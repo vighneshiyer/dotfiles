@@ -1,0 +1,3 @@
+#!/usr/bin/env fish
+
+alacritty --title "Journal" --command "nvim" + ~/90-notes/planning/journal.md

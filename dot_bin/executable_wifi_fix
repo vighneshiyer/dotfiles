@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+import subprocess
+import sys
+
+nmcli_cons = subprocess.check_output("nmcli con show", shell=True)
+nmcli_cons = nmcli_cons.decode("utf-8").split('\n')
+con_name = [x.split(' ')[0] for x in nmcli_cons if "wlp3s0" in x]
+assert len(con_name) == 1
+con_name = con_name[0]
+
+print("Connection name: {}".format(con_name))
+
+print("Rescanning wifi networks")
+wifi_data = subprocess.check_output("nmcli device wifi list --rescan yes", shell=True)
+wifi_data = wifi_data.decode("utf-8").split('\n')
+good_aps = [x for x in wifi_data if con_name in x]
+
+current_ap = [x for x in good_aps if x[0] == "*"][0]
+good_aps.remove(current_ap)
+current_ap_split = current_ap.split()
+print("Current AP strength: {}".format(current_ap_split[7]))
+
+ap_strengths = [int(x.split()[6]) for x in good_aps]
+print("Alternative AP strengths: {}".format(ap_strengths))
+if len(ap_strengths) == 0:
+    print("There are no alternative APs")
+    sys.exit(0)
+best_ap = [good_aps[i] for (i, x) in enumerate(ap_strengths) if x == max(ap_strengths)][0]
+print("Best alternate AP strength {}".format(best_ap.split()[6]))
+if int(best_ap.split()[6]) > int(current_ap_split[7]) + 5:  # Must be at least 5 points better
+    best_ap_bssid = best_ap.split()[0]
+    print("Connecting to {}".format(best_ap_bssid))
+    subprocess.check_output("wpa_cli -i wlp3s0 bssid 0 {}".format(best_ap_bssid), shell=True)
+    subprocess.check_output("wpa_cli -i wlp3s0 reassociate", shell=True)
+else:
+    print("Already connected to a good AP, doing nothing")

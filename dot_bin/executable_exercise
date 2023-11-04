@@ -1,0 +1,3 @@
+#!/usr/bin/env fish
+
+alacritty --title "Exercise Plan" --command "nvim" + ~/90-notes/planning/exercise.md

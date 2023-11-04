@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+
+import sys
+import os
+if len(sys.argv) == 1:
+    print("Usage: fixname <file>")
+    sys.exit(1)
+arg = sys.argv[1]
+if not os.path.exists(arg):
+    print("Path {} doesn't exist".format(arg))
+    sys.exit(1)
+def new_name(old_name):
+    return old_name.strip().replace(' -', '-').replace('- ', '-').replace(' ', '_').replace('&', 'and').replace(',', '').replace('(', '').replace(')', '').replace('[','').replace(']','').replace('@', '')
+if os.path.isfile(arg):
+    new = new_name(arg)
+    if new != arg:
+        print("Fixing\n{}\n{}".format(arg, new))
+        os.rename(arg, new)
+if os.path.isdir(arg):
+    files = [f for f in os.listdir(arg) if os.path.isfile(os.path.join(arg, f))]
+    for f in files:
+        new = new_name(f)
+        if new != f:
+            print("Fixing\n{}\n{}".format(f, new))
+            os.rename(f, new)
