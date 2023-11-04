@@ -1,0 +1,14 @@
+! set dpi to multiple of 96
+Xft.dpi: 192
+! Disable X's font hinting (use hints built into font)
+Xft.autohint: 0
+! reduce color fringing
+Xft.lcdfilter: lcddefault
+! crisp fonts at cost of font shape fidelity (better for hidpi screens)
+Xft.hintstyle: hintfull
+! enable hinting
+Xft.hinting: 1
+! enable X antialiasing
+Xft.antialias: 1
+! rgb subpixel ordering
+Xft.rgba: rgb
