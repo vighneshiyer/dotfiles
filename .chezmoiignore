@@ -5,6 +5,14 @@
 .config/alacritty/**
 .config/dunst
 .config/dunst/**
+.config/i3
+.config/i3/**
+.config/i3status
+.config/i3status/**
+.config/redshift
+.config/redshift/**
+.config/systemd/**
+.config/systemd/user/redshift.service
 .mozilla
 .mozilla/firefox/**
 {{- end }}
