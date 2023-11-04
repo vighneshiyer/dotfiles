@@ -1,0 +1,10 @@
+{{- if ne .chezmoi.fqdnHostname "vighnesh-t480" }}
+.bin
+.bin/**
+.config/alacritty
+.config/alacritty/**
+.config/dunst
+.config/dunst/**
+.mozilla
+.mozilla/firefox/**
+{{- end }}

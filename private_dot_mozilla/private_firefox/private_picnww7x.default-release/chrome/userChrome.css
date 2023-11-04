@@ -1,0 +1,37 @@
+:root {
+--proton-tab-block-margin: 1px !important;
+/* Appmenu item padding */
+--arrowpanel-menuitem-padding-block: 4px 8px !important;
+}
+
+/* Tab */
+.tabbrowser-tab {
+min-height: 0 !important;
+}
+
+/*
+.tab-close-button {
+width: 13px !important;
+height: 13px !important;
+padding: 0px !important;
+}
+*/
+
+/* Toolbar */
+#urlbar:not([open="true"]) {
+/*height: 24px !important;*/
+min-height: 0 !important;
+}
+
+#urlbar-container {
+--urlbar-container-height: 30px !important;
+margin-top: -1px !important;
+}
+
+#urlbar-input {
+margin-top: 1px !important;
+}
+
+/* turn off horizontal tabs */
+/* https://superuser.com/questions/1268732/how-to-hide-tab-bar-tabstrip-in-firefox-57-quantum */
+#TabsToolbar { visibility: collapse !important; }
