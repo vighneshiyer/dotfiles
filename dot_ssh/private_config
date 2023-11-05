@@ -1,0 +1,96 @@
+Host *
+    ServerAliveInterval 60
+
+Host buyvm
+  #HostName 205.185.120.64
+  HostName vighneshiyer.com
+  User root
+
+Host eda1
+  HostName eda-1.eecs.berkeley.edu
+  User cs199-ban
+
+Host eda2
+  HostName eda-2.eecs.berkeley.edu
+  User cs199-ban
+
+Host c111
+  HostName c111-14.eecs.berkeley.edu
+  User cs199-ban
+
+Host rdsl4
+  User vighnesh.iyer
+  ProxyCommand ssh -q vighnesh.iyer@a10.millennium.berkeley.edu nc bwrcrdsl-4.eecs.berkeley.edu 22
+
+Host rdsl6
+  User vighnesh.iyer
+  ProxyCommand ssh -q cs199-ban@eda-1.eecs.berkeley.edu nc bwrcrdsl-6.eecs.berkeley.edu 22
+
+#  2 x Intel E5-2643v2, 3.5GHz, VLSI CAD and FPGA systems, special access 	12(24) 	ON 	256 (1600)
+Host a1
+  HostName a1.millennium.berkeley.edu
+Host a2
+  HostName a2.millennium.berkeley.edu
+Host a3
+  HostName a3.millennium.berkeley.edu
+Host a4
+  HostName a4.millennium.berkeley.edu
+
+#  2 x Intel E5-2643v2, 3.5GHz, Extend VLSI access, general access 	12(24) 	ON 	256 (1600)
+Host a5
+  HostName a5.millennium.berkeley.edu
+Host a6
+  HostName a6.millennium.berkeley.edu
+
+#  2 x Intel E5-2667v2, 3.3GHz, Extend VLSI access, general access 	16(32) 	ON	256 (1600)
+Host a7
+  HostName a7.millennium.berkeley.edu
+
+#  2 x Intel E5-2667v2, 3.3GHz, Extend VLSI access, general access 	16(32) 	ON 	256 (1600)
+Host a8
+  HostName a8.millennium.berkeley.edu
+
+#  2 x Intel E5-2667v4, 3.2GHz, Extend VLSI access, general access 	16(32) 	ON 	256 (2400)
+Host a9
+  HostName a9.millennium.berkeley.edu
+Host a10
+  HostName a10.millennium.berkeley.edu
+Host a11
+  HostName a11.millennium.berkeley.edu
+Host a12
+  HostName a12.millennium.berkeley.edu
+
+#  2 x Intel Gold 6354, 3.0GHz, Extend VLSI access, general access 	36(72) 	ON 	512 (3200)
+Host a13
+  HostName a13.millennium.berkeley.edu
+Host a14
+  HostName a14.millennium.berkeley.edu
+Host a15
+  HostName a15.millennium.berkeley.edu
+Host a16
+  HostName a16.millennium.berkeley.edu
+Host a17
+  HostName a17.millennium.berkeley.edu
+
+# A18 	2 x Intel E5-2667v3 CPU, 3.20GHz; 8 x nVidia A5000 RTX	16(32) 	ON 	384 	2 	4 	3(3) 	1600
+Host a18
+  HostName a18.millennium.berkeley.edu
+# A19 - A20 	2 x Intel E5-2680V3 CPU, 2.5GHz; 8 x nVidia A5000 RTX	24(48) 	ON 	512 	2 	4 	4(4) 	2133
+# A21 - A22 	2 x Intel Gold 6126 CPU, 2.6GHz; 8 x nVidia A6000 RTX	24(48) 	ON 	512 	2 	6 	2(8) 	2666
+# A23 	2 x Intel Gold 6126 CPU, 2.6GHz; 8 x nVidia Titan V	24(48) 	ON 	512 	2 	6 	2(8) 	2666
+# A24 - A27 	2 x Intel Gold 6126 CPU, 2.6GHz; 8 x nVidia RTX2080	24(48) 	ON 	768 	2 	6 	2(24) 	2666 
+
+# firesim1 	Intel Gold 6242 CPU @ 2.80GHz, 4 x U250 xilinx fpga 	32(64) 	ON 	512 	2 	6 	2(8) 	2933
+# firesim2 	Intel Gold 6242 CPU @ 2.80GHz, 4 x D5005 intel fpga, 4 x nVidia A5000 	32(64) 	ON 	512 	2 	6 	2(8) 	2933
+Host firesim1
+  HostName firesim1.millennium.berkeley.edu
+  AddKeysToAgent yes
+  IdentityFile ~/.ssh/id_rsa
+Host firesim2
+  HostName firesim2.millennium.berkeley.edu
+
+Host a*
+  User vighnesh.iyer
+  ForwardX11 yes
+Host firesim*
+  User vighnesh.iyer
