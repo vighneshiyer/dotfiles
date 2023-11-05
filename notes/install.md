@@ -20,6 +20,7 @@
 ### Others
 
 - alacritty (best terminal)
+- rclone (mount remote filesystems + Google Drive / Backblaze B2 sync)
 - Source Code Pro (best font)
 - hyperfine (CLI benchmarking)
 - sxiv (image/gif viewer)

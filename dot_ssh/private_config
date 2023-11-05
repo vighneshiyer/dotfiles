@@ -85,7 +85,7 @@ Host a18
 Host firesim1
   HostName firesim1.millennium.berkeley.edu
   AddKeysToAgent yes
-  IdentityFile ~/.ssh/id_rsa
+  IdentityFile ~/.ssh/id_ed25519
 Host firesim2
   HostName firesim2.millennium.berkeley.edu
 
