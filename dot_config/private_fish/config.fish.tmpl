@@ -256,6 +256,41 @@ alias t 'today --dir $HOME/90-notes/today'
 alias s 'start --dir $HOME/90-notes/today'
 {{- end }}
 
+{{- if regexMatch "(a\\\\d+$)|(firesim\\\\d+$)" .chezmoi.fqdnHostname }}
+# Millennium machines specific things
+
+# set -gx SYNOPSYS_ROOT /ecad/tools/synopsys
+# set -gx VCS_HOME $SYNOPSYS_ROOT/vcs/S-2021.09-SP1-1
+# set -gx VCS_HOME $SYNOPSYS_ROOT/vcs/P-2019.06-SP1
+# set -gx SNPSLMD_LICENSE_FILE 1709@flex-lic.millennium.berkeley.edu:1701@bwrcflex-1.eecs.berkeley.edu:1701@bwrcflex-2.eecs.berkeley.edu
+# export MGLS_LICENSE_FILE=1717@bwrcflex-1.eecs.berkeley.edu:1717@bwrcflex-2.eecs.berkeley.edu
+# export LM_PROJECT=bwrc_users
+# set -gx VERDI_HOME $SYNOPSYS_ROOT/verdi/P-2019.06-SP2-2
+
+set -gx PATH \
+    $HOME/.bin \
+    $HOME/.local/bin \
+    /usr/bin \
+    /nscratch/vighneshiyer/sysroot/bin \
+    /nscratch/vighneshiyer/poetry/bin
+
+eval /scratch/vighneshiyer/miniforge3/bin/conda "shell.fish" "hook" $argv | source
+conda config --set auto_activate_base false
+
+# This function does all the stuff that the bash version of env.sh + conda activate does
+function chipyard_act
+    conda activate ./.conda-env
+    ulimit -Sn 1048576
+    set -gx RISCV $CONDA_PREFIX/riscv-tools
+    set -gx PATH $PATH $RISCV/bin
+    set -gx LD_LIBRARY_PATH $RISCV/lib $LD_LIBRARY_PATH
+    set -gx JAVA_HOME $CONDA_PREFIX/lib/jvm
+    set -gx JAVA_LD_LIBRARY_PATH $JAVA_HOME/lib/server
+end
+
+bass source /ecad/tools/vlsi.bashrc
+{{- end }}
+
 {{- if regexMatch "(bwrcrdsl-\\\\d+$)" .chezmoi.hostname }}
 # BWRC login server specific things
 
