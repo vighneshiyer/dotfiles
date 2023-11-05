@@ -16,3 +16,5 @@
 .mozilla
 .mozilla/firefox/**
 {{- end }}
+notes
+notes/**
