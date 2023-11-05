@@ -20,6 +20,11 @@ Plug 'preservim/vim-markdown'
 "Plug 'bohlender/vim-smt2'
 " Jinja2 syntax highlighting
 "Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.4' }
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+Plug 'nvim-telescope/telescope-live-grep-args.nvim' , { 'tag': 'v1.0.0' }
 call plug#end()
 
 " Use spacebar as leader key
@@ -149,7 +154,12 @@ nmap <Leader>8 8gt
 nmap <Leader>9 9gt
 nmap <Leader>0 10gt
 
+" buffer switching
+nnoremap <Tab> :bnext<CR>
+nnoremap <S-Tab> :bprevious<CR>
+
 nnoremap <Leader>n :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1
 
 nnoremap <Leader>m :make<CR>
 autocmd BufRead,BufNewFile *.v set syntax=verilog
@@ -176,3 +186,5 @@ nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 nnoremap Q <Nop>
 
 autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
+
+lua require('config')
