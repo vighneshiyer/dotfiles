@@ -76,4 +76,4 @@ vim.keymap.set('n', '<leader>b', builtin.buffers, {})
 vim.keymap.set('n', '<leader>s', builtin.grep_string, {})
 -- vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 
-require('leap').add_default_mappings(true)
+-- require('leap').add_default_mappings(true)

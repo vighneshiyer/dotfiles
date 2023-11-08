@@ -289,6 +289,9 @@ function chipyard_act
 end
 
 bass source /ecad/tools/vlsi.bashrc
+
+# https://github.com/python-poetry/poetry/issues/3365
+set -gx PYTHON_KEYRING_BACKEND "keyring.backends.null.Keyring"
 {{- end }}
 
 {{- if regexMatch "(bwrcrdsl-\\\\d+$)" .chezmoi.hostname }}
