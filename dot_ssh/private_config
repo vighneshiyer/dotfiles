@@ -72,12 +72,18 @@ Host a16
 Host a17
   HostName a17.millennium.berkeley.edu
 
+# a18 - a22: Ampere GPUs, for Kurt's group
+
 # A18 	2 x Intel E5-2667v3 CPU, 3.20GHz; 8 x nVidia A5000 RTX	16(32) 	ON 	384 	2 	4 	3(3) 	1600
 Host a18
   HostName a18.millennium.berkeley.edu
 # A19 - A20 	2 x Intel E5-2680V3 CPU, 2.5GHz; 8 x nVidia A5000 RTX	24(48) 	ON 	512 	2 	4 	4(4) 	2133
 # A21 - A22 	2 x Intel Gold 6126 CPU, 2.6GHz; 8 x nVidia A6000 RTX	24(48) 	ON 	512 	2 	6 	2(8) 	2666
+
+# a23: not for SLICE use
 # A23 	2 x Intel Gold 6126 CPU, 2.6GHz; 8 x nVidia Titan V	24(48) 	ON 	512 	2 	6 	2(8) 	2666
+
+# a24 - a27: older GPUs, free for all
 # A24 - A27 	2 x Intel Gold 6126 CPU, 2.6GHz; 8 x nVidia RTX2080	24(48) 	ON 	768 	2 	6 	2(24) 	2666 
 
 # firesim1 	Intel Gold 6242 CPU @ 2.80GHz, 4 x U250 xilinx fpga 	32(64) 	ON 	512 	2 	6 	2(8) 	2933
