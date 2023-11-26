@@ -11,8 +11,6 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-sleuth'
 " Directory browser
 Plug 'preservim/nerdtree'
-" LaTeX syntax highlighting
-Plug 'lervag/vimtex'
 " Markdown syntax highlighting
 Plug 'godlygeek/tabular'
 Plug 'preservim/vim-markdown'
