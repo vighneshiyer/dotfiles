@@ -100,3 +100,5 @@ Host a*
   ForwardX11 yes
 Host firesim*
   User vighnesh.iyer
+
+AddKeysToAgent yes

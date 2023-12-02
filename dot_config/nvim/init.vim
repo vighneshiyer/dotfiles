@@ -17,7 +17,7 @@ Plug 'preservim/vim-markdown'
 " SMT2 syntax highlighting
 "Plug 'bohlender/vim-smt2'
 " Jinja2 syntax highlighting
-"Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.4' }
