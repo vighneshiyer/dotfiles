@@ -202,3 +202,4 @@ exec --no-startup-id "feh --bg-fill ~/40-media/42-photos/03-pol/wallpapers/wallp
 bindsym $mod+Shift+Return exec alacritty --working-directory "$(cat /tmp/whereami)"
 bindsym $mod+Shift+p bar mode toggle
 exec --no-startup-id /usr/bin/dunst
+bindsym $mod+Shift+m exec xdotool getactivewindow click 2
