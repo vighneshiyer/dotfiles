@@ -251,6 +251,8 @@ set -gx MOZ_USE_XINPUT2 1
 # HiDPI settings: https://wiki.archlinux.org/title/HiDPI
 set -gx QT_AUTO_SCREEN_SCALE_FACTOR 1
 
+set -gx RISCV /opt/riscv-gcc-12
+
 # PATH manipulation
 set -Ux PYENV_ROOT $HOME/.pyenv
 pyenv init - | source
@@ -268,6 +270,7 @@ set -gx PATH \
     /usr/bin/core_perl \
     $HOME/.npm-packages/bin \
     $HOME/.cargo/bin \
+    $RISCV/bin
 
 alias t 'today --dir $HOME/90-notes/today'
 alias s 'start --dir $HOME/90-notes/today'
