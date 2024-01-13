@@ -190,8 +190,8 @@ alias dp_right_scale 'xrandr --fb 5824x2400 --output eDP-1 --mode 2560x1440 --po
 alias dp_right_scale2 'xrandr --fb 6720x4000 --output eDP-1 --mode 2560x1440 --pos 0x0 --output DP-1 --primary --mode 1920x1200 --pos 3840x0 --scale 1.5x1.5'
 alias dp_off 'xrandr --output DP-1 --off'
 alias nvidia_auto 'echo auto | sudo tee /sys/bus/pci/devices/0000:01:00.0/power/control'
-alias dock_on 'xrandr --output eDP-1 --auto; xrandr --output DP-1-2 --auto --primary --left-of eDP-1; xrandr --output DP-1-2 --set "Broadcast RGB" "Full"'
-alias dock_off 'xrandr --output DP-1-2 --off'
+alias dock_on 'xrandr --output eDP-1 --auto; xrandr --output DP-1-2 --auto --primary --left-of eDP-1; xrandr --output DP-1-2 --set "Broadcast RGB" "Full"; feh --bg-fill ~/40-media/42-photos/wallpaper.jpg'
+alias dock_off 'xrandr --output DP-1-2 --off; feh --bg-fill ~/40-media/42-photos/wallpaper.jpg'
 
 function ext_brightness
     #ddcutil setvcp --model "DELL U2515HX" 0x10 $argv > /dev/null 2>&1
