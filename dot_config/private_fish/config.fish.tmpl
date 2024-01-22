@@ -226,7 +226,7 @@ function mount_remote -a dir remote remote_dir
     if mount | grep /mnt/$dir > /dev/null;
         fusermount -u /mnt/$dir
     end
-    sshfs -o allow_other,uid=1000,gid=1000,IdentityFile=/home/vighnesh/.ssh/id_rsa $remote:$remote_dir /mnt/$dir
+    sshfs -o allow_other,uid=1000,gid=1000,IdentityFile=/home/vighnesh/.ssh/id_ed25519 $remote:$remote_dir /mnt/$dir
 end
 
 function unmount_remote -a dir
@@ -238,7 +238,7 @@ end
 alias mount_bwrc 'mount_remote bwrc rdsl6 /tools/C/vighneshiyer/'
 alias unmount_bwrc 'unmount_remote bwrc'
 
-alias mount_a 'mount_remote a a10 /scratch/vighneshiyer'
+alias mount_a 'mount_remote a a16 /scratch/vighneshiyer'
 alias unmount_a 'unmount_remote a'
 
 alias mount_eda 'mount_remote eda eda-1 /scratch/cs199-ban'
