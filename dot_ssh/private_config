@@ -95,6 +95,15 @@ Host firesim1
 Host firesim2
   HostName firesim2.millennium.berkeley.edu
 
+Host as1
+  HostName as1.millennium.berkeley.edu
+Host as2
+  HostName as2.millennium.berkeley.edu
+Host as3
+  HostName as3.millennium.berkeley.edu
+Host as4
+  HostName as4.millennium.berkeley.edu
+
 Host a*
   User vighnesh.iyer
   ForwardX11 yes

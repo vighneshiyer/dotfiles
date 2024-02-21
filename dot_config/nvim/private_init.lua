@@ -33,7 +33,10 @@ require("lazy").setup({
   {"nvim-telescope/telescope-live-grep-args.nvim" , tag = 'v1.0.0' },
   "tpope/vim-repeat", -- support repeating plugin commands with '.'
   -- "ggandor/leap.nvim"
+  "nvim-tree/nvim-tree.lua"
 })
+
+require("nvim-tree").setup()
 
 vim.g.tex_flavor = 'latex'  -- Use Latex indenting style
 vim.o.mouse = 'a'           -- Enable mouse support in 'a'll modes
@@ -260,6 +263,11 @@ require('telescope').setup {
     },
     live_grep_args = {
       auto_quoting = true, -- enable/disable auto-quoting
+    }
+  },
+  pickers = {
+    find_files = {
+      follow = true
     }
   }
 }
