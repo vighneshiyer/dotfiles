@@ -276,7 +276,7 @@ alias t 'today --dir $HOME/90-notes/today'
 alias s 'start --dir $HOME/90-notes/today'
 {{- end }}
 
-{{- if regexMatch "(a\\d+$)|(firesim\\d+$)" .chezmoi.fqdnHostname }}
+{{- if regexMatch "(a\\d+$)|(as\\d+$)|(firesim\\d+$)" .chezmoi.fqdnHostname }}
 # Millennium machines specific things
 
 # set -gx SYNOPSYS_ROOT /ecad/tools/synopsys
@@ -292,7 +292,7 @@ set -gx PATH \
     $HOME/.local/bin \
     /usr/bin \
     /nscratch/vighneshiyer/sysroot/bin \
-    /nscratch/vighneshiyer/poetry/bin
+    /scratch/vighneshiyer/poetry/bin
 
 eval /scratch/vighneshiyer/miniforge3/bin/conda "shell.fish" "hook" $argv | source
 conda config --set auto_activate_base false
