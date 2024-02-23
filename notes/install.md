@@ -6,7 +6,7 @@
 
 - [chezmoi](https://www.chezmoi.io/) (dotfile manager, superior to `stow`)
 - [fish](https://fishshell.com/) (a better `bash`, the best shell, no compat issues if only used as interactive shell and NOT as login/POSIX shell)
-- [neovim](https://github.com/neovim/neovim) (a better `vim`) + [Vim-Plug](https://github.com/junegunn/vim-plug)
+- [neovim](https://github.com/neovim/neovim) (a better `vim`)
 - [eza](https://github.com/eza-community/eza) (a better `ls`)
 - [fd](https://github.com/sharkdp/fd) (a better `find`)
 - [rg](https://github.com/BurntSushi/ripgrep) (a better `ack`/`grep`)
@@ -19,7 +19,7 @@
 
 ### Others
 
-- [alacritty](https://github.com/alacritty/alacritty) (the best terminal emulator)
+- [alacritty](https://github.com/alacritty/alacritty) (terminal emulator)
 - [rclone](https://rclone.org/install/) (mount remote filesystems + Google Drive / Backblaze B2 sync)
 - [zathura](https://github.com/pwmt/zathura) (PDF/DJVU/epub reader)
 - [nsxiv](https://github.com/nsxiv/nsxiv) (image/gif viewer)
@@ -28,4 +28,5 @@
 - [dunst](https://github.com/dunst-project/dunst) (notification daemon)
 - [hyperfine](https://github.com/sharkdp/hyperfine) (CLI benchmarking tool)
 - [fdupes](https://github.com/adrianlopezroche/fdupes) (duplicate file finder and remover)
-- [Source Code Pro](https://github.com/adobe-fonts/source-code-pro) (best font)
+- [Patched Source Sans 3](https://www.nerdfonts.com/font-downloads) (terminal font)
+- [lazygit](https://github.com/jesseduffield/lazygit) (git TUI)

@@ -9,15 +9,26 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-set $bg #282828
-set $red #cc241d
-set $green #98971a
-set $yellow #d79921
-set $blue #458588
-set $purple #b16286
-set $aqua #689d68
-set $gray #a89984
-set $darkgray #1d2021
+# Select tokyonight-night colors
+# https://github.com/enkia/tokyo-night-vscode-theme
+set $bg #1a1b26
+set $bg_storm #24283b
+set $black #414868
+set $white #c0caf5
+set $red #f7768e
+set $blue #7aa2f7
+set $blue_text #9aa5ce
+set $yellow #e0af68
+set $cyan #7dcfff
+
+# Window decoration colors
+# class                 border      backgr.     text    indicator   child_border
+client.focused          $blue_text  #364A82     $white  $blue_text  $blue_text
+client.focused_inactive $bg         $bg_storm   $white  $bg         $bg
+client.unfocused        $bg         $bg         $white  $bg         $bg
+client.urgent           $red        $red        $bg     $bg         $bg
+# client.placeholder    $black      $bg         $white  $white      $bg
+# client.background     $bg
 
 set $mod Mod1
 
@@ -146,9 +157,9 @@ bar {
         statusline $yellow
         # workspaces section
         #                    border  backgr. text
-        focused_workspace    $aqua $aqua $darkgray
-        inactive_workspace   $darkgray $darkgray $yellow
-        active_workspace     $darkgray $darkgray $yellow
+        focused_workspace    $blue $white $black
+        inactive_workspace   $black $bg $white
+        active_workspace     $black $bg $white
         urgent_workspace     $red $red $bg
     }
 }
@@ -198,7 +209,7 @@ for_window [instance="arithmetic"] border pixel 5
 exec --no-startup-id alacritty --class arithmetic --command /usr/bin/python
 bindsym $mod+a [instance="arithmetic"] scratchpad show; [instance="arithmetic"] move position center
 
-exec --no-startup-id "feh --bg-fill ~/40-media/42-photos/03-pol/wallpapers/wallpaper4.jpg"
+exec --no-startup-id "feh --bg-fill ~/40-media/42-photos/wallpaper.jpg"
 bindsym $mod+Shift+Return exec alacritty --working-directory "$(cat /tmp/whereami)"
 bindsym $mod+Shift+p bar mode toggle
 exec --no-startup-id /usr/bin/dunst

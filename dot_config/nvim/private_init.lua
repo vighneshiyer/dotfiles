@@ -1,4 +1,7 @@
 vim.o.shell = '/bin/bash'
+-- disable netrw (see nvim-tree)
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 -- https://github.com/folke/lazy.nvim
 
@@ -18,25 +21,38 @@ vim.opt.rtp:prepend(lazypath)
 vim.api.nvim_set_var('mapleader', ' ') -- Use spacebar as leader key
 
 require("lazy").setup({
+  -- "bohlender/vim-smt2",    -- SMT2 syntax highlighting
+  -- "ggandor/leap.nvim"      -- Nice Vim motions
   "morhetz/gruvbox",          -- Color theme
-  "vim-airline/vim-airline",  -- Status bar
+  {"folke/tokyonight.nvim", lazy = false, priority = 1000, opts = {}}, -- Color theme
   "tpope/vim-sensible",       -- Sensible vim defaults
   "tpope/vim-sleuth",         -- Automatically detect tab size for files
-  "preservim/nerdtree",       -- Directory browser
   "godlygeek/tabular",        -- Alignment
   "preservim/vim-markdown",   -- Markdown syntax highlighting
-  -- "bohlender/vim-smt2",    -- SMT2 syntax highlighting
   "Glench/Vim-Jinja2-Syntax", -- Jinja2 syntax highlighting
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"}, -- Treesitter syntax highlighting
   {"nvim-telescope/telescope.nvim", tag = '0.1.5', dependencies = { 'nvim-lua/plenary.nvim' } }, -- File/phrase searcher + previewer
   {"nvim-telescope/telescope-fzf-native.nvim", build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build" },
   {"nvim-telescope/telescope-live-grep-args.nvim" , tag = 'v1.0.0' },
-  "tpope/vim-repeat", -- support repeating plugin commands with '.'
-  -- "ggandor/leap.nvim"
-  "nvim-tree/nvim-tree.lua"
+  "tpope/vim-repeat",         -- support repeating plugin commands with '.'
+  "nvim-tree/nvim-tree.lua",  -- Directory browser
+  {"nvim-lualine/lualine.nvim", dependencies = { 'nvim-tree/nvim-web-devicons' } } -- Status bar
 })
 
-require("nvim-tree").setup()
+require('lualine').setup({
+  options = {
+    theme = 'auto'
+  },
+  sections = {
+    lualine_a = {'mode'},
+    -- lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_b = {'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  }
+})
 
 vim.g.tex_flavor = 'latex'  -- Use Latex indenting style
 vim.o.mouse = 'a'           -- Enable mouse support in 'a'll modes
@@ -84,11 +100,11 @@ vim.o.wildmenu = true       -- Enable wildmenu for better command-line completio
 vim.o.termguicolors = true  -- Set terminal to use true colors
 vim.o.background = 'dark'   -- Set background to dark
 
--- Gruvbox configuration
+-- Colorscheme configuration
 vim.g.gruvbox_italic = 1
 vim.g.gruvbox_contrast_dark = 'hard'
 vim.g.gruvbox_contrast_light = 'hard'
-vim.cmd('colorscheme gruvbox') -- Load Gruvbox colorscheme
+vim.cmd('colorscheme tokyonight-night')
 
 -- Turn off physical line wrapping (automatic insertion of newlines)
 vim.o.textwidth = 0
@@ -162,9 +178,9 @@ vim.api.nvim_set_keymap('n', '<Leader>0', '10gt', { noremap = true, silent = tru
 vim.api.nvim_set_keymap('n', '<Tab>', ':bnext<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<S-Tab>', ':bprevious<CR>', { noremap = true, silent = true })
 
--- Mapping Leader+n to NERDTreeToggle
-vim.api.nvim_set_keymap('n', '<Leader>n', ':NERDTreeToggle<CR>', { noremap = true, silent = true })
-vim.g.NERDTreeShowHidden = 1
+-- Mapping Leader+n to file viewer
+require("nvim-tree").setup()
+vim.api.nvim_set_keymap('n', '<Leader>n', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 
 -- Mapping Leader+m to :make<CR>
 vim.api.nvim_set_keymap('n', '<Leader>m', ':make<CR>', { noremap = true, silent = true })
