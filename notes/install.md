@@ -63,5 +63,5 @@ Then I manually install programs I want into the sysroot by building from source
   - `tmux`
   - `tree`
   - `xsel` (optional)
-  - `poetry` is installed in `sysroot/poetry`
-
+  - `poetry` is installed in `/scratch/vighneshiyer/poetry` (due to `poetry` installs not being truly portable across Millennium machines)
+  - `miniforge3` is installed in `scratch/vighneshiyer/miniforge3` (due to `conda` not performing well unless on local disk)
