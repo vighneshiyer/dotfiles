@@ -30,3 +30,38 @@
 - [fdupes](https://github.com/adrianlopezroche/fdupes) (duplicate file finder and remover)
 - [Patched Source Sans 3](https://www.nerdfonts.com/font-downloads) (terminal font)
 - [lazygit](https://github.com/jesseduffield/lazygit) (git TUI)
+
+## Millennium Machine Setup
+
+I have a custom sysroot in `/nscratch/vighneshiyer/sysroot`.
+The `~/.bashrc` contains:
+
+```bash
+# interactive prompt
+PS1="${BBlu}\H:\w > ${RCol}"
+PS2='> '
+
+source /ecad/tools/vlsi.bashrc
+
+export PATH=/nscratch/vighneshiyer/sysroot/bin:$HOME/.local/bin:${PATH}
+export PYTHON_KEYRING_BACKEND="keyring.backends.null.Keyring"
+export N_PREFIX=/nscratch/vighneshiyer/sysroot
+```
+
+Then I manually install programs I want into the sysroot by building from source or placing static binaries in `sysroot/bin`.
+
+- Here are the programs I've installed:
+  - `bat`
+  - `delta`
+  - `eza`
+  - `fd`
+  - `fish`, `fish_indent`, `fish_key_reader`
+  - `hyperfine`
+  - `n`, `node`, `npm`, `npx`, `corepack`
+  - `nvim`
+  - `rg`
+  - `tmux`
+  - `tree`
+  - `xsel` (optional)
+  - `poetry` is installed in `sysroot/poetry`
+
