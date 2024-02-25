@@ -20,11 +20,12 @@ set $blue #7aa2f7
 set $blue_text #9aa5ce
 set $yellow #e0af68
 set $cyan #7dcfff
+set $comments #565f89
 
 # Window decoration colors
 # class                 border      backgr.     text    indicator   child_border
 client.focused          $blue_text  #364A82     $white  $blue_text  $blue_text
-client.focused_inactive $bg         $bg_storm   $white  $bg         $bg
+client.focused_inactive $comments   $bg_storm   $white  $bg         $comments
 client.unfocused        $bg         $bg         $white  $bg         $bg
 client.urgent           $red        $red        $bg     $bg         $bg
 # client.placeholder    $black      $bg         $white  $white      $bg
