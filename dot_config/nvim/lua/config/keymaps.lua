@@ -6,16 +6,16 @@
 vim.api.nvim_set_keymap("n", ";", ":", { noremap = true, silent = false })
 
 -- Tab switching mappings
-vim.api.nvim_set_keymap("n", "<Leader>1", "1gt", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>2", "2gt", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>3", "3gt", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>4", "4gt", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>5", "5gt", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>6", "6gt", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>7", "7gt", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>8", "8gt", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>9", "9gt", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<Leader>0", "10gt", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader><Tab>1", "1gt", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader><Tab>2", "2gt", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader><Tab>3", "3gt", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader><Tab>4", "4gt", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader><Tab>5", "5gt", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader><Tab>6", "6gt", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader><Tab>7", "7gt", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader><Tab>8", "8gt", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader><Tab>9", "9gt", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader><Tab>0", "10gt", { noremap = true, silent = true })
 
 -- Remove all trailing whitespace by pressing F5
 vim.api.nvim_set_keymap(
