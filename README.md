@@ -2,14 +2,6 @@
 
 - Managed using [chezmoi](https://www.chezmoi.io/)
 - Install with `sh -c "$(curl -fsLS get.chezmoi.io)"`
-- Configure `~/.config/chezmoi/chezmoi.toml` as:
-
-```toml
-encryption = "gpg"
-[gpg]
-    symmetric = true
-```
-
 - If you're SSH-ing to the machine being configured, disable GUI-based GPG passphrase entry
     - Add this line (`pinentry-program /usr/bin/pinentry-curses`) to `~/.gnupg/gpg-agent.conf`
     - Run `gpg-connect-agent reloadagent /bye`
