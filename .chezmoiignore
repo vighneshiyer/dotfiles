@@ -1,23 +1,75 @@
-{{- if ne .chezmoi.fqdnHostname "vighnesh-t480" }}
+# Ignore everything first
+.Xmodmap
+.Xresources
 .bin
 .bin/**
-.config/alacritty
-.config/alacritty/**
-.config/dunst
-.config/dunst/**
-.config/i3
-.config/i3/**
-.config/i3status
-.config/i3status/**
-.config/redshift
-.config/redshift/**
-.config/systemd/**
-.config/systemd/user/redshift.service
+.config
+.config/**
+.gitconfig
 .mozilla
-.mozilla/firefox/**
-{{- end }}
+.mozilla/**
+.ssh
+.ssh/**
+.tmux.conf
+
+# These should always be ignored
 notes
 notes/**
 README.md
-
 key.txt.age
+
+# For specific hostnames, unignore specific dotfiles for that host only
+{{- if eq .chezmoi.fqdnHostname "vighnesh-t480" }}
+!.Xmodmap
+!.Xresources
+!.gitconfig
+!.tmux.conf
+!.ssh
+!.ssh/**
+!.bin
+!.bin/**
+!.config/alacritty
+!.config/alacritty/**
+!.config/bat
+!.config/bat/**
+!.config/dunst
+!.config/dunst/**
+!.config/fish
+!.config/fish/**
+!.config/i3
+!.config/i3/**
+!.config/i3status
+!.config/i3status/**
+!.config/nvim
+!.config/nvim/**
+!.config/rclone
+!.config/rclone/**
+!.config/redshift
+!.config/redshift/**
+!.config/systemd/**
+!.config/systemd/user/redshift.service
+!.mozilla
+!.mozilla/firefox/picnww7x.default-release/**
+{{- end }}
+
+{{- if eq .chezmoi.fqdnHostname "vighnesh-z16" }}
+!.gitconfig
+!.tmux.conf
+!.ssh
+!.ssh/**
+!.bin
+!.bin/**
+!.config
+!.config/alacritty
+!.config/alacritty/**
+!.config/bat
+!.config/bat/**
+!.config/fish
+!.config/fish/**
+!.config/i3status
+!.config/i3status/**
+!.config/nvim
+!.config/nvim/**
+!.config/rclone
+!.config/rclone/**
+{{- end }}

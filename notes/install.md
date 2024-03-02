@@ -31,6 +31,10 @@
 - [Patched Source Sans 3](https://www.nerdfonts.com/font-downloads) (terminal font)
 - [lazygit](https://github.com/jesseduffield/lazygit) (git TUI)
 
+```bash
+sudo pacman -S fish neovim eza fd ripgrep tldr bat git-delta tmux xsel alacritty rclone zathura nsxiv mpv hyperfine fdupes lazygit
+```
+
 ## Millennium Machine Setup
 
 I have a custom sysroot in `/nscratch/vighneshiyer/sysroot`.

@@ -75,7 +75,12 @@ color = '#db4b4b'
 # foreground = "0xd5c4a1"
 
 [font]
+{{- if eq .chezmoi.fqdnHostname "vighnesh-t480" }}
 size = 9.0
+{{- end}}
+{{- if eq .chezmoi.fqdnHostname "vighnesh-z16" }}
+size = 11.0
+{{- end}}
 
 # [font.normal]
 # family = "JetBrainsMono Nerd Font Mono"
