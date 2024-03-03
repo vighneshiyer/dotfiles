@@ -46,10 +46,14 @@ key.txt.age
 !.config/rclone/**
 !.config/redshift
 !.config/redshift/**
-!.config/systemd/**
+!.config/systemd
+!.config/systemd/user
 !.config/systemd/user/redshift.service
 !.mozilla
-!.mozilla/firefox/picnww7x.default-release/**
+!.mozilla/firefox
+!.mozilla/firefox/picnww7x.default-release
+!.mozilla/firefox/picnww7x.default-release/chrome
+!.mozilla/firefox/picnww7x.default-release/chrome/**
 {{- end }}
 
 {{- if eq .chezmoi.fqdnHostname "vighnesh-z16" }}
@@ -72,4 +76,9 @@ key.txt.age
 !.config/nvim/**
 !.config/rclone
 !.config/rclone/**
+!.mozilla
+!.mozilla/firefox
+!.mozilla/firefox/rjj1ehmj.default-release
+!.mozilla/firefox/rjj1ehmj.default-release/chrome
+!.mozilla/firefox/rjj1ehmj.default-release/chrome/**
 {{- end }}
