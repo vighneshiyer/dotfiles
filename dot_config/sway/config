@@ -254,20 +254,18 @@ hide_edge_borders --i3 smart_no_gaps
 default_border pixel 1
 
 # Dropdown scratchpad terminal
-for_window [instance="dropdown"] floating enable
-for_window [instance="dropdown"] resize set 2000 1500
-for_window [instance="dropdown"] move scratchpad
-for_window [instance="dropdown"] border pixel 5
+for_window [app_id="dropdown"] floating enable
+for_window [app_id="dropdown"] move scratchpad
+for_window [app_id="dropdown"] border pixel 5
 exec --no-startup-id alacritty --class dropdown
-bindsym $mod+u [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
+bindsym $mod+u [app_id="dropdown"] scratchpad show; [app_id="dropdown"] move position center; [app_id="dropdown"] resize set width 1280 px height 800 px
 
 # Arithmetic (Python) terminal
-for_window [instance="arithmetic"] floating enable
-for_window [instance="arithmetic"] resize set 2000 1500
-for_window [instance="arithmetic"] move scratchpad
-for_window [instance="arithmetic"] border pixel 5
+for_window [app_id="arithmetic"] floating enable
+for_window [app_id="arithmetic"] move scratchpad
+for_window [app_id="arithmetic"] border pixel 5
 exec --no-startup-id alacritty --class arithmetic --command /usr/bin/python
-bindsym $mod+a [instance="arithmetic"] scratchpad show; [instance="arithmetic"] move position center
+bindsym $mod+a [app_id="arithmetic"] scratchpad show; [app_id="arithmetic"] move position center; [app_id="arithmetic"] resize set width 1280 px height 800 px
 
 bindsym $mod+Shift+Return exec alacritty --working-directory "$(cat /tmp/whereami)"
 
