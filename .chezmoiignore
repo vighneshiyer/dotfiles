@@ -76,6 +76,8 @@ key.txt.age
 !.config/nvim/**
 !.config/rclone
 !.config/rclone/**
+!.config/sway
+!.config/sway/**
 !.mozilla
 !.mozilla/firefox
 !.mozilla/firefox/rjj1ehmj.default-release

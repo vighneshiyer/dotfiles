@@ -116,6 +116,9 @@ style = "Italic"
 
 [scrolling]
 history = 10000
+{{- if eq .chezmoi.fqdnHostname "vighnesh-z16" }}
+multiplier = 3
+{{- end }}
 
 [window.dimensions]
 columns = 150
