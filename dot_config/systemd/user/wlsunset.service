@@ -1,0 +1,11 @@
+[Unit]
+Description=wlsunset
+After=graphical.target
+
+[Service]
+ExecStart=/sbin/wlsunset -l 37.9 -L -122.3 -d 3600 -T 6500 -t 4000
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target

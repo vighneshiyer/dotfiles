@@ -78,6 +78,9 @@ key.txt.age
 !.config/rclone/**
 !.config/sway
 !.config/sway/**
+!.config/systemd
+!.config/systemd/user
+!.config/systemd/user/wlsunset.service
 !.mozilla
 !.mozilla/firefox
 !.mozilla/firefox/rjj1ehmj.default-release

@@ -131,7 +131,7 @@ alias qpdf 'silent qpdfview'
 alias opdf 'silent okular'
 alias office 'silent libreoffice'
 alias gtkwave 'silent gtkwave'
-alias sxiv 'silent sxiv'
+alias sxiv 'silent nsxiv'
 alias spotify 'snap run spotify & disown'
 abbr -a cpr rsync -ah --progress
 abbr -a rsync_remote rsync -chavzP --stats user@remote:~/path
@@ -284,6 +284,7 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
     # Shared things between t480 and z16
     alias t 'today --dir $HOME/90-notes/today'
     alias s 'start --dir $HOME/90-notes/today'
+    alias shot 'grim -g "$(slurp)"'
     alias dropdown 'silent alacritty --class dropdown'
     alias dropdown_arith 'silent alacritty --class arithmetic -e /usr/bin/python'
     # This function is called every time Enter is hit when in a terminal
