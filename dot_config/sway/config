@@ -45,7 +45,7 @@ set $term alacritty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_path | wmenu -f "SauceCodePro Nerd Font Mono 11" | xargs swaymsg exec --
+set $menu dmenu_path | wmenu -f "SauceCodePro Nerd Font Mono 12" -N 1a1b26 -n c0caf5 -S 7aa2f7 -s 1a1b26 | xargs swaymsg exec --
 
 ### Output configuration
 #
@@ -306,3 +306,5 @@ bar {
 }
 
 include /etc/sway/config.d/*
+
+exec_always --no-startup-id touch /tmp/task
