@@ -1,0 +1,162 @@
+#!/usr/bin/env python
+import sys
+import argparse
+import subprocess
+from enum import Enum
+import json
+from dataclasses import dataclass
+from typing import Optional
+
+
+class Position(Enum):
+    LEFT = "left"
+    RIGHT = "right"
+
+
+@dataclass
+class Mode:
+    width: int
+    height: int
+    refresh: int
+
+    def __str__(self) -> str:
+        # refresh will be something like: 59997
+        refresh = str(self.refresh)
+        fractional_part = refresh[-3:]
+        integer_part = refresh[: len(refresh) - 3]
+        return f"{self.width}x{self.height}@{integer_part}.{fractional_part}Hz"
+
+
+@dataclass
+class Output:
+    name: str
+    make: str
+    model: str
+    mode: Mode
+
+    def __str__(self) -> str:
+        return f"{self.name} ({self.make} {self.model}) {self.mode}"
+
+
+@dataclass
+class Workspace:
+    name: str
+    output: str
+    representation: Optional[str]
+
+
+def run_program(command: str) -> str:
+    result: subprocess.CompletedProcess[str]
+    try:
+        result = subprocess.run(
+            command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            text=True,
+            shell=True,
+        )
+    except Exception as e:
+        raise RuntimeError(
+            f"Error: Exception '{e}' was raised while running command '{command}'"
+        )
+
+    if result.returncode == 0:
+        return result.stdout
+    else:
+        raise RuntimeError(
+            f"Error: The command '{command}' exited with code {result.returncode}"
+        )
+
+
+def main(sysargs: list[str]) -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--position",
+        type=Position,
+        choices=list(Position),
+        help="The relative position of the output you want to display",
+    )
+    parser.add_argument(
+        "--scale",
+        type=float,
+        help="The scaling factor for the output you want to display",
+        default=1.0,
+    )
+    parser.add_argument(
+        "--off",
+        action="store_true",
+        help="If this flag is passed, turn the external output off",
+    )
+    args = parser.parse_args(sysargs)
+    outputs_str = run_program("swaymsg -t get_outputs")
+    # every output has an 'id', 'name' (which is used as an input to swaymsg), 'model' which is the edid of the monitor, and 'modes' (of which the first one is the default)
+    outputs_json = json.loads(outputs_str)
+    outputs: list[Output] = []
+    for output in outputs_json:
+        first_mode = output["modes"][0]
+        outputs.append(
+            Output(
+                name=output["name"],
+                model=output["model"],
+                make=output["make"],
+                mode=Mode(
+                    first_mode["width"], first_mode["height"], first_mode["refresh"]
+                ),
+            )
+        )
+    laptop_output_filter = [o for o in outputs if o.name == "eDP-1"]
+    assert len(laptop_output_filter) == 1  # there better be only one laptop output!
+    laptop_output = laptop_output_filter[0]
+    other_outputs = [o for o in outputs if o.name != "eDP-1"]
+    assert (
+        len(other_outputs) == 1
+    )  # for now, let's enforce only one additional monitor which can be positioned left/right of the laptop monitor
+    other_output = other_outputs[0]
+    # This is the default configuration for the laptop output screen
+    laptop_output_scale = 2
+
+    if len(sysargs) == 0:
+        # We should just print out the outputs available
+        print(f"Laptop output: {laptop_output}")
+        print(f"External output: {other_output}")
+    elif args.off:
+        # Move workspaces to laptop monitor
+        # Then switch external monitor off
+        workspaces_str = run_program("swaymsg -t get_workspaces")
+        workspaces_json = json.loads(workspaces_str)
+        workspaces: list[Workspace] = []
+        for workspace in workspaces_json:
+            workspaces.append(
+                Workspace(
+                    workspace["name"], workspace["output"], workspace["representation"]
+                )
+            )
+        workspaces_to_move = [
+            w
+            for w in workspaces
+            if w.output != laptop_output.name and w.representation is not None
+        ]
+        sway_move_cmds = [
+            f"swaymsg -- [workspace={w.name}] move workspace to output {laptop_output.name}"
+            for w in workspaces_to_move
+        ]
+        for cmd in sway_move_cmds:
+            run_program(cmd)
+        other_output_off_cmd = f"swaymsg -- output {other_output.name} power off"
+        run_program(other_output_off_cmd)
+    else:
+        assert args.position and args.scale
+        other_output_xpos: int
+        if args.position is Position.LEFT:
+            other_output_xpos = -int(other_output.mode.width // args.scale)
+        else:
+            assert args.position is Position.RIGHT
+            other_output_xpos = int(laptop_output.mode.width // laptop_output_scale)
+        laptop_output_cmd = f"swaymsg -- output {laptop_output.name} power on mode {laptop_output.mode} position 0 0 scale {laptop_output_scale}"
+        other_output_cmd = f"swaymsg -- output {other_output.name} power on mode {other_output.mode} position {other_output_xpos} 0 scale {args.scale}"
+        run_program(laptop_output_cmd)
+        run_program(other_output_cmd)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
