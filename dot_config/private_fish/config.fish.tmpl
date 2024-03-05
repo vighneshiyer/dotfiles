@@ -262,6 +262,9 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
 
 {{- if eq .chezmoi.fqdnHostname "vighnesh-z16" }}
     # z16 specific things
+    alias display_off 'display --off'
+    alias dock_on 'display --position left --scale 1.5'
+    alias home_on 'display --position right --scale 1.25'
     set -gx PATH \
         $HOME/.local/bin \
         $HOME/.bin \
