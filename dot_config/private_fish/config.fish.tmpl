@@ -342,15 +342,22 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
     # export LM_PROJECT=bwrc_users
     # set -gx VERDI_HOME $SYNOPSYS_ROOT/verdi/P-2019.06-SP2-2
 
+    set -gx RUSTUP_HOME /scratch/vighneshiyer/rustup
+    set -gx CARGO_HOME /scratch/vighneshiyer/cargo
+    set -gx PYENV_ROOT $HOME/.pyenv
+
     set -gx PATH \
         $HOME/.bin \
         $HOME/.local/bin \
+        $PYENV_ROOT/bin \
         /usr/bin \
         /nscratch/vighneshiyer/sysroot/bin \
-        /scratch/vighneshiyer/poetry/bin
+        /scratch/vighneshiyer/poetry/bin \
+        /scratch/vighneshiyer/cargo/bin \
 
     eval /scratch/vighneshiyer/miniforge3/bin/conda "shell.fish" "hook" $argv | source
     conda config --set auto_activate_base false
+    pyenv init - | source
 
     # This function does all the stuff that the bash version of env.sh + conda activate does
     function chipyard_act
@@ -367,6 +374,7 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
 
     # https://github.com/python-poetry/poetry/issues/3365
     set -gx PYTHON_KEYRING_BACKEND "keyring.backends.null.Keyring"
+
     {{- end }}
 
     {{- if regexMatch "(bwrcrdsl-\\\\d+$)" .chezmoi.hostname }}

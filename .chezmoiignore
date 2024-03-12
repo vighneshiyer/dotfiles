@@ -28,6 +28,7 @@ key.txt.age
 !.ssh/**
 !.bin
 !.bin/**
+!.config
 !.config/alacritty
 !.config/alacritty/**
 !.config/bat
@@ -92,6 +93,7 @@ key.txt.age
 !.Xresources
 !.gitconfig
 !.tmux.conf
+!.config
 !.config/bat
 !.config/bat/**
 !.config/fish
