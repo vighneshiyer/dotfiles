@@ -87,3 +87,17 @@ key.txt.age
 !.mozilla/firefox/rjj1ehmj.default-release/chrome
 !.mozilla/firefox/rjj1ehmj.default-release/chrome/**
 {{- end }}
+
+{{- if regexMatch "(a\\d+$)|(as\\d+$)|(firesim\\d+$)" .chezmoi.fqdnHostname }}
+!.Xresources
+!.gitconfig
+!.tmux.conf
+!.config/bat
+!.config/bat/**
+!.config/fish
+!.config/fish/**
+!.config/nvim
+!.config/nvim/**
+!.ssh
+!.ssh/**
+{{- end }}
