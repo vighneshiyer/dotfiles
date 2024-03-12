@@ -118,6 +118,11 @@ input "11311:39:SNSL0027:00_2C2F:0027_Touchpad" {
   scroll_method two_finger
 }
 
+input "6127:24814:Lenovo_TrackPoint_Keyboard_II" {
+  accel_profile adaptive
+  pointer_accel 1.0
+}
+
 ### Key bindings
 #
 # Basics:

@@ -27,3 +27,6 @@ vim.api.nvim_set_keymap(
 
 -- Disable ex mode
 vim.api.nvim_set_keymap("n", "Q", "<Nop>", { noremap = true, silent = true })
+
+-- Leader + m = run make
+vim.api.nvim_set_keymap("n", "<Leader>m", ":make<CR>", { noremap = true, silent = true, desc = "Run make" })
