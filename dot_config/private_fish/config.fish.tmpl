@@ -331,7 +331,7 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
     end
 {{- end }}
 
-{{- if regexMatch "(a\\d+$)|(as\\d+$)|(firesim\\d+$)" .chezmoi.fqdnHostname }}
+{{- if regexMatch "(a\\d+$)|(as\\d+$)|(firesim\\d+$)|(amd\\d+$)" .chezmoi.fqdnHostname }}
     # Millennium machines specific things
 
     # set -gx SYNOPSYS_ROOT /ecad/tools/synopsys

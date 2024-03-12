@@ -104,10 +104,21 @@ Host as3
 Host as4
   HostName as4.millennium.berkeley.edu
 
+Host amd1
+  HostName amd1.millennium.berkeley.edu
+Host amd2
+  HostName amd2.millennium.berkeley.edu
+Host amd3
+  HostName amd3.millennium.berkeley.edu
+Host amd4
+  HostName amd4.millennium.berkeley.edu
+
 Host a*
   User vighnesh.iyer
   ForwardX11 yes
 Host firesim*
+  User vighnesh.iyer
+Host amd*
   User vighnesh.iyer
 
 AddKeysToAgent yes
