@@ -73,6 +73,8 @@ key.txt.age
 !.config/fish/**
 !.config/i3status
 !.config/i3status/**
+!.config/mako
+!.config/mako/**
 !.config/nvim
 !.config/nvim/**
 !.config/rclone

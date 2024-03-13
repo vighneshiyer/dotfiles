@@ -1,0 +1,25 @@
+max-history=10
+max-visible=5
+
+# Only change focus if middle mouse click is used
+on-button-left=dismiss
+on-button-middle=invoke-default-action
+on-button-right=dismiss
+
+# Use tokyonight-night colors
+font=SauceCodePro Nerd Font Mono 11
+background-color=#1a1b26
+text-color=#c0caf5
+border-color=#7aa2f7
+border-size=3
+width=400
+height=200
+margin=10
+padding=10
+
+# Make notifications bubbles disappear after 10 seconds
+default-timeout=10000
+
+[urgency=critical]
+text-color=#f7768e
+border-color=#f7768e
