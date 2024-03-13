@@ -35,3 +35,5 @@ margin-top: 1px !important;
 /* turn off horizontal tabs */
 /* https://superuser.com/questions/1268732/how-to-hide-tab-bar-tabstrip-in-firefox-57-quantum */
 #TabsToolbar { visibility: collapse !important; }
+
+#navigator-toolbox { border-bottom: 0 !important; }

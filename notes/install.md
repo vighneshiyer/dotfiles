@@ -39,6 +39,24 @@
 sudo pacman -S fish neovim eza fd ripgrep tldr bat git-delta tmux xsel alacritty rclone zathura nsxiv mpv hyperfine fdupes lazygit zathura-pdf-mupdf rsync xdg-desktop-portal xdg-desktop-portal-wlr python-jinja borg usbutils python-pipx wlsunset texlive sshfs wev tree i3status dmenu wmenu unzip npm reflector man git firefox mesa xf86-video-amdgpu vulkan-radeon libva-mesa-driver mesa-vdpau age bolt ddcutil wl-clipboard libnotify mako powertop libreoffice-fresh noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra dmidecode
 ```
 
+- `paru` AUR helper
+
+```bash
+sudo pacman -S --needed base-devel
+git clone https://aur.archlinux.org/paru.git
+cd paru
+makepkg -si
+```
+
+```bash
+paru -S
+paru -S snapd
+systemctl restart apparmor.service
+systemctl restart snapd.service
+systemctl enable --now snapd.apparmor.service
+sudo snap install spotify
+```
+
 ## Millennium Machine Setup
 
 I have a custom sysroot in `/nscratch/vighneshiyer/sysroot`.

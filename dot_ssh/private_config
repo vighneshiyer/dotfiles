@@ -105,9 +105,9 @@ Host as4
   HostName as4.millennium.berkeley.edu
 
 Host amd1
-  HostName amd1.millennium.berkeley.edu
+  HostName bwrc-amd1.eecs.berkeley.edu
 Host amd2
-  HostName amd2.millennium.berkeley.edu
+  HostName bwrc-amd2.eecs.berkeley.edu
 Host amd3
   HostName amd3.millennium.berkeley.edu
 Host amd4
