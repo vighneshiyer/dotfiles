@@ -50,7 +50,7 @@ set $menu dmenu_path | wmenu -f "SauceCodePro Nerd Font Mono 12" -N 1a1b26 -n c0
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+output * bg /home/vighnesh/40-media/42-photos/wallpaper2.jpg fill
 output eDP-1 resolution 3840x2400 position 0,0 scale 2
 bindsym $mod+m move workspace to output left
 #
@@ -88,6 +88,12 @@ bindsym $mod+m move workspace to output left
 # Read `man 5 sway-input` for more information about this section.
 
 input type:keyboard {
+  repeat_delay 250
+  repeat_rate 60
+  xkb_options caps:escape
+}
+
+input "6127:24814:Lenovo_TrackPoint_Keyboard_II" {
   repeat_delay 250
   repeat_rate 60
   xkb_options caps:escape

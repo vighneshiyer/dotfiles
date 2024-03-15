@@ -54,6 +54,7 @@ paru -S snapd
 systemctl restart apparmor.service
 systemctl restart snapd.service
 systemctl enable --now snapd.apparmor.service
+systemctl enable --now snapd.socket
 sudo snap install spotify
 ```
 
