@@ -24,3 +24,13 @@
 --  ]],
 --   false
 -- )
+-- Use bigger unicode characters to separate windows
+vim.opt.fillchars = {
+  horiz = "━", -- normally '─'
+  horizup = "┻", -- normally '┴'
+  horizdown = "┳", -- normally '┬'
+  vert = "█", -- normally '│'
+  vertleft = "┫", -- normally '┤'
+  vertright = "┣", -- normally '├'
+  verthoriz = "╋", -- normally '┼'
+}
