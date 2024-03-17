@@ -26,11 +26,11 @@
 -- )
 -- Use bigger unicode characters to separate windows
 vim.opt.fillchars = {
-  horiz = "━", -- normally '─'
-  horizup = "┻", -- normally '┴'
-  horizdown = "┳", -- normally '┬'
+  horiz = "▬", -- normally '─', bold "━"
+  horizup = "█", -- normally '┴', bold "┻"
+  horizdown = "█", -- normally '┬', bold "┳"
   vert = "█", -- normally '│'
-  vertleft = "┫", -- normally '┤'
-  vertright = "┣", -- normally '├'
-  verthoriz = "╋", -- normally '┼'
+  vertleft = "█", -- normally '┤', bold "┫"
+  vertright = "█", -- normally '├', bold "┣"
+  verthoriz = "█", -- normally '┼', bold "╋"
 }
