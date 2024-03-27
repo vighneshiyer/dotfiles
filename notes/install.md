@@ -36,7 +36,7 @@
 - From a base Arch install, install these packages
 
 ```bash
-sudo pacman -S fish neovim eza fd ripgrep tldr bat git-delta tmux xsel alacritty rclone zathura nsxiv mpv hyperfine fdupes lazygit zathura-pdf-mupdf rsync xdg-desktop-portal xdg-desktop-portal-wlr python-jinja borg usbutils python-pipx wlsunset texlive sshfs wev tree i3status dmenu wmenu unzip npm reflector man git firefox mesa xf86-video-amdgpu vulkan-radeon libva-mesa-driver mesa-vdpau age bolt ddcutil wl-clipboard libnotify mako powertop libreoffice-fresh noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra dmidecode rustup cups cups-pdf cups-pk-helper system-config-printer
+sudo pacman -S fish neovim eza fd ripgrep tldr bat git-delta tmux xsel alacritty rclone zathura nsxiv mpv hyperfine fdupes lazygit zathura-pdf-mupdf rsync xdg-desktop-portal xdg-desktop-portal-wlr python-jinja borg usbutils python-pipx wlsunset texlive sshfs wev tree i3status dmenu wmenu unzip npm reflector man git firefox mesa xf86-video-amdgpu vulkan-radeon libva-mesa-driver mesa-vdpau age bolt ddcutil wl-clipboard libnotify mako powertop libreoffice-fresh noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra dmidecode rustup cups cups-pdf cups-pk-helper system-config-printer linux-lts zola remmina freerdp
 
 # https://wiki.archlinux.org/title/CUPS
 systemctl enable --now cups.socket
@@ -69,6 +69,8 @@ systemctl restart snapd.service
 systemctl enable --now snapd.apparmor.service
 systemctl enable --now snapd.socket
 sudo snap install spotify
+
+paru -S x2goclient
 ```
 
 ## Millennium Machine Setup
