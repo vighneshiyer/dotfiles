@@ -329,6 +329,8 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
         #ddcutil setvcp --model "DELL U2515HX" 0x10 $argv > /dev/null 2>&1
         ddcutil setvcp --display 1 0x10 $argv > /dev/null 2>&1
     end
+
+    alias push 'git add . && git commit -m "update" && git push'
 {{- end }}
 
 {{- if regexMatch "(a\\d+$)|(as\\d+$)|(firesim\\d+$)|(amd\\d+$)" .chezmoi.fqdnHostname }}
