@@ -76,6 +76,11 @@ sudo snap install spotify
 paru -S x2goclient
 ```
 
+- Install [mill](https://mill-build.com/mill/Installation_IDE_Support.html), [scala-cli](https://scala-cli.virtuslab.org/install/), and [coursier](https://get-coursier.io/docs/cli-installation) to `~/.local/bin`
+  - `curl -L https://github.com/com-lihaoyi/mill/releases/download/0.11.7/0.11.7 > mill && chmod +x mill`
+  - `curl -fL https://github.com/Virtuslab/scala-cli/releases/latest/download/scala-cli-x86_64-pc-linux.gz | gzip -d > scala-cli`
+  - `curl -fL "https://github.com/coursier/launchers/raw/master/cs-x86_64-pc-linux.gz" | gzip -d > cs`
+
 ### Switch to linux-lts as default kernel
 
 - Add a file to `/boot/loader/entries` (`2024-02-28_03-43-03_linux-lts.conf`)
