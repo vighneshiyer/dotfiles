@@ -113,6 +113,11 @@ Host amd3
 Host amd4
   HostName amd4.millennium.berkeley.edu
 
+# b5 Gold 6126 @ 3.7 GHz (max), 376 GiB RAM, 8x NVIDIA RTX 2080 Ti
+Host b5
+  HostName b5.millennium.berkeley.edu
+  User vighnesh.iyer
+
 Host a*
   User vighnesh.iyer
   ForwardX11 yes

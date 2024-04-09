@@ -50,7 +50,7 @@ set $menu dmenu_path | wmenu -f "SauceCodePro Nerd Font Mono 12" -N 1a1b26 -n c0
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /home/vighnesh/40-media/42-photos/wallpaper2.jpg fill
+output * bg /home/vighnesh/40-media/42-photos/wallpaper3.jpg fill
 output eDP-1 resolution 3840x2400 position 0,0 scale 2
 bindsym $mod+m move workspace to output left
 #
