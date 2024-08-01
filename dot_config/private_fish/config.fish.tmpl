@@ -268,6 +268,7 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
     set -gx PATH \
         $HOME/.local/bin \
         $HOME/.bin \
+        $HOME/.cargo/bin \
         /sbin \
         /bin \
         /usr/local/sbin \
@@ -311,6 +312,7 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
 
     alias mount_bwrc 'mount_remote bwrc rdsl6 /tools/C/vighneshiyer/'
     alias unmount_bwrc 'unmount_remote bwrc'
+    alias bwrc_tunnel 'sshuttle --remote=vighnesh.iyer@bwrcrdsl-6.eecs.berkeley.edu 0.0.0.0/0 -x 128.32.63.39 -vvv'
 
     alias mount_a 'mount_remote a a16 /scratch/vighneshiyer'
     alias unmount_a 'unmount_remote a'
