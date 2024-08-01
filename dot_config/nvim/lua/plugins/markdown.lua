@@ -1,0 +1,70 @@
+return {}
+-- return {
+--   "epwalsh/obsidian.nvim",
+--   version = "*", -- recommended, use latest release instead of latest commit
+--   lazy = true,
+--   ft = "markdown",
+--   -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+--   -- event = {
+--   --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+--   --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
+--   --   "BufReadPre path/to/my-vault/**.md",
+--   --   "BufNewFile path/to/my-vault/**.md",
+--   -- },
+--   dependencies = {
+--     -- Required.
+--     "nvim-lua/plenary.nvim",
+--
+--     -- see below for full list of optional dependencies 👇
+--   },
+--   opts = {
+--     workspaces = {
+--       {
+--         name = "personal",
+--         path = "~/90-notes",
+--       },
+--     },
+--
+--     -- see below for full list of options 👇
+--   },
+-- }
+
+-- return {
+--   "lukas-reineke/headlines.nvim",
+--   dependencies = "nvim-treesitter/nvim-treesitter",
+--   config = true,
+-- }
+
+-- return {
+--   "MeanderingProgrammer/markdown.nvim",
+--   opts = {
+--     file_types = { "markdown", "norg", "rmd", "org" },
+--     code = {
+--       sign = false,
+--       width = "block",
+--       right_pad = 1,
+--     },
+--     heading = {
+--       sign = false,
+--       icons = {},
+--     },
+--   },
+--   ft = { "markdown", "norg", "rmd", "org" },
+--   config = function(_, opts)
+--     require("render-markdown").setup(opts)
+--     LazyVim.toggle.map("<leader>um", {
+--       name = "Render Markdown",
+--       get = function()
+--         return require("render-markdown.state").enabled
+--       end,
+--       set = function(enabled)
+--         local m = require("render-markdown")
+--         if enabled then
+--           m.enable()
+--         else
+--           m.disable()
+--         end
+--       end,
+--     })
+--   end,
+-- }

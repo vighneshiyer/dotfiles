@@ -54,7 +54,7 @@ function fish_prompt
         echo -n -s $error_color [$last_command_status] $normal_color " "
     end
 
-    if not pwd | grep -q "mnt\|firesim\|chipyard\|pdk\|simulator-independent-coverage\|force-riscv\|hammer\|verilog_repair\|cva6\|riscv-dv\|opentitan\|openpiton\|artifact\|sail-riscv\|cov-proxy-model\|rtl-repair"; and git_is_repo
+    if not pwd | grep -q "mnt\|firesim\|chipyard\|pdk\|simulator-independent-coverage\|force-riscv\|hammer\|verilog_repair\|cva6\|riscv-dv\|opentitan\|openpiton\|artifact\|sail-riscv\|cov-proxy-model\|rtl-repair\|rtml-board"; and git_is_repo
         if test "$theme_short_path" = yes
             set root_folder (command git rev-parse --show-toplevel 2> /dev/null)
             set parent_root_folder (dirname $root_folder)
