@@ -106,6 +106,10 @@ input "2:10:TPPS/2_Elan_TrackPoint" {
   scroll_factor 0.5
 }
 
+input "1133:50504:Logitech_USB_Receiver" {
+  xkb_options altwin:ctrl_win
+}
+
 # I think this device is inactive (doesn't seem to trigger any events)
 # input "11311:39:SNSL0027:00_2C2F:0027_Mouse" {
 #   accel_profile adaptive
