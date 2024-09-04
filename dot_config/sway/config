@@ -107,7 +107,9 @@ input "2:10:TPPS/2_Elan_TrackPoint" {
 }
 
 input "1133:50504:Logitech_USB_Receiver" {
-  xkb_options altwin:ctrl_win
+  repeat_delay 250
+  repeat_rate 60
+  xkb_options altwin:ctrl_win,caps:escape
 }
 
 # I think this device is inactive (doesn't seem to trigger any events)

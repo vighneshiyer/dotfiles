@@ -132,3 +132,46 @@ Then I manually install programs I want into the sysroot by building from source
   - `xsel` (optional)
   - `poetry` is installed in `/scratch/vighneshiyer/poetry` (due to `poetry` installs not being truly portable across Millennium machines)
   - `miniforge3` is installed in `scratch/vighneshiyer/miniforge3` (due to `conda` not performing well unless on local disk)
+
+## AMDGPU Crashes
+
+```text
+Sep 04 12:05:26 vighnesh-z16 kernel: [drm:amdgpu_job_timedout [amdgpu]] *ERROR* ring gfx_0.0.0 timeout, signaled seq=35864446, emitted seq=35864448
+Sep 04 12:05:26 vighnesh-z16 kernel: [drm:amdgpu_job_timedout [amdgpu]] *ERROR* Process information: process firefox pid 725026 thread firefox:cs0 pid 725104
+Sep 04 12:05:26 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: GPU reset begin!
+Sep 04 12:05:26 vighnesh-z16 kernel: [drm] DMUB HPD IRQ callback: link_index=4
+Sep 04 12:05:27 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Sep 04 12:05:27 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Sep 04 12:05:27 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Sep 04 12:05:27 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Sep 04 12:05:27 vighnesh-z16 kernel: [drm] DMUB HPD IRQ callback: link_index=4
+Sep 04 12:05:28 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Sep 04 12:05:28 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Sep 04 12:05:28 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Sep 04 12:05:28 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Sep 04 12:05:28 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Sep 04 12:05:28 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Sep 04 12:05:28 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Sep 04 12:05:28 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Sep 04 12:05:28 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Sep 04 12:05:28 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Sep 04 12:05:28 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Sep 04 12:05:28 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Sep 04 12:05:28 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Sep 04 12:05:28 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Sep 04 12:05:29 vighnesh-z16 kernel: [drm:gfx_v11_0_hw_fini [amdgpu]] *ERROR* failed to halt cp gfx
+Sep 04 12:05:29 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: MODE2 reset
+Sep 04 12:05:34 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: SMU: I'm not done with your previous command: SMN_C2PMSG_66:0x00000011 SMN_C2PMSG_82:0x00000002
+Sep 04 12:05:34 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: Mode2 reset failed!
+Sep 04 12:05:34 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: ASIC reset failed with error, -62 for drm dev, 0000:c4:00.0
+Sep 04 12:05:34 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: GPU reset succeeded, trying to resume
+Sep 04 12:05:34 vighnesh-z16 kernel: [drm] PCIE GART of 512M enabled (table at 0x000000803FD00000).
+Sep 04 12:05:34 vighnesh-z16 kernel: [drm] VRAM is lost due to GPU reset!
+Sep 04 12:05:34 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: SMU is resuming...
+Sep 04 12:05:39 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: SMU: I'm not done with your previous command: SMN_C2PMSG_66:0x00000011 SMN_C2PMSG_82:0x00000002
+Sep 04 12:05:39 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: Failed to SetDriverDramAddr!
+Sep 04 12:05:39 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: Failed to setup smc hw!
+Sep 04 12:05:39 vighnesh-z16 kernel: [drm:amdgpu_device_ip_resume_phase2 [amdgpu]] *ERROR* resume of IP block <smu> failed -62
+-- Boot ab2d56e9c14242f4917b0e9a94bb5b04 --
+Sep 04 12:06:27 vighnesh-z16 kernel: Linux version 6.6.48-1-lts (linux-lts@archlinux) (gcc (GCC) 14.2.1 20240805, GNU ld (GNU Binutils) 2.43.0) #1 SMP PREEMPT_DYNAMIC Thu, 29 Aug 2024 17:56:14 +0000
+```
