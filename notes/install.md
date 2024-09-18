@@ -36,7 +36,7 @@
 - From a base Arch install, install these packages
 
 ```bash
-sudo pacman -S fish neovim eza fd ripgrep tldr bat git-delta tmux xsel alacritty rclone zathura nsxiv mpv hyperfine fdupes lazygit zathura-pdf-mupdf rsync xdg-desktop-portal xdg-desktop-portal-wlr python-jinja borg usbutils python-pipx wlsunset texlive sshfs wev tree i3status dmenu wmenu unzip npm reflector man git firefox mesa xf86-video-amdgpu vulkan-radeon libva-mesa-driver mesa-vdpau age bolt ddcutil wl-clipboard libnotify mako powertop libreoffice-fresh noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra dmidecode rustup cups cups-pdf cups-pk-helper system-config-printer linux-lts zola remmina freerdp inkscape yt-dlp jdk-openjdk openjdk-src udftools lsof python-joblib tree-sitter-cli obs-studio dart-sass lld sshuttle kicad
+sudo pacman -S fish neovim eza fd ripgrep tldr bat git-delta tmux xsel alacritty rclone zathura nsxiv mpv hyperfine fdupes lazygit zathura-pdf-mupdf rsync xdg-desktop-portal xdg-desktop-portal-wlr python-jinja borg usbutils python-pipx wlsunset texlive sshfs wev tree i3status dmenu wmenu unzip npm reflector man git firefox mesa xf86-video-amdgpu vulkan-radeon libva-mesa-driver mesa-vdpau age bolt ddcutil wl-clipboard libnotify mako powertop libreoffice-fresh noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra dmidecode rustup cups cups-pdf cups-pk-helper system-config-printer linux-lts zola remmina freerdp inkscape yt-dlp jdk-openjdk openjdk-src udftools lsof python-joblib tree-sitter-cli obs-studio dart-sass lld sshuttle kicad ripgrep-all cmake lz4 iverilog yosys time lua53 pinta libc++ extra/perf lsb-release riscv64-elf-gcc vlc biber
 sudo pacman -Syu --asdeps kicad-library kicad-library-3d
 
 # https://wiki.archlinux.org/title/CUPS
