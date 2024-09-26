@@ -83,6 +83,9 @@ paru -S ttf-ms-win11-auto
   - `curl -fL https://github.com/Virtuslab/scala-cli/releases/latest/download/scala-cli-x86_64-pc-linux.gz | gzip -d > scala-cli`
   - `curl -fL "https://github.com/coursier/launchers/raw/master/cs-x86_64-pc-linux.gz" | gzip -d > cs`
 
+- https://blog.aktsbot.in/no-more-blurry-fonts.html
+  - Add this to `/etc/environment`
+
 ### Switch to linux-lts as default kernel
 
 - Add a file to `/boot/loader/entries` (`2024-02-28_03-43-03_linux-lts.conf`)
