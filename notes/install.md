@@ -178,3 +178,51 @@ Sep 04 12:05:39 vighnesh-z16 kernel: [drm:amdgpu_device_ip_resume_phase2 [amdgpu
 -- Boot ab2d56e9c14242f4917b0e9a94bb5b04 --
 Sep 04 12:06:27 vighnesh-z16 kernel: Linux version 6.6.48-1-lts (linux-lts@archlinux) (gcc (GCC) 14.2.1 20240805, GNU ld (GNU Binutils) 2.43.0) #1 SMP PREEMPT_DYNAMIC Thu, 29 Aug 2024 17:56:14 +0000
 ```
+
+```
+Oct 31 15:24:34 vighnesh-z16 kernel: [drm:amdgpu_job_timedout [amdgpu]] *ERROR* ring gfx_0.0.0 timeout, signaled seq=21433650, emitted seq=21433652
+Oct 31 15:24:34 vighnesh-z16 kernel: [drm:amdgpu_job_timedout [amdgpu]] *ERROR* Process information: process firefox pid 500806 thread firefox:cs0 pid 500885
+Oct 31 15:24:34 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: GPU reset begin!
+Oct 31 15:24:34 vighnesh-z16 kernel: [drm] DMUB HPD IRQ callback: link_index=4
+Oct 31 15:24:35 vighnesh-z16 pipewire[844]: pw.node: (alsa_input.usb-Lenovo_ThinkPad_Thunderbolt_3_Dock_USB_Audio_000000000000-00.pro-input-0-111) graph xrun not-triggered (0 suppressed)
+Oct 31 15:24:35 vighnesh-z16 pipewire[844]: pw.node: (alsa_input.usb-Lenovo_ThinkPad_Thunderbolt_3_Dock_USB_Audio_000000000000-00.pro-input-0-111) xrun state:0x78756cdfe008 pending:2/3 s:286361872244411 a:2863618>
+Oct 31 15:24:35 vighnesh-z16 pipewire[844]: pw.node: (Firefox-126) xrun state:0x78756e779008 pending:0/1 s:286361882169303 a:286361872302691 f:286361872319503 waiting:18446744073699685004 process:16812 status:tri>
+Oct 31 15:24:35 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Oct 31 15:24:35 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Oct 31 15:24:35 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Oct 31 15:24:35 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Oct 31 15:24:35 vighnesh-z16 kernel: [drm] DMUB HPD IRQ callback: link_index=4
+Oct 31 15:24:36 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Oct 31 15:24:36 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Oct 31 15:24:36 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Oct 31 15:24:36 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Oct 31 15:24:36 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Oct 31 15:24:36 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Oct 31 15:24:36 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Oct 31 15:24:36 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Oct 31 15:24:36 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Oct 31 15:24:36 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Oct 31 15:24:36 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Oct 31 15:24:36 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Oct 31 15:24:36 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Oct 31 15:24:36 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Oct 31 15:24:37 vighnesh-z16 kernel: [drm:gfx_v11_0_hw_fini [amdgpu]] *ERROR* failed to halt cp gfx
+Oct 31 15:24:37 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: MODE2 reset
+Oct 31 15:24:41 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: SMU: I'm not done with your previous command: SMN_C2PMSG_66:0x00000011 SMN_C2PMSG_82:0x00000002
+Oct 31 15:24:41 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: Mode2 reset failed!
+Oct 31 15:24:41 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: ASIC reset failed with error, -62 for drm dev, 0000:c4:00.0
+Oct 31 15:24:41 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: GPU reset succeeded, trying to resume
+Oct 31 15:24:41 vighnesh-z16 kernel: [drm] PCIE GART of 512M enabled (table at 0x000000803FD00000).
+Oct 31 15:24:41 vighnesh-z16 kernel: [drm] VRAM is lost due to GPU reset!
+Oct 31 15:24:41 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: SMU is resuming...
+Oct 31 15:24:46 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: SMU: I'm not done with your previous command: SMN_C2PMSG_66:0x00000011 SMN_C2PMSG_82:0x00000002
+Oct 31 15:24:46 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: Failed to SetDriverDramAddr!
+Oct 31 15:24:46 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: Failed to setup smc hw!
+Oct 31 15:24:46 vighnesh-z16 kernel: [drm:amdgpu_device_ip_resume_phase2 [amdgpu]] *ERROR* resume of IP block <smu> failed -62
+-- Boot 80fb03bcb0ba46e18734e3e44af7c4bf --
+Oct 31 15:26:57 vighnesh-z16 kernel: Linux version 6.6.58-1-lts (linux-lts@archlinux) (gcc (GCC) 14.2.1 20240910, GNU ld (GNU Binutils) 2.43.0) #1 SMP PREEMPT_DYNAMIC Wed, 23 Oct 2024 17:28:15 +0000
+Oct 31 15:26:57 vighnesh-z16 kernel: Command line: initrd=\amd-ucode.img initrd=\initramfs-linux-lts.img root=PARTUUID=4582d8e9-773e-4eeb-ac4a-c76ea768ff79 zswap.enabled=0 rw rootfstype=ext4
+Oct 31 15:26:57 vighnesh-z16 kernel: BIOS-provided physical RAM map:
+Oct 31 15:26:57 vighnesh-z16 kernel: BIOS-e820: [mem 0x0000000000000000-0x000000000009ffff] usable
+Oct 31 15:26:57 vighnesh-z16 kernel: BIOS-e820: [mem 0x0000000000100000-0x0000000009bfffff] usable
+```
