@@ -10,6 +10,7 @@ return {
       "rust-analyzer",
       "lua-language-server",
       "marksman",
+      "tinymist",
     },
   },
 }

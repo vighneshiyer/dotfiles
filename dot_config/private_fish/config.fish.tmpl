@@ -265,10 +265,12 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
     alias display_off 'display --off'
     alias dock_on 'display --position left --scale 1.25'
     alias home_on 'display --position right --scale 1.25'
+    set -gx RISCV /opt/riscv
     set -gx PATH \
         $HOME/.local/bin \
         $HOME/.bin \
         $HOME/.cargo/bin \
+        $RISCV/bin \
         /sbin \
         /bin \
         /usr/local/sbin \
@@ -278,6 +280,7 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
         /usr/bin/site_perl \
         /usr/bin/vendor_perl \
         /usr/bin/core_perl
+
 {{- end }}
 
 

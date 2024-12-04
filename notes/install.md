@@ -226,3 +226,39 @@ Oct 31 15:26:57 vighnesh-z16 kernel: BIOS-provided physical RAM map:
 Oct 31 15:26:57 vighnesh-z16 kernel: BIOS-e820: [mem 0x0000000000000000-0x000000000009ffff] usable
 Oct 31 15:26:57 vighnesh-z16 kernel: BIOS-e820: [mem 0x0000000000100000-0x0000000009bfffff] usable
 ```
+
+```
+Dec 03 16:08:13 vighnesh-z16 kernel: [drm:amdgpu_job_timedout [amdgpu]] *ERROR* ring gfx_0.0.0 timeout, signaled seq=3485545, emitted seq=3485547
+Dec 03 16:08:13 vighnesh-z16 kernel: [drm:amdgpu_job_timedout [amdgpu]] *ERROR* Process information: process firefox pid 1298 thread firefox:cs0 pid 1370
+Dec 03 16:08:13 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: GPU reset begin!
+Dec 03 16:08:13 vighnesh-z16 kernel: [drm] DMUB HPD IRQ callback: link_index=4
+Dec 03 16:08:14 vighnesh-z16 kernel: [drm:amdgpu_dm_atomic_check [amdgpu]] *ERROR* [CRTC:83:crtc-1] hw_done or flip_done timed out
+Dec 03 16:08:14 vighnesh-z16 kernel: [drm] DMUB HPD IRQ callback: link_index=4
+Dec 03 16:08:14 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Dec 03 16:08:14 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Dec 03 16:08:14 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Dec 03 16:08:14 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Dec 03 16:08:14 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Dec 03 16:08:14 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Dec 03 16:08:15 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Dec 03 16:08:15 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Dec 03 16:08:15 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Dec 03 16:08:15 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Dec 03 16:08:15 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Dec 03 16:08:15 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Dec 03 16:08:15 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Dec 03 16:08:15 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Dec 03 16:08:15 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Dec 03 16:08:15 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Dec 03 16:08:15 vighnesh-z16 kernel: [drm:mes_v11_0_submit_pkt_and_poll_completion.constprop.0 [amdgpu]] *ERROR* MES failed to response msg=3
+Dec 03 16:08:15 vighnesh-z16 kernel: [drm:amdgpu_mes_unmap_legacy_queue [amdgpu]] *ERROR* failed to unmap legacy queue
+Dec 03 16:08:15 vighnesh-z16 kernel: [drm:gfx_v11_0_hw_fini [amdgpu]] *ERROR* failed to halt cp gfx
+Dec 03 16:08:15 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: MODE2 reset
+Dec 03 16:08:20 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: SMU: I'm not done with your previous command: SMN_C2PMSG_66:0x00000011 SMN_C2PMSG_82:0x00000002
+Dec 03 16:08:20 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: Mode2 reset failed!
+Dec 03 16:08:20 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: ASIC reset failed with error, -62 for drm dev, 0000:c4:00.0
+Dec 03 16:08:20 vighnesh-z16 kernel: amdgpu 0000:c4:00.0: amdgpu: GPU reset succeeded, trying to resume
+Dec 03 16:08:20 vighnesh-z16 kernel: [drm] PCIE GART of 512M enabled (table at 0x000000803FD00000).
+Dec 03 16:08:20 vighnesh-z16 kernel: [drm] VRAM is lost due to GPU reset!
+-- Boot f3d88401526b4d808e2a3d9af9520016 --
+```
