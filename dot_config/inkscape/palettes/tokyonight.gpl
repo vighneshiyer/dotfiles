@@ -1,0 +1,23 @@
+GIMP Palette
+Name: TokyoNight
+Columns: 8
+#
+# Tokyo Night Storm Colors
+68 71 90 Storm Dark Background
+248 248 242 Storm Foreground
+80 250 123 Storm Green
+255 121 198 Storm Pink
+139 233 253 Storm Cyan
+189 147 249 Storm Purple
+255 184 108 Storm Yellow
+255 85 85 Storm Red
+#
+# Tokyo Night Light Colors
+245 245 245 Light Background
+34 35 39 Light Foreground
+152 195 121 Light Green
+198 120 221 Light Pink
+86 182 194 Light Cyan
+121 158 205 Light Purple
+209 154 102 Light Yellow
+224 108 117 Light Red

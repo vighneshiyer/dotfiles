@@ -73,6 +73,9 @@ key.txt.age
 !.config/fish/**
 !.config/i3status
 !.config/i3status/**
+!.config/inkscape
+!.config/inkscape/palettes
+!.config/inkscape/palettes/tokyonight.gpl
 !.config/mako
 !.config/mako/**
 !.config/nvim
