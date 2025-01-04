@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+python $HOME/.bin/list_within_range.py $*
