@@ -147,7 +147,7 @@ function fix_perms
     find . -type d -exec chmod 775 '{}' \;
 end
 
-function rename
+function rerename
     set tmp (mktemp)
     echo $argv > $tmp
     vim $tmp

@@ -21,6 +21,7 @@ def is_in_range(file: Path, start_number: int, end_number: Optional[int]) -> boo
 def main():
     # Set up argument parser
     parser = argparse.ArgumentParser(description="Filter JPG files by numeric range.")
+    parser.add_argument("--files-only", action="store_true", default=False, help="Only list the file names, not including the directory prefix")
     parser.add_argument(
         "directory", type=Path, help="The directory containing JPG files."
     )
@@ -53,10 +54,14 @@ def main():
         directory.rglob("*.JPG"),
     )
 
-    # Print the filtered file paths relative to the script's working directory
-    for file in sorted(jpg_files):
-        #print(file.relative_to(Path.cwd()))
-        print(file)
+    if args.files_only:
+        file_names = [f.name for f in jpg_files]
+        for file in sorted(file_names):
+            print(file)
+    else:
+        # Print the filtered file paths relative to the script's working directory
+        for file in sorted(jpg_files):
+            print(file)
 
 
 if __name__ == "__main__":

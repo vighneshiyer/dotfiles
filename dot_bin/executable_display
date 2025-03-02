@@ -11,6 +11,7 @@ from typing import Optional
 class Position(Enum):
     LEFT = "left"
     RIGHT = "right"
+    TOP = "top"
 
 
 @dataclass
@@ -146,14 +147,20 @@ def main(sysargs: list[str]) -> None:
         run_program(other_output_off_cmd)
     else:
         assert args.position and args.scale
+        other_output_ypos: int
         other_output_xpos: int
         if args.position is Position.LEFT:
+            other_output_ypos = 0
             other_output_xpos = -int(other_output.mode.width // args.scale)
-        else:
-            assert args.position is Position.RIGHT
+        elif args.position is Position.RIGHT:
+            other_output_ypos = 0
             other_output_xpos = int(laptop_output.mode.width // laptop_output_scale)
+        else:
+            assert args.position is Position.TOP
+            other_output_ypos = - int(laptop_output.mode.height // laptop_output_scale)
+            other_output_xpos = int((other_output.mode.width // args.scale) - (laptop_output.mode.width // laptop_output_scale) / 2)
         laptop_output_cmd = f"swaymsg -- output {laptop_output.name} power on mode {laptop_output.mode} position 0 0 scale {laptop_output_scale}"
-        other_output_cmd = f"swaymsg -- output {other_output.name} power on mode {other_output.mode} position {other_output_xpos} 0 scale {args.scale}"
+        other_output_cmd = f"swaymsg -- output {other_output.name} power on mode {other_output.mode} position {other_output_xpos} {other_output_ypos} scale {args.scale}"
         run_program(laptop_output_cmd)
         run_program(other_output_cmd)
 
