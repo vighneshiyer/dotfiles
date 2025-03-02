@@ -34,3 +34,4 @@ vim.opt.fillchars = {
   vertright = "█", -- normally '├', bold "┣"
   verthoriz = "█", -- normally '┼', bold "╋"
 }
+vim.g.snacks_animate = false
