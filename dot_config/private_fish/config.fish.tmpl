@@ -133,6 +133,7 @@ alias office 'silent libreoffice'
 alias gtkwave 'silent gtkwave'
 alias sxiv 'silent nsxiv'
 alias spotify 'snap run spotify & disown'
+alias windsurf '/opt/Windsurf/bin/windsurf --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland'
 abbr -a cpr rsync -ah --progress
 abbr -a rsync_remote rsync -chavzP --stats user@remote:~/path
 abbr -a yt-audio "yt-dlp -f \"bestaudio\" -o \"%(title)s.%(ext)s\" --user-agent \"Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)\""
@@ -147,7 +148,7 @@ function fix_perms
     find . -type d -exec chmod 775 '{}' \;
 end
 
-function rerename
+function rename
     set tmp (mktemp)
     echo $argv > $tmp
     vim $tmp
