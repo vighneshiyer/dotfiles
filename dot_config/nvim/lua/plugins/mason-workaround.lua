@@ -8,7 +8,6 @@ return {
         "shfmt",
         "black",
         "pyright",
-        "ruff-lsp",
         "rust-analyzer",
         "lua-language-server",
         "marksman",
