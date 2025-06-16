@@ -69,6 +69,10 @@ key.txt.age
 !.config/alacritty/**
 !.config/bat
 !.config/bat/**
+!.config/Cursor
+!.config/Cursor/User
+!.config/Cursor/User/settings.json
+!.config/Cursor/User/keybindings.json
 !.config/fish
 !.config/fish/**
 !.config/i3status

@@ -1,0 +1,53 @@
+{
+    "window.commandCenter": true,
+    "keyboard.dispatch": "keyCode",
+    "vim.leader": "<space>",
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": ["<leader>", "<leader>"],
+            "commands": ["workbench.action.quickOpen"]
+        },
+        {
+            "before": ["<leader>", "f", "f"],
+            "commands": ["workbench.action.quickOpen"]
+        },
+        {
+            "before": ["<leader>", "f", "g"],
+            "commands": ["workbench.action.findInFiles"]
+        },
+        {
+            "before": ["<leader>", "f", "s"],
+            "commands": ["workbench.action.gotoSymbol"]
+        },
+        {
+            "before": ["<leader>", "f", "S"],
+            "commands": ["workbench.action.showAllSymbols"]
+        },
+        {
+            "before": ["<leader>", "e"],
+            "commands": ["workbench.view.explorer"]
+        },
+        {
+            "before": ["<leader>", "/"],
+            "commands": ["editor.action.commentLine"]
+        },
+        {
+            "before": ["<leader>", "q"],
+            "commands": ["workbench.action.closeActiveEditor"]
+        },
+        {
+            "before": [";"],
+            "after": [":"]
+        },
+        {
+            "before": ["Q"],
+            "commands": []
+        }
+    ],
+    "vim.insertModeKeyBindings": [
+        {
+            "before": ["<tab>"],
+            "after": ["<esc>"]
+        }
+    ]
+}
