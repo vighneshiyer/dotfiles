@@ -42,12 +42,30 @@
         {
             "before": ["Q"],
             "commands": []
+        },
+        {
+            "before": ["p"],
+            "after": ["\"", "+", "p"]
+        },
+        {
+            "before": ["P"],
+            "after": ["\"", "+", "P"]
+        },
+        {
+            "before": ["y"],
+            "after": ["\"", "+", "y"]
         }
     ],
     "vim.insertModeKeyBindings": [
         {
             "before": ["<tab>"],
             "after": ["<esc>"]
+        }
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+        {
+          "before": ["y"],
+          "after": ["\"", "+", "y"]
         }
     ]
 }
