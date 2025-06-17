@@ -1,6 +1,11 @@
 {
     "window.commandCenter": true,
     "keyboard.dispatch": "keyCode",
+    // Enable auto-detection of indentation (tab size and type)
+    "editor.detectIndentation": true,
+    // Set default tab size if detection fails
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
     "vim.leader": "<space>",
     "vim.normalModeKeyBindingsNonRecursive": [
         {
@@ -54,6 +59,10 @@
         {
             "before": ["y"],
             "after": ["\"", "+", "y"]
+        },
+        {
+            "before": ["d"],
+            "after": ["\"", "+", "d"]
         }
     ],
     "vim.insertModeKeyBindings": [
@@ -66,6 +75,10 @@
         {
           "before": ["y"],
           "after": ["\"", "+", "y"]
+        },
+        {
+            "before": ["d"],
+            "after": ["\"", "+", "d"]
         }
     ]
 }
