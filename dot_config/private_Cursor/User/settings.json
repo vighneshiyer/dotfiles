@@ -63,6 +63,14 @@
         {
             "before": ["d"],
             "after": ["\"", "+", "d"]
+        },
+        {
+            "before": ["H"],
+            "commands": ["workbench.action.previousEditor"],
+        },
+        {
+            "before": ["L"],
+            "commands": ["workbench.action.nextEditor"],
         }
     ],
     "vim.insertModeKeyBindings": [
@@ -80,5 +88,9 @@
             "before": ["d"],
             "after": ["\"", "+", "d"]
         }
-    ]
+    ],
+    "editor.wordWrap": "on",
+    "remote.SSH.remotePlatform": {
+        "ubuntu@129.80.173.179": "linux"
+    }
 }

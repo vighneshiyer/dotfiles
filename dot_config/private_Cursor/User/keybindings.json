@@ -14,14 +14,4 @@
         "command": "workbench.action.focusRightGroup",
         "when": "editorTextFocus"
     },
-    {
-        "key": "shift+h",
-        "command": "workbench.action.previousEditor",
-        "when": "editorTextFocus"
-    },
-    {
-        "key": "shift+l",
-        "command": "workbench.action.nextEditor",
-        "when": "editorTextFocus"
-    }
 ]
