@@ -336,6 +336,7 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
 
     alias push 'git add . && git commit -m "update" && git push'
 starship init fish | source
+zoxide init fish | source
 {{- end }}
 
 {{- if regexMatch "(a\\d+$)|(as\\d+$)|(firesim\\d+$)|(amd\\d+$)" .chezmoi.fqdnHostname }}
