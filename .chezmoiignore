@@ -121,4 +121,5 @@ key.txt.age
 !.local
 !.local/bin
 !.local/bin/btop
+!.local/bin/zoxide
 {{- end }}
