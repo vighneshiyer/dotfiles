@@ -2,6 +2,11 @@
 
 ## Utilities
 
+- https://news.ycombinator.com/item?id=44620623
+  - `btop` and `zoxide` seem nice
+  - I can add local static binaries using chezmoi to avoid constant setup repacking
+  - Replace my hacked together fish prompt (https://starship.rs/)
+
 ### Critical
 
 - [chezmoi](https://www.chezmoi.io/) (dotfile manager, superior to `stow`)
@@ -16,6 +21,7 @@
 - [tmux](https://github.com/tmux/tmux) (terminal multiplexer, most useful for remote persistence)
 - [xsel](https://github.com/kfish/xsel) (clipboard manager)
 - [i3](https://i3wm.org/) (tiling window manager)
+- [btop](https://github.com/aristocratos/btop) (`htop` alternative)
 
 ### Others
 

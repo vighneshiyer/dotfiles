@@ -281,9 +281,7 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
         /usr/bin/site_perl \
         /usr/bin/vendor_perl \
         /usr/bin/core_perl
-
 {{- end }}
-
 
 {{- if eq .chezmoi.fqdnHostname "vighnesh-t480" "vighnesh-z16" }}
     # Shared things between t480 and z16
@@ -337,6 +335,7 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
     end
 
     alias push 'git add . && git commit -m "update" && git push'
+starship init fish | source
 {{- end }}
 
 {{- if regexMatch "(a\\d+$)|(as\\d+$)|(firesim\\d+$)|(amd\\d+$)" .chezmoi.fqdnHostname }}
@@ -383,10 +382,9 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
 
     # https://github.com/python-poetry/poetry/issues/3365
     set -gx PYTHON_KEYRING_BACKEND "keyring.backends.null.Keyring"
+{{- end }}
 
-    {{- end }}
-
-    {{- if regexMatch "(bwrcrdsl-\\\\d+$)" .chezmoi.hostname }}
+{{- if regexMatch "(bwrcrdsl-\\\\d+$)" .chezmoi.hostname }}
     # BWRC login server specific things
 
     ## VNC
