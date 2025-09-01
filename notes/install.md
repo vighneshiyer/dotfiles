@@ -92,6 +92,9 @@ paru -S ttf-ms-win11-auto
 - https://blog.aktsbot.in/no-more-blurry-fonts.html
   - Add this to `/etc/environment`
 
+- https://linuxblog.io/boost-battery-life-on-linux-laptop-tlp/
+  - Use TLP to improve battery life
+
 ### Switch to linux-lts as default kernel
 
 - Add a file to `/boot/loader/entries` (`2024-02-28_03-43-03_linux-lts.conf`)
