@@ -112,6 +112,27 @@ input "1133:50504:Logitech_USB_Receiver" {
   xkb_options altwin:ctrl_win,caps:escape
 }
 
+input "13364:3376:Keychron_Keychron_K3_Version_3" {
+  repeat_delay 250
+  repeat_rate 60
+  xkb_layout "us"
+  xkb_options altwin:swap_alt_win,caps:escape
+}
+
+input "13364:3376:Keychron_Keychron_K3_Version_3_Keyboard" {
+  repeat_delay 250
+  repeat_rate 60
+  xkb_layout "us"
+  xkb_options altwin:swap_alt_win,caps:escape
+}
+
+input "9456:8352:SONiX_Das_Keyboard_MacTigr" {
+  repeat_delay 250
+  repeat_rate 60
+  xkb_layout "us"
+  xkb_options altwin:swap_alt_win,caps:escape
+}
+
 # I think this device is inactive (doesn't seem to trigger any events)
 # input "11311:39:SNSL0027:00_2C2F:0027_Mouse" {
 #   accel_profile adaptive

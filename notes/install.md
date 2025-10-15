@@ -37,6 +37,16 @@
 - [Patched Source Sans 3](https://www.nerdfonts.com/font-downloads) (terminal font)
 - [lazygit](https://github.com/jesseduffield/lazygit) (git TUI)
 
+### Misc
+
+VSCode/Cursor launch on Wayland:
+
+```sh
+#!/usr/bin/fish
+
+$HOME/.local/bin/Cursor-1.0.0-x86_64.AppImage --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland
+```
+
 ## z16 Setup
 
 - From a base Arch install, install these packages
