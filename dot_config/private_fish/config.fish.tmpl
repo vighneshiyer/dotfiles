@@ -330,8 +330,12 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
     set -gx QT_AUTO_SCREEN_SCALE_FACTOR 1
 
     function ext_brightness
-        #ddcutil setvcp --model "DELL U2515HX" 0x10 $argv > /dev/null 2>&1
-        ddcutil setvcp --display 1 0x10 $argv > /dev/null 2>&1
+        ddcutil setvcp --model "DELL U2515HX" 0x10 $argv > /dev/null 2>&1
+        #ddcutil setvcp --display 1 0x10 $argv > /dev/null 2>&1
+    end
+
+    function ext_brightness2
+        ddcutil setvcp --model "DELL P2723DE" 0x10 $argv > /dev/null 2>&1
     end
 
     alias push 'git add . && git commit -m "update" && git push'

@@ -127,3 +127,8 @@ Host amd*
   User vighnesh.iyer
 
 AddKeysToAgent yes
+
+Host dost
+  HostName 192.243.215.235
+  User vighnesh
+  IdentityFile ~/.ssh/dost_id_ed25519
