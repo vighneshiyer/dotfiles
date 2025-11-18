@@ -433,8 +433,8 @@ zoxide init fish | source
 
 {{- if eq .chezmoi.fqdnHostname "dost" }}
     set -gx PATH \
+	$HOME/sysroot/bin \
 	$HOME/.local/bin \
-	$HOME/vighnesh/sysroot/bin \
 	$HOME/.cargo/bin \
 	/usr/local/sbin \
 	/usr/local/bin \
@@ -442,4 +442,5 @@ zoxide init fish | source
 	/usr/bin \
 	/sbin \
 	/bin
+    starship init fish | source
 {{- end }}
