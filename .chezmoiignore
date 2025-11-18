@@ -95,6 +95,7 @@ key.txt.age
 !.config/systemd
 !.config/systemd/user
 !.config/systemd/user/wlsunset.service
+!.config/starship.toml
 !.mozilla
 !.mozilla/firefox
 !.mozilla/firefox/rjj1ehmj.default-release
