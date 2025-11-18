@@ -17,6 +17,8 @@ vimcmd_visual_symbol = '[❯](bold yellow)'
 
 [hostname]
 ssh_only = true
+ssh_symbol = '🌐'
+format = '[$ssh_symbol$hostname]($style) '
 
 [cmd_duration]
 min_time = 1_000
