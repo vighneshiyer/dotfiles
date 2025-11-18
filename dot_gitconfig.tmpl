@@ -1,6 +1,10 @@
 [user]
 	name = Vighnesh Iyer
+{{- if eq .chezmoi.fqdnHostname "dost" }}
+        email = vighnesh.iyer@dosteda.com
+{{- else }}
 	email = vighnesh.iyer@gmail.com
+{{- end }}
 [core]
 	autocrlf = input
 	askPass =
