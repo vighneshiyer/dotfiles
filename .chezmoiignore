@@ -73,6 +73,10 @@ key.txt.age
 !.config/alacritty/**
 !.config/bat
 !.config/bat/**
+!.config/Code
+!.config/Code/User
+!.config/Code/User/settings.json
+!.config/Code/User/keybindings.json
 !.config/Cursor
 !.config/Cursor/User
 !.config/Cursor/User/settings.json
