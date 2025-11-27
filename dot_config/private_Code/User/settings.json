@@ -92,4 +92,6 @@
         }
     ],
     "workbench.colorTheme": "Tokyo Night",
+    "excalidraw.theme": "light",
+    "editor.minimap.enabled": false,
 }
