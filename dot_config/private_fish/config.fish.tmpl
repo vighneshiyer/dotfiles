@@ -434,6 +434,7 @@ zoxide init fish | source
 
 {{- if eq .chezmoi.fqdnHostname "dost" }}
     set -gx PATH \
+  $HOME/dost-circt/build/bin \
 	$HOME/sysroot/bin \
 	$HOME/.local/bin \
 	$HOME/.cargo/bin \
@@ -444,4 +445,12 @@ zoxide init fish | source
 	/sbin \
 	/bin
     starship init fish | source
+    function run_on_lpu
+      python3 -c "import groq.api as g; \
+        import groq.runtime.runner as runner; \
+        iop_file = '$argv'; \
+        program = runner.create_tsp_runner(iop_file); \
+        result = program(); \
+        print(result)"
+    end
 {{- end }}
