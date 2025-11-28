@@ -141,3 +141,12 @@ key.txt.age
 !.config/nvim/**
 !.config/starship.toml
 {{- end }}
+
+{{- if eq .chezmoi.fqdnHostname "Vighneshs-MacBook-Air.local" }}
+!.config
+!.config/starship.toml
+!.config/alacritty
+!.config/alacritty/**
+!.ssh
+!.ssh/**
+{{- end }}

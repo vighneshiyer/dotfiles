@@ -1,5 +1,5 @@
 [colors]
-draw_bold_text_with_bright_colors = false
+draw_bold_text_with_bright_colors = true
 
 # TokyoNight Alacritty Colors
 # Default colors
@@ -36,43 +36,11 @@ white = '#c0caf5'
 # Indexed Colors
 [[colors.indexed_colors]]
 index = 16
-color = '#ff9e64'
+color = '#ff9e64' # Orange
 
 [[colors.indexed_colors]]
 index = 17
-color = '#db4b4b'
-
-# # Base16 Gruvbox dark, hard - alacritty color config
-# # Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)
-#
-# [colors.bright]
-# black = "0x665c54"
-# blue = "0xbdae93"
-# cyan = "0xd65d0e"
-# green = "0x3c3836"
-# magenta = "0xebdbb2"
-# red = "0xfe8019"
-# white = "0xfbf1c7"
-# yellow = "0x504945"
-#
-# # Colors the cursor will use if `custom_cursor_colors` is true
-# [colors.cursor]
-# cursor = "0xd5c4a1"
-# text = "0x1d2021"
-#
-# [colors.normal]
-# black = "0x1d2021"
-# blue = "0x83a598"
-# cyan = "0x8ec07c"
-# green = "0xb8bb26"
-# magenta = "0xd3869b"
-# red = "0xfb4934"
-# white = "0xd5c4a1"
-# yellow = "0xfabd2f"
-#
-# [colors.primary]
-# background = "0x1d2021"
-# foreground = "0xd5c4a1"
+color = '#db4b4b' # Reddish-brown
 
 [font]
 {{- if eq .chezmoi.fqdnHostname "vighnesh-t480" }}
@@ -81,22 +49,6 @@ size = 9.0
 {{- if eq .chezmoi.fqdnHostname "vighnesh-z16" }}
 size = 11.0
 {{- end}}
-
-# [font.normal]
-# family = "JetBrainsMono Nerd Font Mono"
-# style = "Regular"
-#
-# [font.bold]
-# family = "JetBrainsMono Nerd Font Mono"
-# style = "Bold"
-#
-# [font.bold_italic]
-# family = "JetBrainsMono Nerd Font Mono"
-# style = "Bold Italic"
-#
-# [font.italic]
-# family = "JetBrainsMono Nerd Font Mono"
-# style = "Italic"
 
 [font.normal]
 family = "SauceCodePro Nerd Font Mono"
