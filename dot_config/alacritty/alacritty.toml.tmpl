@@ -1,46 +1,30 @@
-[colors]
-draw_bold_text_with_bright_colors = true
+[general]
+{{- if eq .chezmoi.fqdnHostname "Vighneshs-MacBook-Air.local" }}
+working_directory = "/Users/vighnesh/home"
+{{- end }}
+live_config_reload = true
 
-# TokyoNight Alacritty Colors
-# Default colors
-[colors.primary]
-background = '#1a1b26'
-foreground = '#c0caf5'
+[window]
+decorations = "Buttonless"
 
-[colors.cursor]
-cursor = '#c0caf5'
-text = '#1a1b26'
+[window.dimensions]
+columns = 150
+lines = 70
 
-# Normal colors
-[colors.normal]
-black = '#15161e'
-red = '#f7768e'
-green = '#9ece6a'
-yellow = '#e0af68'
-blue = '#7aa2f7'
-magenta = '#bb9af7'
-cyan = '#7dcfff'
-white = '#a9b1d6'
+[window.padding]
+{{- if eq .chezmoi.fqdnHostname "Vighneshs-MacBook-Air.local" }}
+x = 5
+y = 0
+{{- else }}
+x = 0
+y = 0
+{{- end }}
 
-# Bright colors
-[colors.bright]
-black = '#414868'
-red = '#f7768e'
-green = '#9ece6a'
-yellow = '#e0af68'
-blue = '#7aa2f7'
-magenta = '#bb9af7'
-cyan = '#7dcfff'
-white = '#c0caf5'
-
-# Indexed Colors
-[[colors.indexed_colors]]
-index = 16
-color = '#ff9e64' # Orange
-
-[[colors.indexed_colors]]
-index = 17
-color = '#db4b4b' # Reddish-brown
+[scrolling]
+history = 10000
+{{- if eq .chezmoi.fqdnHostname "vighnesh-z16" }}
+multiplier = 3
+{{- end }}
 
 [font]
 {{- if eq .chezmoi.fqdnHostname "vighnesh-t480" }}
@@ -48,6 +32,9 @@ size = 9.0
 {{- end}}
 {{- if eq .chezmoi.fqdnHostname "vighnesh-z16" }}
 size = 11.0
+{{- end}}
+{{- if eq .chezmoi.fqdnHostname "Vighneshs-MacBook-Air.local" }}
+size = 13.0
 {{- end}}
 
 [font.normal]
@@ -66,16 +53,56 @@ style = "Bold Italic"
 family = "SauceCodePro Nerd Font Mono"
 style = "Italic"
 
-[scrolling]
-history = 10000
-{{- if eq .chezmoi.fqdnHostname "vighnesh-z16" }}
-multiplier = 3
+[colors]
+draw_bold_text_with_bright_colors = true
+
+# https://github.com/tokyo-night/tokyo-night-vscode-theme/blob/master/themes/tokyo-night-color-theme.json#L346
+[colors.primary]
+background = '#16161e'
+# foreground = '#787c99'
+foreground = '#e6e7ed' # This is actually Tokyo Night Light's background color
+
+[colors.cursor]
+cursor = '#787c99' # Terminal White
+text = '#16161e' # Background (black)
+
+# Normal colors
+[colors.normal]
+black = '#363b54'
+red = '#f7768e'
+green = '#73daca'
+yellow = '#e0af68'
+blue = '#7aa2f7'
+magenta = '#bb9af7'
+cyan = '#7dcfff'
+white = '#787c99'
+
+# Bright colors
+[colors.bright]
+black = '#363b54'
+red = '#f7768e'
+green = '#73daca'
+yellow = '#e0af68'
+blue = '#7aa2f7'
+magenta = '#bb9af7'
+cyan = '#7dcfff'
+white = '#acb0d0'
+
+# Indexed Colors
+# https://gist.github.com/arthurk/d90b9f6c107dbe66db61f297fbdb643c#file-foot-ini-L25
+[[colors.indexed_colors]]
+index = 16
+color = '#ff9e64' # Orange
+
+[[colors.indexed_colors]]
+index = 17
+color = '#db4b4b' # Reddish-brown
+
+[cursor]
+style = "Beam"
+thickness = 0.2
+
+[terminal]
+{{- if eq .chezmoi.fqdnHostname "Vighneshs-MacBook-Air.local" }}
+shell = "/opt/homebrew/bin/fish"
 {{- end }}
-
-[window.dimensions]
-columns = 150
-lines = 70
-
-[window.padding]
-x = 0
-y = 0

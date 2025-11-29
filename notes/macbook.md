@@ -25,6 +25,9 @@ Unversioned symlinks `python`, `python-config`, `pip` etc. pointing to
 Homebrew's installation does not include the `mount` subcommand on macOS which depends on FUSE, use `nfsmount` instead.
 
 1. Configure dotfiles for alacritty (TN colorscheme check, check other Alacritty options)
+
+- `sudo scutil --set HostName <desired host name>` ([make sure your hostname is fixed](https://superuser.com/questions/639691/why-does-my-network-set-my-hostname-how-can-i-stop-this))
+
 1. Configure dotfiles for fish (PATH, starship)
 1. Configure dotfiles for neovim
 1. Configure dotfiles (colorscheme, cache) for bat
