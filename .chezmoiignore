@@ -144,9 +144,19 @@ key.txt.age
 
 {{- if eq .chezmoi.fqdnHostname "Vighneshs-MacBook-Air.local" }}
 !.config
-!.config/starship.toml
+!.config/aerospace
+!.config/aerospace/**
 !.config/alacritty
 !.config/alacritty/**
+!.config/bat
+!.config/bat/**
+!.config/fish
+!.config/fish/**
+!.config/nvim
+!.config/nvim/**
+!.config/starship.toml
+!.gitconfig
 !.ssh
 !.ssh/**
+!.tmux.conf
 {{- end }}

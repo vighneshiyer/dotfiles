@@ -340,8 +340,8 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
     end
 
     alias push 'git add . && git commit -m "update" && git push'
-starship init fish | source
-zoxide init fish | source
+    starship init fish | source
+    zoxide init fish | source
 {{- end }}
 
 {{- if regexMatch "(a\\d+$)|(as\\d+$)|(firesim\\d+$)|(amd\\d+$)" .chezmoi.fqdnHostname }}
@@ -452,5 +452,35 @@ zoxide init fish | source
         program = runner.create_tsp_runner(iop_file); \
         result = program(); \
         print(result)"
+    end
+{{- end }}
+
+{{- if eq .chezmoi.fqdnHostname "Vighneshs-MacBook-Air.local" }}
+    set -gx PATH \
+      /opt/homebrew/opt/python@3.14/libexec/bin \
+      /opt/homebrew/bin \
+      /opt/homebrew/sbin \
+      /usr/local/bin \
+      /usr/bin \
+      /bin \
+      /usr/sbin \
+      /sbin
+    starship init fish | source
+    function cd
+      if test (count $argv) -eq 0
+        # If no arguments are provided, change to a custom directory
+        builtin cd /Users/vighnesh/home
+      else
+        # Otherwise, use the default behavior of cd with the provided arguments
+        builtin cd $argv
+      end
+    end
+    alias push 'git add . && git commit -m "update" && git push'
+    alias t 'today --dir $HOME/90-notes/today'
+    alias s 'start --dir $HOME/90-notes/today'
+    alias dropdown 'silent alacritty --class dropdown'
+    alias dropdown_arith 'silent alacritty --class arithmetic -e /usr/bin/python'
+    function dostuff --on-event fish_prompt
+        pwd > /tmp/whereami
     end
 {{- end }}
