@@ -26,28 +26,35 @@ Don't bother updating to Tahoe.
     - `brew install borders`
   - `brew install cristianoliveira/tap/aerospace-scratchpad` ([aerospace-scratchpad](https://github.com/cristianoliveira/aerospace-scratchpad))
   - `brew install --cask signal slack` (communication programs)
+  - `brew install --cask cursor-cli visual-studio-code` (programming tools)
 1. Configure dotfiles for alacritty (TN colorscheme check, check other Alacritty options)
 1. Configure dotfiles (colorscheme, cache) for bat
 1. Configure dotfiles for fish (PATH, starship)
 1. Configure dotfiles for neovim
-1. Configure aerospace
-    - [x] aerospace config
-    - [x] Alan.App / JankyBorders
-    - [x] Scratchpads
-    - [x] Open shell from PWD
+1. Configure aerospace (`aerospace.toml`, Alan.App / JankyBorders, aerospace-scratchpad, open shell from PWD)
 1. Firefox plugins: Bitwarden, UBlock Origin, Vimium, ~~Sidebery~~ (no longer needed due to native vertical tab support in Firefox)
   - about:config -> uidensity -> set to 1 (for maximum compactness)
   - Settings -> Privacy & Security -> Passwords -> uncheck all boxes (disable Firefox password, payment, and address manager)
 1. Logins: Email (+ Calendar + Keep), Github, Amazon, ChatGPT
 1. Install: Signal, Slack, KKT (via app store)
 1. Clone repos: website, notes, research-notes, sim-notes, pubs, backup
-1. Cursor agent
-1. Today (use Cursor)
-  - Need to ignore missing symlinks instead of failing
-  - Need to patch dost task symlink for the time being
-1. Install VSCode
+1. Today
+  - [x] Need to ignore missing symlinks instead of failing
+  - [x] Need to patch dost task symlink for the time being
+1. Install and configure VSCode
+  - Extensions: vim, ssh, augment, c++, tokyo night
+  - Port files from Linux dotfiles location
+
+Extras when I have time:
+
+1. Figure out how to center floating windows in the current workspace (Alacritty scratchpad windows)
+  - https://github.com/nikitabobko/AeroSpace/discussions/633
+  - It seems the best way is to use a tiny Swift app that can be run whenever the window is detected
+  - Write a swift app in ~/.local/bin, versioned by chezmoi. It should be called by aerospace when an Alacritty scratchpad is detected. It should resize the currently focused window  to the dimensions requested and center it. Make this dynamic based on the resolution + dpi scaling of the monitor the workspace is on.
 1. Configure Sketchybar
   - https://nikitabobko.github.io/AeroSpace/goodies#show-aerospace-workspaces-in-sketchybar
+1. Add today (start) integration into SketchyBar
+1. Add timer integration into SketchyBar
 1. Mount remote restic archives
   - Rclone mount + restic mount for regular filesystem
   - Direct Restic mount for cold filesystem

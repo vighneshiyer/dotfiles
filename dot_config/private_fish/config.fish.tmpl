@@ -481,10 +481,8 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
       end
     end
     alias push 'git add . && git commit -m "update" && git push'
-    alias t 'today --dir $HOME/90-notes/today'
-    alias s 'start --dir $HOME/90-notes/today'
-    alias dropdown 'silent alacritty --class dropdown'
-    alias dropdown_arith 'silent alacritty --class arithmetic -e /usr/bin/python'
+    alias t 'today --dir $HOME/home/notes/today'
+    alias s 'start --dir $HOME/home/notes/today'
     function dostuff --on-event fish_prompt
         pwd > /tmp/whereami
     end
