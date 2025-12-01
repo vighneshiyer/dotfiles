@@ -119,7 +119,11 @@ alias vivado 'vivado -nolog -nojournal'
 alias sbt 'sbt -Dsbt.supershell=false'
 set -gx SBT_OPTS
 alias treea 'tree -a -I .git'
+{{- if eq .chezmoi.fqdnHostname "Vighneshs-MacBook-Air.local" }}
+alias list 'dust -d 1'
+{{- else }}
 alias list 'du -ahd1 | sort -h'
+{{- end }}
 alias df 'df -h'
 alias free 'free -mh'
 function ff
@@ -457,6 +461,7 @@ alias speedtest 'curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/
 
 {{- if eq .chezmoi.fqdnHostname "Vighneshs-MacBook-Air.local" }}
     set -gx PATH \
+      $HOME/.local/bin \
       /opt/homebrew/opt/python@3.14/libexec/bin \
       /opt/homebrew/bin \
       /opt/homebrew/sbin \

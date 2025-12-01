@@ -8,13 +8,15 @@ Don't bother updating to Tahoe.
 - `defaults write -g NSWindowShouldDragOnGesture -bool true` ([move windows by dragging with Cmd+Ctrl](https://nikitabobko.github.io/AeroSpace/goodies#move-by-dragging-any-part-of-the-window))
 - `defaults write -g NSAutomaticWindowAnimationsEnabled -bool false` ([disable window open animations](https://nikitabobko.github.io/AeroSpace/goodies#disable-open-animations))
 - Toggle on "Reduce Motion" in System Settings
+- `defaults write -g InitialKeyRepeat -float 10.0` (key repeat initial delay)
+- `defaults write -g KeyRepeat -float 1.0` (key repeat frequency)
 
 1. Remap caps lock to escape
 1. Install Homebrew (it will also install xcode tools)
 1. Install chezmoi
 1. Unpack ssh keys via chezmoi
 1. Install software via brew
-  - `brew install fish btop zoxide neovim rsync git eza fd bat git-delta tmux ripgrep tlrc zellij tree rclone fdupes zola hyperfine restic uv python tree-sitter tree-sitter-cli typst starship` (CLI programs)
+  - `brew install fish btop zoxide neovim rsync git eza fd bat git-delta tmux ripgrep tlrc zellij tree rclone fdupes zola hyperfine restic uv python pipx tree-sitter tree-sitter-cli typst starship dust` (CLI programs)
   - `brew install --cask font-sauce-code-pro-nerd-font font-noto-sans font-noto-sans-display font-noto-sans-math font-noto-sans-symbols font-noto-sans-symbols-2` (fonts)
   - `brew install --cask firefox gimp alacritty inkscape` (graphical programs)
   - `brew install --cask nikitabobko/tap/aerospace` (window manager)
@@ -23,6 +25,7 @@ Don't bother updating to Tahoe.
   - `brew tap FelixKratz/formulae` ([JankyBorders](https://github.com/FelixKratz/JankyBorders))
     - `brew install borders`
   - `brew install cristianoliveira/tap/aerospace-scratchpad` ([aerospace-scratchpad](https://github.com/cristianoliveira/aerospace-scratchpad))
+  - `brew install --cask signal slack` (communication programs)
 1. Configure dotfiles for alacritty (TN colorscheme check, check other Alacritty options)
 1. Configure dotfiles (colorscheme, cache) for bat
 1. Configure dotfiles for fish (PATH, starship)
@@ -33,14 +36,21 @@ Don't bother updating to Tahoe.
     - [x] Scratchpads
     - [x] Open shell from PWD
 1. Firefox plugins: Bitwarden, UBlock Origin, Vimium, ~~Sidebery~~ (no longer needed due to native vertical tab support in Firefox)
-1. Logins: Email (+ Calendar + Keep), Github, Amazon
-1. Install: Signal, Slack, KKT
+  - about:config -> uidensity -> set to 1 (for maximum compactness)
+  - Settings -> Privacy & Security -> Passwords -> uncheck all boxes (disable Firefox password, payment, and address manager)
+1. Logins: Email (+ Calendar + Keep), Github, Amazon, ChatGPT
+1. Install: Signal, Slack, KKT (via app store)
 1. Clone repos: website, notes, research-notes, sim-notes, pubs, backup
+1. Cursor agent
+1. Today (use Cursor)
+  - Need to ignore missing symlinks instead of failing
+  - Need to patch dost task symlink for the time being
 1. Install VSCode
-1. Adjust keyboard repeat rate + delay (https://apple.stackexchange.com/questions/10467/how-to-increase-keyboard-key-repeat-rate-on-os-x)
-1. Today
 1. Configure Sketchybar
   - https://nikitabobko.github.io/AeroSpace/goodies#show-aerospace-workspaces-in-sketchybar
+1. Mount remote restic archives
+  - Rclone mount + restic mount for regular filesystem
+  - Direct Restic mount for cold filesystem
 
 Caveats:
 
