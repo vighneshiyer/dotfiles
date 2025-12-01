@@ -16,85 +16,97 @@ after-startup-command = [
   'exec-and-forget borders active_color=0xff7aa2f7 inactive_color=0x00000000 width=7.0'
 ]
 
+exec-on-workspace-change = ["/opt/homebrew/bin/fish", "-c",
+  "aerospace-scratchpad hook pull-window $AEROSPACE_PREV_WORKSPACE $AEROSPACE_FOCUSED_WORKSPACE"
+]
+
 [gaps]
-inner.horizontal = 10
-inner.vertical = 10
+inner.horizontal = 0
+inner.vertical = 0
 
 [mode.main.binding]
-    # See: https://nikitabobko.github.io/AeroSpace/goodies#open-a-new-window-with-applescript
-#cmd-enter = '''exec-and-forget osascript -e '
-#    tell application "Alacritty"
-#        do script
-#        activate
-#    end tell'
-#    '''
-#cmd-enter = 'exec-and-forget open -n /opt/homebrew/bin/alacritty'
 cmd-enter = 'exec-and-forget alacritty msg create-window || alacritty'
+cmd-shift-enter = 'exec-and-forget alacritty msg create-window --working-directory "$(cat /tmp/whereami)" || alacritty --working-directory "$(cat /tmp/whereami)"'
 
-    # i3 wraps focus by default
-    cmd-h = 'focus --boundaries-action wrap-around-the-workspace left'
-    cmd-j = 'focus --boundaries-action wrap-around-the-workspace down'
-    cmd-k = 'focus --boundaries-action wrap-around-the-workspace up'
-    cmd-l = 'focus --boundaries-action wrap-around-the-workspace right'
+# i3 wraps focus by default
+cmd-h = 'focus --boundaries-action wrap-around-the-workspace left'
+cmd-j = 'focus --boundaries-action wrap-around-the-workspace down'
+cmd-k = 'focus --boundaries-action wrap-around-the-workspace up'
+cmd-l = 'focus --boundaries-action wrap-around-the-workspace right'
 
-    cmd-shift-h = 'move left'
-    cmd-shift-j = 'move down'
-    cmd-shift-k = 'move up'
-    cmd-shift-l = 'move right'
+cmd-shift-h = 'move left'
+cmd-shift-j = 'move down'
+cmd-shift-k = 'move up'
+cmd-shift-l = 'move right'
 
-    # Consider using 'join-with' command as a 'split' replacement if you want to enable
-    # normalizations
-    cmd-o = 'split horizontal'
-    cmd-p = 'split vertical'
+# Consider using 'join-with' command as a 'split' replacement if you want to enable
+# normalizations
+cmd-o = 'split horizontal'
+cmd-p = 'split vertical'
 
-    cmd-f = 'fullscreen'
+cmd-f = 'fullscreen'
 
-    cmd-s = 'layout v_accordion' # 'layout stacking' in i3
-    cmd-w = 'layout h_accordion' # 'layout tabbed' in i3
-    cmd-e = 'layout tiles horizontal vertical' # 'layout toggle split' in i3
+cmd-s = 'layout v_accordion' # 'layout stacking' in i3
+cmd-w = 'layout h_accordion' # 'layout tabbed' in i3
+cmd-e = 'layout tiles horizontal vertical' # 'layout toggle split' in i3
 
-    cmd-shift-space = 'layout floating tiling' # 'floating toggle' in i3
+cmd-shift-space = 'layout floating tiling' # 'floating toggle' in i3
 
-    cmd-shift-q = 'close --quit-if-last-window'
+cmd-shift-q = 'close --quit-if-last-window'
 
-    # Not supported, because this command is redundant in AeroSpace mental model.
-    # See: https://nikitabobko.github.io/AeroSpace/guide#<D-R>loating-windows
-    #cmd-space = 'focus toggle_tiling_floating'
+cmd-1 = 'workspace 1'
+cmd-2 = 'workspace 2'
+cmd-3 = 'workspace 3'
+cmd-4 = 'workspace 4'
+cmd-5 = 'workspace 5'
+cmd-6 = 'workspace 6'
+cmd-7 = 'workspace 7'
+cmd-8 = 'workspace 8'
+cmd-9 = 'workspace 9'
+cmd-0 = 'workspace 10'
 
-    # `focus parent`/`focus child` are not yet supported, and it's not clear whether they
-    # should be supported at all https://github.com/nikitabobko/AeroSpace/issues/5
-    # cmd-a = 'focus parent'
+cmd-shift-1 = 'move-node-to-workspace 1'
+cmd-shift-2 = 'move-node-to-workspace 2'
+cmd-shift-3 = 'move-node-to-workspace 3'
+cmd-shift-4 = 'move-node-to-workspace 4'
+cmd-shift-5 = 'move-node-to-workspace 5'
+cmd-shift-6 = 'move-node-to-workspace 6'
+cmd-shift-7 = 'move-node-to-workspace 7'
+cmd-shift-8 = 'move-node-to-workspace 8'
+cmd-shift-9 = 'move-node-to-workspace 9'
+cmd-shift-0 = 'move-node-to-workspace 10'
 
-    cmd-1 = 'workspace 1'
-    cmd-2 = 'workspace 2'
-    cmd-3 = 'workspace 3'
-    cmd-4 = 'workspace 4'
-    cmd-5 = 'workspace 5'
-    cmd-6 = 'workspace 6'
-    cmd-7 = 'workspace 7'
-    cmd-8 = 'workspace 8'
-    cmd-9 = 'workspace 9'
-    cmd-0 = 'workspace 10'
+cmd-shift-r = 'reload-config'
 
-    cmd-shift-1 = 'move-node-to-workspace 1'
-    cmd-shift-2 = 'move-node-to-workspace 2'
-    cmd-shift-3 = 'move-node-to-workspace 3'
-    cmd-shift-4 = 'move-node-to-workspace 4'
-    cmd-shift-5 = 'move-node-to-workspace 5'
-    cmd-shift-6 = 'move-node-to-workspace 6'
-    cmd-shift-7 = 'move-node-to-workspace 7'
-    cmd-shift-8 = 'move-node-to-workspace 8'
-    cmd-shift-9 = 'move-node-to-workspace 9'
-    cmd-shift-0 = 'move-node-to-workspace 10'
+cmd-r = 'mode resize'
 
-    cmd-shift-r = 'reload-config'
+# See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
+# cmd-tab = 'workspace-back-and-forth'
+# See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
+cmd-m = 'move-workspace-to-monitor --wrap-around next'
 
-    cmd-r = 'mode resize'
+cmd-u = """
+exec-and-forget aerospace-scratchpad show alacritty -F window-title='terminal-scratchpad' \
+             || alacritty -t 'terminal-scratchpad' -o window.dimensions.columns=150 window.dimensions.lines=70
+"""
 
-    # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
-    # cmd-tab = 'workspace-back-and-forth'
-    # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
-    cmd-m = 'move-workspace-to-monitor --wrap-around next'
+cmd-a = """
+exec-and-forget aerospace-scratchpad show alacritty -F window-title='python-scratchpad' \
+             || alacritty -t 'python-scratchpad' -o window.dimensions.columns=150 window.dimensions.lines=70 --command /opt/homebrew/bin/python3
+"""
+
+# TODO: figure out how to center these floating windows in the current workspace
+# https://github.com/nikitabobko/AeroSpace/discussions/633
+# It seems the best way is to use a tiny Swift app that can be run whenever the window is detected
+[[on-window-detected]]
+    if.app-name-regex-substring = 'alacritty'
+    if.window-title-regex-substring = 'terminal-scratchpad'
+    run = 'layout floating'
+
+[[on-window-detected]]
+    if.app-name-regex-substring = 'alacritty'
+    if.window-title-regex-substring = 'python-scratchpad'
+    run = 'layout floating'
 
 [mode.resize.binding]
     h = 'resize width -50'

@@ -4,6 +4,10 @@ Update to latest version of Sequoia.
 Don't bother updating to Tahoe.
 
 - `sudo scutil --set HostName <desired host name>` ([make sure your hostname is fixed](https://superuser.com/questions/639691/why-does-my-network-set-my-hostname-how-can-i-stop-this))
+- `defaults write org.alacritty AppleFontSmoothing -int 0` ([improve font rendering on Alacritty](https://github.com/alacritty/alacritty/issues/7333))
+- `defaults write -g NSWindowShouldDragOnGesture -bool true` ([move windows by dragging with Cmd+Ctrl](https://nikitabobko.github.io/AeroSpace/goodies#move-by-dragging-any-part-of-the-window))
+- `defaults write -g NSAutomaticWindowAnimationsEnabled -bool false` ([disable window open animations](https://nikitabobko.github.io/AeroSpace/goodies#disable-open-animations))
+- Toggle on "Reduce Motion" in System Settings
 
 1. Remap caps lock to escape
 1. Install Homebrew (it will also install xcode tools)
@@ -18,6 +22,7 @@ Don't bother updating to Tahoe.
     - `brew install fuse-t fuse-t-sshfs`
   - `brew tap FelixKratz/formulae` ([JankyBorders](https://github.com/FelixKratz/JankyBorders))
     - `brew install borders`
+  - `brew install cristianoliveira/tap/aerospace-scratchpad` ([aerospace-scratchpad](https://github.com/cristianoliveira/aerospace-scratchpad))
 1. Configure dotfiles for alacritty (TN colorscheme check, check other Alacritty options)
 1. Configure dotfiles (colorscheme, cache) for bat
 1. Configure dotfiles for fish (PATH, starship)
@@ -25,14 +30,17 @@ Don't bother updating to Tahoe.
 1. Configure aerospace
     - [x] aerospace config
     - [x] Alan.App / JankyBorders
-    - [ ] Scratchpads
+    - [x] Scratchpads
+    - [x] Open shell from PWD
 1. Firefox plugins: Bitwarden, UBlock Origin, Vimium, ~~Sidebery~~ (no longer needed due to native vertical tab support in Firefox)
 1. Logins: Email (+ Calendar + Keep), Github, Amazon
 1. Install: Signal, Slack, KKT
 1. Clone repos: website, notes, research-notes, sim-notes, pubs, backup
-1. Today
 1. Install VSCode
 1. Adjust keyboard repeat rate + delay (https://apple.stackexchange.com/questions/10467/how-to-increase-keyboard-key-repeat-rate-on-os-x)
+1. Today
+1. Configure Sketchybar
+  - https://nikitabobko.github.io/AeroSpace/goodies#show-aerospace-workspaces-in-sketchybar
 
 Caveats:
 
