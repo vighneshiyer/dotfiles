@@ -31,10 +31,6 @@
             "commands": ["workbench.action.showAllSymbols"]
         },
         {
-            "before": ["<leader>", "e"],
-            "commands": ["workbench.view.explorer"]
-        },
-        {
             "before": ["<leader>", "/"],
             "commands": ["editor.action.commentLine"]
         },

@@ -9,4 +9,16 @@
         "command": "workbench.action.focusRightGroup",
         "when": "editorTextFocus"
     },
+    // When in Normal mode and in the editor, <leader>e focuses the Explorer
+    {
+        "key": "space e",
+        "command": "workbench.view.explorer",
+        "when": "vim.mode == 'Normal' && editorTextFocus"
+    },
+    // When the Explorer is focused, <leader>e closes the sidebar and returns focus to the editor
+    {
+        "key": "space e",
+        "command": "workbench.action.toggleSidebarVisibility",
+        "when": "filesExplorerFocus"
+    }
 ]

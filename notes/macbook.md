@@ -10,6 +10,7 @@ Don't bother updating to Tahoe.
 - Toggle on "Reduce Motion" in System Settings
 - `defaults write -g InitialKeyRepeat -float 10.0` (key repeat initial delay)
 - `defaults write -g KeyRepeat -float 1.0` (key repeat frequency)
+- `defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false` (disable press and hold nonsense)
 
 1. Remap caps lock to escape
 1. Install Homebrew (it will also install xcode tools)
@@ -42,7 +43,7 @@ Don't bother updating to Tahoe.
   - [x] Need to ignore missing symlinks instead of failing
   - [x] Need to patch dost task symlink for the time being
 1. Install and configure VSCode
-  - Extensions: vim, ssh, augment, c++, tokyo night
+  - Extensions: vim, ssh, augment, c++, tokyo night, excalidraw
   - Port files from Linux dotfiles location
 
 Extras when I have time:
