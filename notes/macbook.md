@@ -45,6 +45,7 @@ Don't bother updating to Tahoe.
 1. Install and configure VSCode
   - Extensions: vim, ssh, augment, c++, tokyo night, excalidraw
   - Port files from Linux dotfiles location
+1. Install `rustup`
 
 Extras when I have time:
 
@@ -52,13 +53,13 @@ Extras when I have time:
   - https://github.com/nikitabobko/AeroSpace/discussions/633
   - It seems the best way is to use a tiny Swift app that can be run whenever the window is detected
   - Write a swift app in ~/.local/bin, versioned by chezmoi. It should be called by aerospace when an Alacritty scratchpad is detected. It should resize the currently focused window  to the dimensions requested and center it. Make this dynamic based on the resolution + dpi scaling of the monitor the workspace is on.
+1. Mount remote restic archives
+  - Rclone mount + restic mount for regular filesystem
+  - Direct Restic mount for cold filesystem
 1. Configure Sketchybar
   - https://nikitabobko.github.io/AeroSpace/goodies#show-aerospace-workspaces-in-sketchybar
 1. Add today (start) integration into SketchyBar
 1. Add timer integration into SketchyBar
-1. Mount remote restic archives
-  - Rclone mount + restic mount for regular filesystem
-  - Direct Restic mount for cold filesystem
 
 Caveats:
 
