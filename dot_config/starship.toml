@@ -4,7 +4,7 @@
 # Inserts a blank line between shell prompts
 add_newline = false
 
-format = """[⁂ ](bright-green) $hostname$directory$character"""
+format = """[⁂](bright-green) $hostname$directory$character"""
 right_format = """$git_branch$git_state$cmd_duration"""
 
 [character]
