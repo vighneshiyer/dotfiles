@@ -27,6 +27,8 @@ inner.vertical = 0
 [mode.main.binding]
 cmd-enter = 'exec-and-forget alacritty msg create-window || alacritty'
 cmd-shift-enter = 'exec-and-forget alacritty msg create-window --working-directory "$(cat /tmp/whereami)" || alacritty --working-directory "$(cat /tmp/whereami)"'
+cmd-b = 'exec-and-forget firefox --new-window'
+cmd-shift-b = 'exec-and-forget firefox --private-window'
 
 # i3 wraps focus by default
 cmd-h = 'focus --boundaries-action wrap-around-the-workspace left'
@@ -54,6 +56,7 @@ cmd-shift-space = 'layout floating tiling' # 'floating toggle' in i3
 
 cmd-shift-q = 'close --quit-if-last-window'
 
+cmd-backtick = 'workspace 0'
 cmd-1 = 'workspace 1'
 cmd-2 = 'workspace 2'
 cmd-3 = 'workspace 3'
@@ -65,6 +68,7 @@ cmd-8 = 'workspace 8'
 cmd-9 = 'workspace 9'
 cmd-0 = 'workspace 10'
 
+cmd-shift-backtick = 'move-node-to-workspace 0'
 cmd-shift-1 = 'move-node-to-workspace 1'
 cmd-shift-2 = 'move-node-to-workspace 2'
 cmd-shift-3 = 'move-node-to-workspace 3'
