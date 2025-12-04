@@ -19,7 +19,7 @@ Don't bother updating to Tahoe.
 1. Install software via brew
   - `brew install fish btop zoxide neovim rsync git eza fd bat git-delta tmux ripgrep tlrc zellij tree rclone fdupes zola hyperfine restic uv python pipx tree-sitter tree-sitter-cli typst starship dust node` (CLI programs)
   - `brew install --cask font-sauce-code-pro-nerd-font font-noto-sans font-noto-sans-display font-noto-sans-math font-noto-sans-symbols font-noto-sans-symbols-2` (fonts)
-  - `brew install --cask firefox gimp alacritty inkscape` (graphical programs)
+  - `brew install --cask firefox gimp alacritty inkscape spotify` (GUI programs)
   - `brew install --cask nikitabobko/tap/aerospace` (window manager)
   - `brew tap macos-fuse-t/homebrew-cask` (FUSE-T)
     - `brew install fuse-t fuse-t-sshfs`

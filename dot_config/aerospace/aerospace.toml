@@ -46,7 +46,7 @@ cmd-p = 'split vertical'
 
 cmd-f = 'fullscreen'
 
-cmd-s = 'layout v_accordion' # 'layout stacking' in i3
+# cmd-s = 'layout v_accordion' # 'layout stacking' in i3
 cmd-w = 'layout h_accordion' # 'layout tabbed' in i3
 cmd-e = 'layout tiles horizontal vertical' # 'layout toggle split' in i3
 
@@ -95,6 +95,11 @@ exec-and-forget aerospace-scratchpad show alacritty -F window-title='python-scra
              || alacritty -t 'python-scratchpad' -o window.dimensions.columns=150 window.dimensions.lines=70 --command /opt/homebrew/bin/python3
 """
 
+cmd-s = """
+exec-and-forget aerospace-scratchpad show Spotify \
+             || ./Applications/Spotify.app/Contents/MacOS/Spotify
+"""
+
 # TODO: figure out how to center these floating windows in the current workspace
 # https://github.com/nikitabobko/AeroSpace/discussions/633
 # It seems the best way is to use a tiny Swift app that can be run whenever the window is detected
@@ -106,6 +111,10 @@ exec-and-forget aerospace-scratchpad show alacritty -F window-title='python-scra
 [[on-window-detected]]
     if.app-name-regex-substring = 'alacritty'
     if.window-title-regex-substring = 'python-scratchpad'
+    run = 'layout floating'
+
+[[on-window-detected]]
+    if.app-id = 'com.spotify.client'
     run = 'layout floating'
 
 [mode.resize.binding]
