@@ -21,7 +21,7 @@ Don't bother updating to Tahoe.
 1. Install chezmoi
 1. Unpack ssh keys via chezmoi
 1. Install software via brew
-  - `brew install fish btop zoxide neovim rsync git eza fd bat git-delta tmux ripgrep tlrc zellij tree rclone fdupes zola hyperfine restic uv python pipx tree-sitter tree-sitter-cli typst starship dust node` (CLI programs)
+  - `brew install fish btop zoxide neovim rsync git eza fd bat git-delta tmux ripgrep tlrc zellij tree rclone fdupes zola hyperfine restic uv python pipx tree-sitter tree-sitter-cli typst starship dust node openjdk` (CLI programs)
   - `brew install --cask font-sauce-code-pro-nerd-font font-noto-sans font-noto-sans-display font-noto-sans-math font-noto-sans-symbols font-noto-sans-symbols-2` (fonts)
   - `brew install --cask firefox gimp alacritty inkscape spotify` (GUI programs)
   - `brew install --cask nikitabobko/tap/aerospace` (window manager)
@@ -45,6 +45,7 @@ Don't bother updating to Tahoe.
 1. Install and configure VSCode
   - Extensions: vim, ssh, augment, c++, tokyo night, excalidraw
 1. Install `rustup`
+1. Install `mill` ([Install script](https://mill-build.org/mill/cli/installation-ide.html#_global_installation))
 
 ## Extras
 
