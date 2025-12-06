@@ -36,7 +36,8 @@ Don't bother updating to Tahoe.
 1. Configure dotfiles for neovim
 1. Configure aerospace (`aerospace.toml`, Alan.App / JankyBorders, aerospace-scratchpad, open shell from PWD)
 1. Firefox plugins: Bitwarden, UBlock Origin, Vimium, ~~Sidebery~~ (no longer needed due to native vertical tab support in Firefox)
-  - about:config -> uidensity -> set to 1 (for maximum compactness)
+  - about:config -> `uidensity` -> set to 1 (for maximum compactness)
+  - about:config -> `media.videocontrols.picture-in-picture.video-toggle.enabled` -> set to false (disable PIP popup)
   - Settings -> Privacy & Security -> Passwords -> uncheck all boxes (disable Firefox password, payment, and address manager)
 1. Logins: Email (+ Calendar + Keep), Github, Amazon, ChatGPT
 1. Install: Signal, Slack, KKT (via app store)
