@@ -474,43 +474,7 @@ function dostuff --on-event fish_prompt
 end
 source $HOME/.cargo/env.fish
 
-function check_git_clean
-    set -l dirty_repos
-
-    for path in $argv
-        # Normalize path (remove trailing slash)
-        set -l root (string replace -r '/$' '' $path)
-        set -l targets
-
-        # Logic: If argument is a repo, check it. Otherwise, check its immediate children.
-        if test -d "$root/.git"
-            set targets $root
-        else
-            # Use BSD find to safely list subdirs without wildcard errors on empty dirs
-            set targets (find "$root" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
-        end
-
-        for repo in $targets
-            test -d "$repo/.git"; or continue
-
-            # git status --porcelain -b provides branch info (head) and file status (body)
-            set -l status_out (command git -C "$repo" status --porcelain -b 2>/dev/null)
-
-            # Unclean if >1 line (implies changes) or header contains "ahead" (unpushed)
-            if test (count $status_out) -gt 1; or string match -q "*ahead*" -- $status_out[1]
-                set -a dirty_repos $repo
-            end
-        end
-    end
-
-    # Print results with color
-    if set -q dirty_repos[1]
-        set_color red --bold; echo "Dirty repositories found:"; set_color normal
-        printf "  %s\n" $dirty_repos
-    else
-        set_color green --bold; echo "All clean"; set_color normal
-    end
-end
-
-alias check 'check_git_clean $HOME/home $HOME/.local/share/chezmoi'
+set REPOS $HOME/home $HOME/.local/share/chezmoi
+alias check 'check_git_repos $REPOS'
+alias sync 'sync_git_repos $REPOS'
 {{- end }}
