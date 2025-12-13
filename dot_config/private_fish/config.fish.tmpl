@@ -273,6 +273,19 @@ set -gx PATH \
     /usr/bin/site_perl \
     /usr/bin/vendor_perl \
     /usr/bin/core_perl
+set REPOS \
+    $HOME/20-research/research-notes \
+    $HOME/20-research/publications \
+    $HOME/20-research/simulation-startup \
+    $HOME/20-research/pdfs \
+    $HOME/20-research/rtl-simulation-reading \
+    $HOME/60-organizations/61-websites/vighneshiyer \
+    $HOME/.local/share/chezmoi \
+    $HOME/90-notes \
+    $HOME/temp/hft \
+    $HOME/temp/today
+alias check 'check_git_repos $REPOS'
+alias sync 'sync_git_repos $REPOS'
 {{- end }}
 
 {{- if eq .chezmoi.fqdnHostname "vighnesh-t480" "vighnesh-z16" }}
