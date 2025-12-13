@@ -14,6 +14,7 @@
 .ssh
 .ssh/**
 .tmux.conf
+Library
 
 # These should always be ignored
 notes

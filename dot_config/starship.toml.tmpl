@@ -4,7 +4,11 @@
 # Inserts a blank line between shell prompts
 add_newline = false
 
+{{- if eq .chezmoi.fqdnHostname "vighnesh-z16" }}
+format = """[⁂ ](bright-green) $hostname$directory$character"""
+{{- else }}
 format = """[⁂](bright-green) $hostname$directory$character"""
+{{- end }}
 right_format = """$git_branch$git_state$cmd_duration"""
 
 [character]

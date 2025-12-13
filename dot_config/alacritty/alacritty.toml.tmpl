@@ -58,7 +58,11 @@ draw_bold_text_with_bright_colors = true
 
 # https://github.com/tokyo-night/tokyo-night-vscode-theme/blob/master/themes/tokyo-night-color-theme.json#L346
 [colors.primary]
+{{- if eq .chezmoi.fqdnHostname "vighnesh-z16" }}
+background = '#1a1b26'
+{{- else }}
 background = '#16161e'
+{{- end }}
 # foreground = '#787c99'
 foreground = '#e6e7ed' # This is actually Tokyo Night Light's background color
 
