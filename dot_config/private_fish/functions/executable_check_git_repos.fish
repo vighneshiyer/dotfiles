@@ -55,7 +55,7 @@ function check_git_repos
         for repo in $dirty_repos
             set_color normal
             echo -n "  "(basename $repo)" "
-            set_color brblack
+            set_color white
             echo "($repo)"
             set_color normal
         end
