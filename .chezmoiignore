@@ -154,6 +154,8 @@ key.txt.age
 !.config/fish/**
 !.config/nvim
 !.config/nvim/**
+!.config/rclone
+!.config/rclone/**
 !.config/starship.toml
 !.gitconfig
 !.ssh
