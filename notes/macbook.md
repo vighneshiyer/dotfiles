@@ -5,7 +5,11 @@ Don't bother updating to Tahoe.
 
 ## System Settings Setup
 
-- Remap caps lock to escape in System Settings
+- System Settings -> Spotlight search categories -> Uncheck all boxes except "Applications" and "System Settings" -> Uncheck "Help Apple Improve Search"
+- System Settings -> Show spotlight in menu bar -> Don't show
+- System Settings -> Customize modifier keys -> Set Caps Lock to Escape
+- System Settings -> Keyboard shortcuts -> App Shortcuts -> "Find in Page..." -> Ctrl-F
+- System Settings -> Keyboard shortcuts -> App Shortcuts -> "Find..." -> Ctrl-F
 - `sudo scutil --set HostName <desired host name>` ([make sure your hostname is fixed](https://superuser.com/questions/639691/why-does-my-network-set-my-hostname-how-can-i-stop-this))
 - `defaults write org.alacritty AppleFontSmoothing -int 0` ([improve font rendering on Alacritty](https://github.com/alacritty/alacritty/issues/7333))
 - `defaults write -g NSWindowShouldDragOnGesture -bool true` ([move windows by dragging with Cmd+Ctrl](https://nikitabobko.github.io/AeroSpace/goodies#move-by-dragging-any-part-of-the-window))
@@ -38,6 +42,7 @@ Don't bother updating to Tahoe.
 1. Firefox plugins: Bitwarden, UBlock Origin, Vimium, ~~Sidebery~~ (no longer needed due to native vertical tab support in Firefox)
   - about:config -> `uidensity` -> set to 1 (for maximum compactness)
   - about:config -> `media.videocontrols.picture-in-picture.video-toggle.enabled` -> set to false (disable PIP popup)
+  - about:config -> `browser.download.open_pdf_attachments_inline` -> set to true (enable opening PDFs in Firefox from the CLI)
   - Settings -> Privacy & Security -> Passwords -> uncheck all boxes (disable Firefox password, payment, and address manager)
 1. Logins: Email (+ Calendar + Keep), Github, Amazon, ChatGPT
 1. Install: Signal, Slack, KKT (via app store)
@@ -58,7 +63,7 @@ Don't bother updating to Tahoe.
   - This actually seems impossible, let's just not bother with it.
   - I tried various Swift approaches, but they all failed with Alacritty, perhaps due to its decoration-free windows. Or the accessibility permissions weren't enough. Or whatever. And Raycast requires a "Pro" membership to use its window manipulation functionality. Just no more, resize these windows by hand for now until aerospace supports floating window manipulation natively.
 - [x] Firefox launch hotkeys
-- [ ] Mount remote restic archives
+- [x] Mount remote restic archives
   - Rclone mount + restic mount for regular filesystem
   - Direct Restic mount for cold filesystem
 - [ ] Configure Sketchybar

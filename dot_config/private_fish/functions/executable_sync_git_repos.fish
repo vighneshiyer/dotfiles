@@ -74,17 +74,136 @@ function sync_git_repos --description "Sync and check git repositories for out-o
     set_color cyan
     echo "Fetching updates..."
     set_color normal
-    # Fetch all remotes for each repository in parallel
+    
+    # Print initial status lines for each repository
+    for repo in $git_repos
+        set -l repo_name (basename $repo)
+        set_color yellow
+        echo "  [$repo_name] Fetching..."
+        set_color normal
+    end
+    
+    # Move cursor back to the first status line
+    set -l num_repos (count $git_repos)
+    for i in (seq $num_repos)
+        echo -ne "\033[A"
+    end
+    
+    # Create temp files and launch parallel fetches
+    set -l temp_files
     set -l fetch_pids
     for repo in $git_repos
-        git -C "$repo" fetch --all --quiet 2>&1 &
+        set -l temp_file (mktemp)
+        set -a temp_files $temp_file
+        git -C "$repo" fetch --all --verbose > $temp_file 2>&1 &
         set -a fetch_pids $last_pid
     end
     
-    # Wait for all fetch operations to complete
-    for pid in $fetch_pids
-        wait $pid
+    # Monitor processes and update status
+    set -l completed_status
+    for i in (seq (count $git_repos))
+        set -a completed_status 0
     end
+    
+    while true
+        set -l all_done 1
+        
+        for i in (seq (count $git_repos))
+            if test $completed_status[$i] -eq 0
+                # Check if process is still running
+                if not ps -p $fetch_pids[$i] > /dev/null 2>&1
+                    # Process completed, check exit status
+                    wait $fetch_pids[$i]
+                    set -l exit_code $status
+                    set completed_status[$i] 1
+                    
+                    set -l repo_name (basename $git_repos[$i])
+                    
+                    # Clear the line and update status
+                    echo -ne "\r\033[K"
+                    if test $exit_code -eq 0
+                        # Parse the temp file for summary
+                        set -l up_to_date_count (grep -c "\[up to date\]" $temp_files[$i] 2>/dev/null)
+                        set -l updated_count (grep -c "^   [a-f0-9]\+\.\.[a-f0-9]\+" $temp_files[$i] 2>/dev/null)
+                        set -l new_branch_count (grep -c "^\s*\* \[new branch\]" $temp_files[$i] 2>/dev/null)
+                        set -l new_tag_count (grep -c "^\s*\* \[new tag\]" $temp_files[$i] 2>/dev/null)
+                        
+                        set_color green
+                        echo -n "  [$repo_name] Done"
+                        set_color normal
+                        
+                        # Build summary string
+                        set -l summary_parts
+                        if test $up_to_date_count -gt 0
+                            set -a summary_parts "$up_to_date_count up to date"
+                        end
+                        if test $updated_count -gt 0
+                            set -a summary_parts "$updated_count updated"
+                        end
+                        if test $new_branch_count -gt 0
+                            set -a summary_parts "$new_branch_count new"
+                        end
+                        if test $new_tag_count -gt 0
+                            set -a summary_parts "$new_tag_count new tags"
+                        end
+                        
+                        if test (count $summary_parts) -gt 0
+                            echo -n " ("(string join ", " $summary_parts)")"
+                        end
+                        echo
+                    else
+                        set_color red
+                        echo "  [$repo_name] Failed"
+                    end
+                    set_color normal
+                else
+                    set all_done 0
+                    # Still running, show latest output
+                    set -l repo_name (basename $git_repos[$i])
+                    
+                    # Get the last line from the temp file
+                    set -l last_line (tail -n 1 $temp_files[$i] 2>/dev/null | string trim)
+                    
+                    # Clear the line and update status with fetch progress
+                    echo -ne "\r\033[K"
+                    set_color yellow
+                    echo -n "  [$repo_name] Fetching..."
+                    set_color normal
+                    
+                    # Append the git fetch status if available
+                    if test -n "$last_line"
+                        # Truncate if too long (keep it under ~80 chars total)
+                        set -l max_len 60
+                        if test (string length "$last_line") -gt $max_len
+                            set last_line (string sub -l $max_len "$last_line")"..."
+                        end
+                        echo -n " $last_line"
+                    end
+                    echo -ne "\n"
+                end
+            else
+                # Already completed, skip this line
+                echo -ne "\n"
+            end
+        end
+        
+        if test $all_done -eq 1
+            break
+        end
+        
+        # Move cursor back up to start
+        for i in (seq $num_repos)
+            echo -ne "\033[A"
+        end
+        
+        sleep 0.1
+    end
+    
+    # Clean up temp files
+    for temp_file in $temp_files
+        rm -f $temp_file
+    end
+    echo
 
     set -l any_out_of_date 0
     # Store repos and branches that need pulling (only "behind" branches)
