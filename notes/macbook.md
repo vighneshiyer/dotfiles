@@ -10,6 +10,8 @@ Don't bother updating to Tahoe.
 - System Settings -> Customize modifier keys -> Set Caps Lock to Escape
 - System Settings -> Keyboard shortcuts -> App Shortcuts -> "Find in Page..." -> Ctrl-F
 - System Settings -> Keyboard shortcuts -> App Shortcuts -> "Find..." -> Ctrl-F
+- System Settings -> Time and Date -> Use 24 hour clock on menubar
+- System Settings -> Control Center -> Don't show Wifi / Now Playing on menubar + don't show day of week
 - `sudo scutil --set HostName <desired host name>` ([make sure your hostname is fixed](https://superuser.com/questions/639691/why-does-my-network-set-my-hostname-how-can-i-stop-this))
 - `defaults write org.alacritty AppleFontSmoothing -int 0` ([improve font rendering on Alacritty](https://github.com/alacritty/alacritty/issues/7333))
 - `defaults write -g NSWindowShouldDragOnGesture -bool true` ([move windows by dragging with Cmd+Ctrl](https://nikitabobko.github.io/AeroSpace/goodies#move-by-dragging-any-part-of-the-window))
@@ -52,24 +54,8 @@ Don't bother updating to Tahoe.
   - Extensions: vim, ssh, augment, c++, tokyo night, excalidraw
 1. Install `rustup`
 1. Install `mill` ([Install script](https://mill-build.org/mill/cli/installation-ide.html#_global_installation))
-
-## Extras
-
-- [x] Figure out how to center floating windows in the current workspace
-  - Alacritty scratchpad windows
-  - https://github.com/nikitabobko/AeroSpace/discussions/633
-  - It seems the best way is to use a tiny Swift app that can be run whenever the window is detected
-  - Write a swift app in ~/.local/bin, versioned by chezmoi. It should be called by aerospace when an Alacritty scratchpad is detected. It should resize the currently focused window  to the dimensions requested and center it. Make this dynamic based on the resolution + dpi scaling of the monitor the workspace is on.
-  - This actually seems impossible, let's just not bother with it.
-  - I tried various Swift approaches, but they all failed with Alacritty, perhaps due to its decoration-free windows. Or the accessibility permissions weren't enough. Or whatever. And Raycast requires a "Pro" membership to use its window manipulation functionality. Just no more, resize these windows by hand for now until aerospace supports floating window manipulation natively.
-- [x] Firefox launch hotkeys
-- [x] Mount remote restic archives
-  - Rclone mount + restic mount for regular filesystem
-  - Direct Restic mount for cold filesystem
-- [ ] Configure Sketchybar
-  - https://nikitabobko.github.io/AeroSpace/goodies#show-aerospace-workspaces-in-sketchybar
-- [ ] Add today (start) integration into SketchyBar
-- [ ] Add timer integration into SketchyBar
+1. Configure SwiftBar
+  - `brew install swiftbar`. Launch SwiftBar. Set plugin folder to `~/.config/swiftbar` (use Cmd+Shift+Period to show hidden files in Finder).
 
 ## Caveats
 

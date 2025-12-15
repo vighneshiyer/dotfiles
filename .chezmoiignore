@@ -158,6 +158,8 @@ key.txt.age
 !.config/rclone
 !.config/rclone/**
 !.config/starship.toml
+!.config/swiftbar
+!.config/swiftbar/**
 !.gitconfig
 !.ssh
 !.ssh/**
