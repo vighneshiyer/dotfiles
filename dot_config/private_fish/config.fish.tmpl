@@ -460,9 +460,11 @@ end
 {{- end }}
 
 {{- if eq .chezmoi.fqdnHostname "Vighneshs-MacBook-Air.local" }}
+set -gx JAVA_HOME /opt/homebrew/opt/openjdk
 set -gx PATH \
   $HOME/.local/bin \
   /opt/homebrew/opt/python@3.14/libexec/bin \
+  $JAVA_HOME/bin \
   /opt/homebrew/bin \
   /opt/homebrew/sbin \
   /usr/local/bin \
