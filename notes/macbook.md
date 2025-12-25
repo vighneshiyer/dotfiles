@@ -56,6 +56,7 @@ Don't bother updating to Tahoe.
 1. Install `mill` ([Install script](https://mill-build.org/mill/cli/installation-ide.html#_global_installation))
 1. Configure SwiftBar
   - `brew install swiftbar`. Launch SwiftBar. Set plugin folder to `~/.config/swiftbar` (use Cmd+Shift+Period to show hidden files in Finder).
+1. System Settings -> Privacy & Security -> Developer Tools -> add Alacritty and Aerospace
 
 ## Caveats
 
