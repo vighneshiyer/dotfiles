@@ -36,7 +36,7 @@ set -g fish_pager_color_selected_background --background=$selection
 # Enable vi mode
 set -U fish_cursor_insert line
 set -U fish_cursor_replace_one underscore
-fish_vi_key_bindings
+set --global fish_key_bindings fish_vi_key_bindings
 
 set -U fish_greeting ""
 
