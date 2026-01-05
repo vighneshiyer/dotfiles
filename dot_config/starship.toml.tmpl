@@ -9,7 +9,12 @@ format = """[⁂ ](bright-green) $hostname$directory$character"""
 {{- else }}
 format = """[⁂](bright-green) $hostname$directory$character"""
 {{- end }}
+
+{{- if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" }}
+right_format = """$python$git_branch$git_state$cmd_duration"""
+{{- else }}
 right_format = """$git_branch$git_state$cmd_duration"""
+{{- end }}
 
 [character]
 success_symbol = '[❯](bold green)'
@@ -32,6 +37,9 @@ style = "dimmed"
 truncation_length = 2
 style = "bright-yellow"
 fish_style_pwd_dir_length = 1
+
+[python]
+format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
 
 # Disable the package module, hiding it from the prompt completely
 [package]

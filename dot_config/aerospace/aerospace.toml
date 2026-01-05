@@ -26,7 +26,7 @@ inner.horizontal = 0
 inner.vertical = 0
 
 [mode.main.binding]
-cmd-enter = 'exec-and-forget alacritty msg create-window || alacritty'
+cmd-enter = 'exec-and-forget alacritty msg create-window --working-directory "$HOME/home" || alacritty --working-directory "$HOME/home"'
 cmd-shift-enter = 'exec-and-forget alacritty msg create-window --working-directory "$(cat /tmp/whereami)" || alacritty --working-directory "$(cat /tmp/whereami)"'
 cmd-b = 'exec-and-forget firefox --new-window'
 cmd-shift-b = 'exec-and-forget firefox --private-window'

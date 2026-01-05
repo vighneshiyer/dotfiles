@@ -15,6 +15,9 @@ lines = 70
 {{- if eq .chezmoi.fqdnHostname "Vighneshs-MacBook-Air.local" }}
 x = 5
 y = 0
+{{- else if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" }}
+x = 5
+y = 5
 {{- else }}
 x = 0
 y = 0
