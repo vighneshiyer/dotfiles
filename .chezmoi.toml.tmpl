@@ -7,3 +7,8 @@ encryption = "age"
 [cd]
     command = "/opt/homebrew/bin/fish"
 {{- end }}
+
+{{- if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" }}
+[cd]
+    command = "/opt/homebrew/bin/fish"
+{{- end }}

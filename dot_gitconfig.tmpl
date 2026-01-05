@@ -1,7 +1,9 @@
 [user]
 	name = Vighnesh Iyer
 {{- if eq .chezmoi.fqdnHostname "dost" }}
-        email = vighnesh.iyer@dosteda.com
+  email = vighnesh.iyer@dosteda.com
+{{- else if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" }}
+  email = vighnesh@pax.markets
 {{- else }}
 	email = vighnesh.iyer@gmail.com
 {{- end }}

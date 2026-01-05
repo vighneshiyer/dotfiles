@@ -168,3 +168,24 @@ key.txt.age
 !Library/Application Support/Code/User/settings.json
 !Library/Application Support/Code/User/keybindings.json
 {{- end }}
+
+{{- if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" }}
+!.config
+!.config/aerospace
+!.config/aerospace/**
+!.config/alacritty
+!.config/alacritty/**
+!.config/bat
+!.config/bat/**
+!.config/fish
+!.config/fish/**
+!.config/nvim
+!.config/nvim/**
+!.config/starship.toml
+!.config/swiftbar
+!.config/swiftbar/**
+!.gitconfig
+!.ssh
+!.ssh/**
+!.tmux.conf
+{{- end }}

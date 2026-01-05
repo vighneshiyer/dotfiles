@@ -494,3 +494,37 @@ set REPOS $HOME/home $HOME/.local/share/chezmoi
 alias check 'check_git_repos $REPOS'
 alias sync 'sync_git_repos $REPOS'
 {{- end }}
+
+{{- if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" }}
+set -gx JAVA_HOME /opt/homebrew/opt/openjdk
+set -gx PATH \
+  $HOME/.local/bin \
+  /opt/homebrew/opt/python@3.14/libexec/bin \
+  $JAVA_HOME/bin \
+  /opt/homebrew/bin \
+  /opt/homebrew/sbin \
+  /usr/local/bin \
+  /usr/bin \
+  /bin \
+  /usr/sbin \
+  /sbin
+starship init fish | source
+function cd
+  if test (count $argv) -eq 0
+    # If no arguments are provided, change to a custom directory
+    builtin cd /Users/vighnesh/home
+  else
+    # Otherwise, use the default behavior of cd with the provided arguments
+    builtin cd $argv
+  end
+end
+alias push 'git add . && git commit -m "update" && git push'
+function dostuff --on-event fish_prompt
+    pwd > /tmp/whereami
+end
+source $HOME/.cargo/env.fish
+
+set REPOS $HOME/home $HOME/.local/share/chezmoi
+alias check 'check_git_repos $REPOS'
+alias sync 'sync_git_repos $REPOS'
+{{- end }}
