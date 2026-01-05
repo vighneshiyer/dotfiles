@@ -188,6 +188,9 @@ key.txt.age
 !.ssh
 !.ssh/**
 !.tmux.conf
+!Library/
+!Library/Application Support/
+!Library/Application Support/Code
 !Library/Application Support/Code/User
 !Library/Application Support/Code/User/settings.json
 !Library/Application Support/Code/User/keybindings.json
