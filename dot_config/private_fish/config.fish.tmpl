@@ -533,6 +533,8 @@ alias s 'start --dir $HOME/home/pax-notes/tasks'
 
 function pax
   set -gx PAXREPO $HOME/home/pax
+  set -gx AWSHDK (readlink -f $HOME/home/aws-fpga/hdk)
+  set -gx AWSSDK (readlink -f $HOME/home/aws-fpga/sdk)
   cd $HOME/home/pax && source .venv/bin/activate.fish
 end
 {{- end }}
