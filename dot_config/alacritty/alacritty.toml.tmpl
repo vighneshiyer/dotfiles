@@ -116,3 +116,10 @@ shell = "/opt/homebrew/bin/fish"
 {{- if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" }}
 shell = "/opt/homebrew/bin/fish"
 {{- end }}
+
+{{- if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" }}
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001B\r"
+{{- end }}

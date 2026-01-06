@@ -20,5 +20,50 @@
         "key": "space e",
         "command": "workbench.action.toggleSidebarVisibility",
         "when": "filesExplorerFocus"
+    },
+    {
+        "key": "space space",
+        "command": "workbench.action.quickOpen",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space f",
+        "command": "workbench.action.findInFiles",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space f",
+        "command": "workbench.action.toggleSidebarVisibility",
+        "when": "searchViewletFocus"
+    },
+    {
+        "key": "space s",
+        "command": "workbench.action.gotoSymbol",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space shift+s",
+        "command": "workbench.action.showAllSymbols",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space /",
+        "command": "editor.action.commentLine",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space q",
+        "command": "workbench.action.closeActiveEditor",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "alt+h",
+        "command": "workbench.action.moveEditorLeftInGroup",
+        "when": "vim.mode == 'Normal' && editorTextFocus"
+    },
+    {
+        "key": "alt+l",
+        "command": "workbench.action.moveEditorRightInGroup",
+        "when": "vim.mode == 'Normal' && editorTextFocus"
     }
 ]

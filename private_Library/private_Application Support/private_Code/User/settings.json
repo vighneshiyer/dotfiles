@@ -2,7 +2,7 @@
     "editor.accessibilitySupport": "off",
     "github.copilot.nextEditSuggestions.enabled": true,
     "window.commandCenter": true,
-    "keyboard.dispatch": "keyCode",
+    //"keyboard.dispatch": "keyCode",
     // Enable auto-detection of indentation (tab size and type)
     "editor.detectIndentation": true,
     // Set default tab size if detection fails
@@ -10,14 +10,6 @@
     "editor.insertSpaces": true,
     "vim.leader": "<space>",
     "vim.normalModeKeyBindingsNonRecursive": [
-        {
-            "before": ["<leader>", "<leader>"],
-            "commands": ["workbench.action.quickOpen"]
-        },
-        {
-            "before": ["<leader>", "f", "f"],
-            "commands": ["workbench.action.quickOpen"]
-        },
         {
             "before": ["<leader>", "f", "g"],
             "commands": ["workbench.action.findInFiles"]
@@ -69,7 +61,7 @@
         {
             "before": ["L"],
             "commands": ["workbench.action.nextEditor"],
-        }
+        },
     ],
     "vim.insertModeKeyBindings": [
         {
