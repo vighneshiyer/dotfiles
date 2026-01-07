@@ -8,8 +8,14 @@
     // Set default tab size if detection fails
     "editor.tabSize": 2,
     "editor.insertSpaces": true,
+    "editor.occurrencesHighlight": "multiFile",
     "vim.leader": "<space>",
+    "vim.hlsearch": true,
     "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": ["<Esc>"],
+            "commands": [":nohl", "<Esc>"]
+        },
         {
             "before": ["<leader>", "f", "g"],
             "commands": ["workbench.action.findInFiles"]
