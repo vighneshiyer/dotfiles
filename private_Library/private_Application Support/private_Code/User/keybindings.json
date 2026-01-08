@@ -9,6 +9,16 @@
         "command": "workbench.action.focusRightGroup",
         "when": "editorTextFocus"
     },
+    {
+        "key": "ctrl+j",
+        "command": "workbench.action.focusBelowGroup",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+k",
+        "command": "workbench.action.focusAboveGroup",
+        "when": "editorTextFocus"
+    },
     // When in Normal mode and in the editor, <leader>e focuses the Explorer
     {
         "key": "space e",
