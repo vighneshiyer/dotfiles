@@ -6,7 +6,8 @@
     // Enable auto-detection of indentation (tab size and type)
     "editor.detectIndentation": true,
     // Set default tab size if detection fails
-    "editor.tabSize": 2,
+    "editor.tabSize": 4,
+    "files.trimTrailingWhitespace": false,
     "editor.insertSpaces": true,
     "editor.occurrencesHighlight": "multiFile",
     "vim.leader": "<space>",
