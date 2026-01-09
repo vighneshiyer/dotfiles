@@ -537,4 +537,10 @@ function pax
   set -gx AWSSDK (readlink -f $HOME/home/aws-fpga/sdk)
   cd $HOME/home/pax && source .venv/bin/activate.fish
 end
+
+if set -q SSH_CLIENT; or set -q SSH_TTY
+    if test (pwd) = $HOME
+        cd $HOME/home
+    end
+end
 {{- end }}
