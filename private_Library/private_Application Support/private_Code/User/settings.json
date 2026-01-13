@@ -10,6 +10,7 @@
     "files.trimTrailingWhitespace": false,
     "editor.insertSpaces": true,
     "editor.occurrencesHighlight": "multiFile",
+    "editor.formatOnSave": false,
     "vim.leader": "<space>",
     "vim.hlsearch": true,
     "vim.normalModeKeyBindingsNonRecursive": [

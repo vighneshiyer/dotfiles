@@ -534,7 +534,7 @@ function pax
   set -gx PAXREPO $HOME/home/pax
   set -gx AWSHDK (readlink -f $HOME/home/aws-fpga/hdk)
   set -gx AWSSDK (readlink -f $HOME/home/aws-fpga/sdk)
-  cd $HOME/home/pax && source .venv/bin/activate.fish
+  cd $HOME/home/pax
 end
 
 if set -q SSH_CLIENT; or set -q SSH_TTY
