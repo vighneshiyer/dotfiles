@@ -530,18 +530,13 @@ alias sync 'sync_git_repos $REPOS'
 alias t 'today --dir $HOME/home/pax-notes/tasks'
 alias s 'start --dir $HOME/home/pax-notes/tasks'
 
-function pax
-  set -gx PAXREPO $HOME/home/pax
-  set -gx AWSHDK (readlink -f $HOME/home/aws-fpga/hdk)
-  set -gx AWSSDK (readlink -f $HOME/home/aws-fpga/sdk)
-  cd $HOME/home/pax
-end
-
 if set -q SSH_CLIENT; or set -q SSH_TTY
     if test (pwd) = $HOME
         cd $HOME/home
     end
 end
 
+set -gx AWSHDK (readlink -f $HOME/home/aws-fpga/hdk)
+set -gx AWSSDK (readlink -f $HOME/home/aws-fpga/sdk)
 alias p 'pixi shell'
 {{- end }}
