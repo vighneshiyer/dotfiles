@@ -123,13 +123,6 @@ key.txt.age
 !.ssh/**
 {{- end }}
 
-{{ if eq .chezmoi.os "linux" }}
-!.local
-!.local/bin
-!.local/bin/btop
-!.local/bin/zoxide
-{{- end }}
-
 {{- if eq .chezmoi.fqdnHostname "dost" }}
 !.gitconfig
 !.tmux.conf
@@ -197,4 +190,17 @@ key.txt.age
 !Library/Application Support/Code/User
 !Library/Application Support/Code/User/settings.json
 !Library/Application Support/Code/User/keybindings.json
+{{- end }}
+
+{{- if (and (eq .chezmoi.os "linux") (eq .chezmoi.username "ubuntu")) }}
+!.config
+!.config/bat
+!.config/bat/**
+!.config/fish
+!.config/fish/**
+!.config/nvim
+!.config/nvim/**
+!.config/starship.toml
+!.gitconfig
+!.tmux.conf
 {{- end }}
