@@ -21,20 +21,10 @@ bind R source-file ~/.tmux.conf
 bind-key -T copy-mode-vi y send-keys -X copy-pipe "xclip -i -selection clipboard"
 bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "xclip -i -selection clipboard"
 
-# Per Nvim's suggestion
-#
-# - Put this in your ~/.tmux.conf and replace XXX by your $TERM outside of tmux:
-#     set-option -sa terminal-overrides ',XXX:RGB'
-# - For older tmux versions use this instead:
-#     set-option -ga terminal-overrides ',XXX:Tc'
-# - (tmux 1.9+ only) Set `focus-events` in ~/.tmux.conf:
-#     set-option -g focus-events on
-set-option -sa terminal-overrides ',alacritty:RGB'
-set-option -g default-terminal "screen-256color"
+# https://gist.github.com/andersevenrud/015e61af2fd264371032763d4ed965b6
+set-option -g default-terminal "alacritty"
+set-option -sg terminal-overrides ",*:RGB"
 set-option -g focus-events on
-
-#set -g default-terminal "screen-256color"
-#set-option -ga terminal-overrides ",xterm-256color:Tc"
 
 {{- if eq .chezmoi.fqdnHostname "vighnesh-t480" }}
 set-option -g default-shell /usr/bin/fish
@@ -50,6 +40,10 @@ set-option -g default-shell /home/vighnesh/sysroot/bin/fish
 
 {{- if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" }}
 set-option -g default-shell "/opt/homebrew/bin/fish"
+{{- end }}
+
+{{- if (and (eq .chezmoi.os "linux") (eq .chezmoi.username "ubuntu"))  }}
+set-option -g default-shell "/usr/local/bin/fish"
 {{- end }}
 
 # Status bar
