@@ -1,7 +1,10 @@
+{{- if (and (eq .chezmoi.os "linux") (eq .chezmoi.username "ubuntu")) }}
+{{- else }}
 encryption = "age"
 [age]
     identity = "~/.config/chezmoi/key.txt"
     recipient = "age196lu2dhl3vaqu49vrrgyx0epvjppwk4u3ehe2syraqa4mc6t6ews8qf62d"
+{{- end }}
 
 {{- if eq .chezmoi.fqdnHostname "Vighneshs-MacBook-Air.local" }}
 [cd]
