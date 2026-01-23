@@ -4,6 +4,8 @@
   email = vighnesh.iyer@dosteda.com
 {{- else if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" }}
   email = vighnesh@pax.markets
+{{- else if (and (eq .chezmoi.os "linux") (eq .chezmoi.username "ubuntu")) }}
+  email = vighnesh@pax.markets
 {{- else }}
 	email = vighnesh.iyer@gmail.com
 {{- end }}

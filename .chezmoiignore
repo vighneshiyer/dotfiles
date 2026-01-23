@@ -15,6 +15,7 @@
 .ssh/**
 .tmux.conf
 Library
+setup.sh
 
 # These should always be ignored
 notes

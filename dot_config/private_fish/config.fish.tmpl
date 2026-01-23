@@ -540,3 +540,20 @@ set -gx AWSHDK (readlink -f $HOME/home/aws-fpga/hdk)
 set -gx AWSSDK (readlink -f $HOME/home/aws-fpga/sdk)
 alias p 'pixi shell'
 {{- end }}
+
+{{- if (and (eq .chezmoi.os "linux") (eq .chezmoi.username "ubuntu")) }}
+set -gx AWSHDK (readlink -f $HOME/repos/aws/aws-fpga/hdk)
+set -gx AWSSDK (readlink -f $HOME/repos/aws/aws-fpga/sdk)
+set -gx AWS_FPGA_REPO_DIR $HOME/repos/aws/aws-fpga
+set -gx PATH \
+  $AWS_FPGA_REPO_DIR/sdk/userspace/utils \
+  /opt/Xilinx/2025.1/Vivado/bin \
+  $HOME/.pixi/bin \
+  /usr/local/bin \
+  /usr/bin \
+  /bin \
+  /usr/sbin \
+  /sbin
+starship init fish | source
+eval (pixi completion --shell fish)
+{{- end }}

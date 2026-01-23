@@ -12,3 +12,8 @@ encryption = "age"
 [cd]
     command = "/opt/homebrew/bin/fish"
 {{- end }}
+
+{{- if (and (eq .chezmoi.os "linux") (eq .chezmoi.username "ubuntu")) }}
+[cd]
+    command = "/usr/local/bin/fish"
+{{- end }}
