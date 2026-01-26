@@ -539,6 +539,7 @@ end
 set -gx AWSHDK (readlink -f $HOME/home/aws-fpga/hdk)
 set -gx AWSSDK (readlink -f $HOME/home/aws-fpga/sdk)
 alias p 'pixi shell'
+alias diff_with_main "git diff HEAD main -- . ':(exclude)gen' ':(exclude)sw/canned-test-data'"
 {{- end }}
 
 {{- if (and (eq .chezmoi.os "linux") (eq .chezmoi.username "ubuntu")) }}

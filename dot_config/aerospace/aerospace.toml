@@ -95,6 +95,11 @@ exec-and-forget aerospace-scratchpad show alacritty -F window-title='terminal-sc
              || alacritty -t 'terminal-scratchpad' -o window.dimensions.columns=150 window.dimensions.lines=70
 """
 
+cmd-n = """
+exec-and-forget aerospace-scratchpad show alacritty -F window-title='notes-scratchpad' \
+             || alacritty -t 'notes-scratchpad' -o window.dimensions.columns=150 window.dimensions.lines=70
+"""
+
 cmd-a = """
 exec-and-forget aerospace-scratchpad show alacritty -F window-title='python-scratchpad' \
              || alacritty -t 'python-scratchpad' -o window.dimensions.columns=150 window.dimensions.lines=70 --command /opt/homebrew/bin/python3
@@ -111,6 +116,11 @@ exec-and-forget aerospace-scratchpad show Spotify \
 [[on-window-detected]]
     if.app-name-regex-substring = 'alacritty'
     if.window-title-regex-substring = 'terminal-scratchpad'
+    run = 'layout floating'
+
+[[on-window-detected]]
+    if.app-name-regex-substring = 'alacritty'
+    if.window-title-regex-substring = 'notes-scratchpad'
     run = 'layout floating'
 
 [[on-window-detected]]
