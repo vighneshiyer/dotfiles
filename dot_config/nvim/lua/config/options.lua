@@ -26,12 +26,13 @@
 -- )
 -- Use bigger unicode characters to separate windows
 vim.opt.fillchars = {
-  horiz = "▬", -- normally '─', bold "━"
-  horizup = "█", -- normally '┴', bold "┻"
-  horizdown = "█", -- normally '┬', bold "┳"
-  vert = "█", -- normally '│'
-  vertleft = "█", -- normally '┤', bold "┫"
-  vertright = "█", -- normally '├', bold "┣"
-  verthoriz = "█", -- normally '┼', bold "╋"
+	horiz = "▬", -- normally '─', bold "━"
+	horizup = "█", -- normally '┴', bold "┻"
+	horizdown = "█", -- normally '┬', bold "┳"
+	vert = "█", -- normally '│'
+	vertleft = "█", -- normally '┤', bold "┫"
+	vertright = "█", -- normally '├', bold "┣"
+	verthoriz = "█", -- normally '┼', bold "╋"
 }
 vim.g.snacks_animate = false
+vim.opt.laststatus = 2 -- statusline per window (creates horizontal separation)
