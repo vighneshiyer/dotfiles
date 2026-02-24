@@ -1,0 +1,106 @@
+{{- if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" }}
+# Code Style
+
+## Comments
+
+- Do not add any comments to struct / protobuf message declarations or fields. You can add comments about implementation subtleties, but keep them brief.
+- In general avoid comments unless they are saying something non-obvious
+- If you're going to create comments for a function in general, place them *inside* the function body, not above the function prototype.
+
+## Indentation
+
+- Use 4 spaces for indentation
+- In indented code blocks, for all languages, use spaces to pad empty lines to the indentation level of the surrounding code. Example:
+
+```python
+class LPU:
+    def eval_kernel( self ):
+        self.audit()
+        assert order.data.origin in [ common.Origin.EXOGENOUS, common.Origin.LAMBDA ]
+        side_enum = order.data.side
+        
+        book = self.books[order.data.symbol_id]
+```
+
+Note the empty line after `side_enum = order.data.side` which is padded with spaces to the indentation level of the surrounding code.
+
+## Spacing in Argument Lists
+
+- Use spaces around argument lists for function definitions, arguments in function invocations, and list literals. Examples in Python and Rust:
+
+```python
+# spaces around argument lists
+def run_sw_me( self, *, msgs_fm_hw_to_sw ):
+# spaces around arguments when calling a function
+rsp = self.fns.process_level_refill( level_refill=level_refill, book=book )
+self.books = defaultdict( lambda: SortedDefaultDictBook( capacity=self.config.NUM_LEVELS ) )
+# spaces around list literals and comprehensions
+im_tif  = order.data.tif in [ common.TimeInForce.IOC, common.TimeInForce.FOK ]
+ex_tos = [ to for to in tos if to.qty > 0 ]
+```
+
+```rust
+// spaces around argument lists and struct instantiations
+fn min_max_pred_met( v: i64, min_v: i64, max_v: i64 ) -> bool {
+HWDatapathOrder { meta, data: hw_order }
+// spaces around arguments when calling a function
+let ticks_good = min_max_pred_met( ticks_test_value, predicate.min_ticks, predicate.max_ticks );
+assert!( new.data.event_level_begin_qty == 0 );
+// spaces around array literals / types
+type LambdaRow = [ LambdaProgramEntry; NUM_LAMBDAS ];
+```
+
+## Visual Alignment
+
+- To the best of your ability, try to indent syntax to maintain good visual alignment with the surrounding code. Examples in Python and Rust:
+
+```python
+use_agg = order.meta.agg_recirc or ( first_pass and not cancels )
+use_clt = order.meta.clt_recirc or ( first_pass and     cancels )
+next_qty_values = {
+    common.LrQtyType.ENTIRE:      0,
+    common.LrQtyType.PERMANENT:   l.order.qty,
+    common.LrQtyType.MM_CX_PREV:  l.order.qty,
+}
+```
+
+```rust
+triggered_lambdas.sort_by(|a, b|
+    if a.order.qty < 0 && b.order.qty <  0 { std::cmp::Ordering::Equal   }
+    else if a.order.qty < 0                { std::cmp::Ordering::Less    }
+    else if b.order.qty < 0                { std::cmp::Ordering::Greater }
+    else                                   { std::cmp::Ordering::Equal   }
+);
+match wire_inp_msg {
+    ToFpgaMsg::HWOrder(msg)               => { send_to_hw_hw_order_msg          ( &msg ); }
+    ToFpgaMsg::MatchRequest(msg)          => { send_to_hw_match_request         ( &msg ); }
+    ToFpgaMsg::OebConfigureInit(msg)      => { send_to_hw_oeb_cfg_init          ( &msg ); }
+    ToFpgaMsg::OebConfigureSplitQty(msg)  => { send_to_hw_oeb_cfg_split_qty     ( &msg ); }
+}
+```
+
+## Chained ifs
+
+- if, else-if, and else statements should be aligned at the same indentation level, for all languages. Example:
+
+```rust
+if symbol_id < NUM_BOOKS {
+    self.split_qtys[symbol_id] = cfg.split_qty;
+}
+else {
+    log::error!("err");
+}
+```
+
+- Always use braces even for a single-line conditional. In Verilog, always use `begin` / `end`.
+
+## String Literals
+
+- For Python, prefer single quotes over double quotes for string literals
+
+## Verilog Implementation Notes
+
+- Do not use `always_ff` to infer a register. Instead explicitly instantiate a Flop.sv or EnableFlop.sv (see `hw/src`).
+- Avoid the usage of `always_comb` unless it is to set just a single field or two in a struct, leaving the other fields unchanged. You can also use `always_comb` for complicated state machine control logic. But in general, prefer to use plain logic and ternary operators.
+- Use `inp_` and `out_` as prefixes for module port signals.
+{{- end }}
