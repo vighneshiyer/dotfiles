@@ -62,9 +62,9 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Disable autoformat for Python
+-- Disable autoformat for Python and Rust
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = "python",
+  pattern = { "python", "rust" },
   callback = function()
     vim.b.autoformat = false
   end,
