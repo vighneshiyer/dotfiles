@@ -4,7 +4,6 @@ return {
     opts = {
       ensure_installed = {
         "stylua",
-        "rust-analyzer",
         "lua-language-server",
         "marksman",
         "tinymist",
