@@ -9,6 +9,7 @@
       "Glob",
       "Grep",
       "LS",
+      "WebFetch",
       "Bash(git log:*)",
       "Bash(git diff:*)",
       "Bash(git status:*)",
