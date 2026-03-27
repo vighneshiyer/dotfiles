@@ -1,8 +1,4 @@
 {
-  "model": "opus[1m]",
-  "enabledPlugins": {
-    "rust-analyzer-lsp@claude-plugins-official": true
-  },
   "permissions": {
     "allowedTools": [
       "Read",
@@ -107,5 +103,9 @@
       "Bash(more:*)",
       "Bash(xargs:*)"
     ]
+  },
+  "model": "opus[1m]",
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true
   }
 }
