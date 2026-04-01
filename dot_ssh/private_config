@@ -137,3 +137,8 @@ Host pax-macbook
   HostName vighneshs-macbook-pro
   User vighnesh
   IdentityFile ~/.ssh/id_ed25519
+
+Host oracle
+  HostName 170.9.25.220
+  User ubuntu
+  IdentityFile ~/.ssh/oracle.key
