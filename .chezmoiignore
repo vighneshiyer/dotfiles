@@ -3,6 +3,8 @@
 .Xresources
 .bin
 .bin/**
+.claude
+.claude/**
 .config
 .config/**
 .gitconfig
@@ -167,6 +169,11 @@ key.txt.age
 {{- end }}
 
 {{- if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" }}
+!.claude
+!.claude/CLAUDE.md
+!.claude/skills
+!.claude/skills/format-pax
+!.claude/skills/format-pax/**
 !.config
 !.config/aerospace
 !.config/aerospace/**

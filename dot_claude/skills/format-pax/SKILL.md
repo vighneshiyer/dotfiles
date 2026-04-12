@@ -1,4 +1,13 @@
-{{- if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" }}
+---
+name: format-pax
+description: Format the code modified / added in this PR to adhere to formatting guidelines for pax. Only use this skill when asked to do so explicitly.
+---
+
+When asked to format code according to the PAX style, do the following:
+
+1. Review the full, exact, diff of this PR using `git diff main`.
+2. Rewrite the code according to the formatting rules below.
+
 # Code Style
 
 ## Comments
@@ -85,4 +94,3 @@ else {
 - Do not use `always_ff`. Explicitly instantiate `Flop.sv` or `EnableFlop.sv` from `hw/src`.
 - Avoid `always_comb` unless setting one or two struct fields or for complex state machine control logic. Prefer plain `logic` with ternary operators.
 - Prefix module ports: `inp_`, `out_`.
-{{- end }}
