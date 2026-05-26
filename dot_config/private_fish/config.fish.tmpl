@@ -543,7 +543,7 @@ alias p 'pixi shell'
 alias diff_with_main "git diff main HEAD -- . ':(exclude)gen' ':(exclude)sw/canned-test-data'"
 {{- end }}
 
-{{- if (and (eq .chezmoi.os "linux") (eq .chezmoi.username "ubuntu") (ne .chezmoi.hostname "claw")) }}
+{{- if (and (eq .chezmoi.os "linux") (eq .chezmoi.username "ubuntu") (ne .chezmoi.hostname "hermes")) }}
 set -gx AWSHDK (readlink -f $HOME/repos/aws/aws-fpga/hdk)
 set -gx AWSSDK (readlink -f $HOME/repos/aws/aws-fpga/sdk)
 set -gx AWS_FPGA_REPO_DIR $HOME/repos/aws/aws-fpga
@@ -561,7 +561,7 @@ eval (pixi completion --shell fish)
 set -gx TERM alacritty
 {{- end }}
 
-{{- if (and (eq .chezmoi.os "linux") (eq .chezmoi.username "ubuntu") (eq .chezmoi.hostname "claw")) }}
+{{- if (and (eq .chezmoi.os "linux") (eq .chezmoi.username "ubuntu") (eq .chezmoi.hostname "hermes")) }}
 set -gx PATH \
   $HOME/.local/bin \
   /usr/local/bin \
