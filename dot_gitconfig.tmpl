@@ -1,12 +1,18 @@
 [user]
+{{- if eq .chezmoi.username "hermes" }}
+	name = hermes
+	email = hermes@vighneshiyer.com
+{{- else if eq .chezmoi.fqdnHostname "dost" }}
 	name = Vighnesh Iyer
-{{- if eq .chezmoi.fqdnHostname "dost" }}
   email = vighnesh.iyer@dosteda.com
 {{- else if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" }}
+	name = Vighnesh Iyer
   email = vighnesh@pax.markets
 {{- else if (and (eq .chezmoi.os "linux") (eq .chezmoi.username "ubuntu")) }}
+	name = Vighnesh Iyer
   email = vighnesh@pax.markets
 {{- else }}
+	name = Vighnesh Iyer
 	email = vighnesh.iyer@gmail.com
 {{- end }}
 [core]
