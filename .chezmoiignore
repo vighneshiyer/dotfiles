@@ -214,3 +214,16 @@ key.txt.age
 !.gitconfig
 !.tmux.conf
 {{- end }}
+
+{{- if (eq .chezmoi.username "hermes") }}
+!.config
+!.config/bat
+!.config/bat/**
+!.config/fish
+!.config/fish/**
+!.config/nvim
+!.config/nvim/**
+!.config/starship.toml
+!.gitconfig
+!.tmux.conf
+{{- end }}

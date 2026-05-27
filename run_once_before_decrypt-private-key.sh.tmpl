@@ -1,5 +1,5 @@
 #!/bin/sh
-{{- if (and (eq .chezmoi.os "linux") (eq .chezmoi.username "ubuntu")) }}
+{{- if (or (and (eq .chezmoi.os "linux") (eq .chezmoi.username "ubuntu")) (eq .chezmoi.username "hermes")) }}
 {{- else }}
 if [ ! -f "${HOME}/.config/chezmoi/key.txt" ]; then
     mkdir -p "${HOME}/.config/chezmoi"

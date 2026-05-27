@@ -573,3 +573,16 @@ set -gx TERM alacritty
 set -gx COLORTERM truecolor
 starship init fish | source
 {{- end }}
+
+{{- if (eq .chezmoi.username "hermes") }}
+set -gx PATH \
+  $HOME/.local/bin \
+  /usr/local/bin \
+  /usr/bin \
+  /bin \
+  /usr/sbin \
+  /sbin
+set -gx TERM alacritty
+set -gx COLORTERM truecolor
+starship init fish | source
+{{- end }}
