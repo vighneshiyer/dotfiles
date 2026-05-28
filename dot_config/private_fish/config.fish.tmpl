@@ -585,5 +585,6 @@ set -gx PATH \
 set -gx LANG en_US.UTF-8
 set -gx TERM alacritty
 set -gx COLORTERM truecolor
+set -gx XDG_RUNTIME_DIR /run/user/(id -u)
 starship init fish | source
 {{- end }}
