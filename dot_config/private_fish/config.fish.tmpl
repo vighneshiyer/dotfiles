@@ -482,8 +482,8 @@ function cd
   end
 end
 alias push 'git add . && git commit -m "update" && git push'
-alias t 'today --dir $HOME/home/secretary/workspace/tasks/'
-alias s 'start --dir $HOME/home/secretary/workspace/tasks/'
+alias t 'today --dir $HOME/home/secretary/workspace/tasks/ --ignore AGENTS.md'
+alias s 'start --dir $HOME/home/secretary/workspace/tasks/ --ignore AGENTS.md'
 function dostuff --on-event fish_prompt
     pwd > /tmp/whereami
 end
