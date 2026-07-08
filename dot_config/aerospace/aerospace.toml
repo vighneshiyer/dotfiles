@@ -5,6 +5,15 @@
 # But the feature is very helpful.
 # Normalizations eliminate all sorts of weird tree configurations that don't make sense.
 # Give normalizations a chance and enable them back.
+
+# config-version = 2 requires persistent workspaces to be declared explicitly.
+# In v1 these were inferred from the `workspace N` keybindings below; this
+# reproduces that set (0-10). The 'scratch' workspace is intentionally omitted
+# so it stays hidden when empty. See:
+# https://nikitabobko.github.io/AeroSpace/guide#config-version
+config-version = 2
+persistent-workspaces = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+
 enable-normalization-flatten-containers = false
 enable-normalization-opposite-orientation-for-nested-containers = false
 
@@ -15,10 +24,6 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 after-startup-command = [
   'exec-and-forget borders active_color=0xff7aa2f7 inactive_color=0x00000000 width=7.0',
   'exec-and-forget /Applications/SwiftBar.app/Contents/MacOS/SwiftBar'
-]
-
-exec-on-workspace-change = ["/opt/homebrew/bin/fish", "-c",
-  "aerospace-scratchpad hook pull-window $AEROSPACE_PREV_WORKSPACE $AEROSPACE_FOCUSED_WORKSPACE"
 ]
 
 [gaps]
@@ -90,25 +95,13 @@ cmd-r = 'mode resize'
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
 cmd-m = 'move-workspace-to-monitor --wrap-around next'
 
-cmd-u = """
-exec-and-forget aerospace-scratchpad show alacritty -F window-title='terminal-scratchpad' \
-             || alacritty -t 'terminal-scratchpad' -o window.dimensions.columns=150 window.dimensions.lines=70
-"""
+cmd-u = 'exec-and-forget ~/.config/aerospace/scratchpad.sh alacritty terminal-scratchpad alacritty -t terminal-scratchpad -o window.dimensions.columns=150 window.dimensions.lines=70'
 
-cmd-n = """
-exec-and-forget aerospace-scratchpad show alacritty -F window-title='notes-scratchpad' \
-             || alacritty -t 'notes-scratchpad' -o window.dimensions.columns=150 window.dimensions.lines=70
-"""
+cmd-n = 'exec-and-forget ~/.config/aerospace/scratchpad.sh alacritty notes-scratchpad alacritty -t notes-scratchpad -o window.dimensions.columns=150 window.dimensions.lines=70'
 
-cmd-a = """
-exec-and-forget aerospace-scratchpad show alacritty -F window-title='python-scratchpad' \
-             || alacritty -t 'python-scratchpad' -o window.dimensions.columns=150 window.dimensions.lines=70 --command /opt/homebrew/bin/python3
-"""
+cmd-a = 'exec-and-forget ~/.config/aerospace/scratchpad.sh alacritty python-scratchpad alacritty -t python-scratchpad -o window.dimensions.columns=150 window.dimensions.lines=70 --command /opt/homebrew/bin/python3'
 
-cmd-s = """
-exec-and-forget aerospace-scratchpad show Spotify \
-             || ./Applications/Spotify.app/Contents/MacOS/Spotify
-"""
+cmd-s = 'exec-and-forget ~/.config/aerospace/scratchpad.sh Spotify "" open -a Spotify'
 
 # TODO: figure out how to center these floating windows in the current workspace
 # https://github.com/nikitabobko/AeroSpace/discussions/633
