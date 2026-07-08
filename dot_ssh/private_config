@@ -133,6 +133,11 @@ Host dost
   User vighnesh
   IdentityFile ~/.ssh/dost_id_ed25519
 
+Host z16
+  HostName vighnesh-z16
+  User vighnesh
+  IdentityFile ~/.ssh/id_ed25519
+
 Host pax-macbook
   HostName vighneshs-macbook-pro
   User vighnesh
