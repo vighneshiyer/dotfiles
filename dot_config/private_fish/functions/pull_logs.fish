@@ -11,6 +11,6 @@ function pull_logs --description "Pull reports and scripts from an S3 bitstream-
     mkdir -p $dest/reports $dest/scripts
     or return 1
 
-    aws s3 sync $s3_url/artifacts/reports $dest/reports
-    aws s3 sync $s3_url/artifacts/scripts $dest/scripts
+    aws s3 sync --profile Developer-992382479566 $s3_url/artifacts/reports $dest/reports
+    aws s3 sync --profile Developer-992382479566 $s3_url/artifacts/scripts $dest/scripts
 end
