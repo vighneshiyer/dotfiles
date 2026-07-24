@@ -541,6 +541,7 @@ set -gx AWSHDK (readlink -f $HOME/home/aws-fpga/hdk)
 set -gx AWSSDK (readlink -f $HOME/home/aws-fpga/sdk)
 alias p 'pixi shell'
 alias diff_with_main "git diff main HEAD -- . ':(exclude)gen' ':(exclude)sw/canned-test-data'"
+set -gx AWS_PROFILE Developer-992382479566
 {{- end }}
 
 {{- if (and (eq .chezmoi.os "linux") (eq .chezmoi.username "ubuntu") (ne .chezmoi.hostname "hermes")) }}
