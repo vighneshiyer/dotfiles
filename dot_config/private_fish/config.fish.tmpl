@@ -284,15 +284,17 @@ set REPOS \
     $HOME/90-notes \
     $HOME/temp/ \
     /opt/backup \
-    $HOME/70-cold/repos
+    $HOME/70-cold/repos \
+    $HOME/70-cold/repos/euphoric-hardware \
+    $HOME/home
 alias check 'check_git_repos $REPOS'
 alias sync 'sync_git_repos $REPOS'
 {{- end }}
 
 {{- if eq .chezmoi.fqdnHostname "vighnesh-t480" "vighnesh-z16" }}
 # Shared things between t480 and z16
-alias t 'today --dir $HOME/90-notes/today'
-alias s 'start --dir $HOME/90-notes/today'
+alias t 'today --dir $HOME/home/secretary/workspace/tasks'
+alias s 'start --dir $HOME/home/secretary/workspace/tasks'
 alias shot 'grim -g "$(slurp)"'
 alias dropdown 'silent alacritty --class dropdown'
 alias dropdown_arith 'silent alacritty --class arithmetic -e /usr/bin/python'
