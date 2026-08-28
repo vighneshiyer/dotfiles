@@ -283,7 +283,8 @@ set REPOS \
     $HOME/.local/share/chezmoi \
     $HOME/90-notes \
     $HOME/temp/ \
-    /opt/backup
+    /opt/backup \
+    $HOME/70-cold/repos
 alias check 'check_git_repos $REPOS'
 alias sync 'sync_git_repos $REPOS'
 {{- end }}
@@ -344,7 +345,6 @@ end
 
 alias push 'git add . && git commit -m "update" && git push'
 starship init fish | source
-zoxide init fish | source
 {{- end }}
 
 {{- if regexMatch "(a\\d+$)|(as\\d+$)|(firesim\\d+$)|(amd\\d+$)" .chezmoi.fqdnHostname }}
