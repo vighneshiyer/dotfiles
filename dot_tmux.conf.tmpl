@@ -13,13 +13,20 @@ bind-key H swap-pane -d -t left
 bind-key J swap-pane -d -t bottom
 bind-key K swap-pane -d -t top
 bind-key L swap-pane -d -t right
+## Split panes, keeping the current directory
+bind | split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
 
 unbind R
 bind R source-file ~/.tmux.conf
 
 # Copy mode
-bind-key -T copy-mode-vi y send-keys -X copy-pipe "xclip -i -selection clipboard"
-bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "xclip -i -selection clipboard"
+{{- $copyCmd := "xclip -i -selection clipboard" }}
+{{- if eq .chezmoi.os "darwin" }}
+{{- $copyCmd = "pbcopy" }}
+{{- end }}
+bind-key -T copy-mode-vi y send-keys -X copy-pipe "{{ $copyCmd }}"
+bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "{{ $copyCmd }}"
 
 # https://gist.github.com/andersevenrud/015e61af2fd264371032763d4ed965b6
 set-option -g default-terminal "alacritty"
