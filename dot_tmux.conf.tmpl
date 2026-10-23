@@ -16,6 +16,12 @@ bind-key L swap-pane -d -t right
 ## Split panes, keeping the current directory
 bind | split-window -h -c "#{pane_current_path}"
 bind - split-window -v -c "#{pane_current_path}"
+bind c new-window -c "#{pane_current_path}"
+## Resize panes with vim keys
+bind -r C-h resize-pane -L 5
+bind -r C-j resize-pane -D 5
+bind -r C-k resize-pane -U 5
+bind -r C-l resize-pane -R 5
 ## Move the current pane into another window (side by side), creating it if needed
 bind m command-prompt -p "move pane to window:" "if-shell \"tmux list-windows -F '##{window_index}' | grep -qx '%1'\" \"join-pane -h -t ':%1'\" \"break-pane -t ':%1'\""
 
@@ -27,6 +33,7 @@ bind R source-file ~/.tmux.conf
 {{- if eq .chezmoi.os "darwin" }}
 {{- $copyCmd = "pbcopy" }}
 {{- end }}
+bind-key -T copy-mode-vi v send-keys -X begin-selection
 bind-key -T copy-mode-vi y send-keys -X copy-pipe "{{ $copyCmd }}"
 bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "{{ $copyCmd }}"
 
@@ -58,6 +65,7 @@ set-option -g default-shell "/usr/local/bin/fish"
 # Status bar
 ## Start window indexing from 1
 set -g base-index 1
+set -g renumber-windows on
 set -g status-fg terminal
 set -g status-bg default
 set -g status-style bg=default
@@ -90,6 +98,8 @@ set-window-option -g mode-keys vi
 setw -g mode-keys vi
 ## Tmux shouldn't wait when PREFIX is hit for a command
 set -s escape-time 0
+## Let copy-mode yanks reach the local clipboard over SSH (OSC 52)
+set -g set-clipboard on
 # Enable mouse support
 set-option -g mouse on
 setw -g aggressive-resize on
