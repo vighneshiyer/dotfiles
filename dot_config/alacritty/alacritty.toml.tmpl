@@ -130,3 +130,11 @@ key = "Return"
 mods = "Shift"
 chars = "\u001B\r"
 {{- end }}
+
+
+{{- if eq .chezmoi.os "darwin" }}
+[[keyboard.bindings]]
+key = "D"
+mods = "Command"
+chars = "\u0006"
+{{- end }}
