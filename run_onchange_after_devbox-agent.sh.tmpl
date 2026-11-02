@@ -1,0 +1,14 @@
+{{- if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" -}}
+#!/bin/bash
+# plist hash: {{ include "private_Library/private_LaunchAgents/local.devstate.snapshot.plist.tmpl" | sha256sum }}
+set -euo pipefail
+mkdir -p "$HOME/.local/state/devstate"
+domain="gui/$(id -u)"
+launchctl bootout "$domain/local.devstate.snapshot" 2>/dev/null || true
+for _ in 1 2 3 4 5; do
+  launchctl bootstrap "$domain" "$HOME/Library/LaunchAgents/local.devstate.snapshot.plist" && exit 0
+  sleep 1
+done
+echo "devbox: could not load local.devstate.snapshot" >&2
+exit 1
+{{ end -}}

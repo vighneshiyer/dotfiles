@@ -1,0 +1,1154 @@
+#!/usr/bin/python3
+import argparse
+import gzip
+import json
+import os
+import platform
+import re
+import shlex
+import shutil
+import socket
+import subprocess
+import sys
+import time
+from datetime import datetime
+from pathlib import Path
+
+# launchd hands agents a bare PATH; homebrew tools (aerospace, tmux, docker) live outside it.
+os.environ["PATH"] = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:" + os.environ.get("PATH", "")
+# Tailscale.app's binary only behaves as a CLI when TERM is set; otherwise it tries to launch the GUI.
+os.environ.setdefault("TERM", "dumb")
+
+HOME = Path.home()
+STATE_DIR = Path(os.environ.get("DEVSTATE_DIR", HOME / ".local/state/devstate"))
+SNAP_DIR = STATE_DIR / "snapshots"
+CLAUDE_DIR = HOME / ".claude"
+NETWATCH_LOG = Path("/var/log/netwatch.log")
+RETAIN_DAYS = 14
+# The final snapshot of each boot is what you need after a crash, so it outlives the rest.
+KEEP_LAST_OF_BOOT_DAYS = 120
+SHELLS = {"fish", "zsh", "bash", "sh", "nu", "xonsh"}
+TERMINAL_APPS = {"alacritty"}
+
+COLOR = False
+
+
+def style(code, s):
+    return f"\033[{code}m{s}\033[0m" if COLOR else s
+
+
+def bold(s):
+    return style("1", s)
+
+
+def dim(s):
+    return style("2", s)
+
+
+def red(s):
+    return style("31", s)
+
+
+def green(s):
+    return style("32", s)
+
+
+def yellow(s):
+    return style("33", s)
+
+
+def cyan(s):
+    return style("36", s)
+
+
+def run(cmd, timeout=5):
+    try:
+        return subprocess.run(cmd, capture_output=True, text=True, timeout=timeout).stdout
+    except (OSError, subprocess.SubprocessError):
+        return ""
+
+
+def run_json(cmd, timeout=5):
+    try:
+        return json.loads(run(cmd, timeout))
+    except ValueError:
+        return None
+
+
+def cmd_name(args):
+    return os.path.basename((args or "").split(" ", 1)[0]).lstrip("-")
+
+
+def tilde(path):
+    if not path:
+        return "?"
+    home = str(HOME)
+    return "~" + path[len(home):] if path == home or path.startswith(home + "/") else path
+
+
+def trunc(s, n):
+    s = " ".join((s or "").split())
+    return s if len(s) <= n else s[: n - 1] + "…"
+
+
+def fmt_ts(ts, fmt="%a %b %d %H:%M"):
+    return datetime.fromtimestamp(ts).strftime(fmt) if ts else "?"
+
+
+def ago(seconds):
+    if seconds is None:
+        return "?"
+    seconds = int(max(0, seconds))
+    for unit, size in (("d", 86400), ("h", 3600), ("m", 60)):
+        if seconds >= size:
+            major, rest = divmod(seconds, size)
+            minor = {"d": ("h", 3600), "h": ("m", 60)}.get(unit)
+            if minor and rest >= minor[1]:
+                return f"{major}{unit}{rest // minor[1]}{minor[0]}"
+            return f"{major}{unit}"
+    return f"{seconds}s"
+
+
+def get_processes():
+    procs = {}
+    out = run(["ps", "-axww", "-o", "pid=,ppid=,pgid=,tpgid=,stat=,etime=,pcpu=,rss=,tty=,args="])
+    for line in out.splitlines():
+        f = line.split(None, 9)
+        if len(f) < 10:
+            continue
+        try:
+            procs[int(f[0])] = {
+                "pid": int(f[0]),
+                "ppid": int(f[1]),
+                "pgid": int(f[2]),
+                "tpgid": int(f[3]),
+                "stat": f[4],
+                "etime": f[5],
+                "cpu": float(f[6]),
+                "rss_mb": int(f[7]) // 1024,
+                "tty": None if f[8] in ("??", "-") else f[8],
+                "args": f[9],
+            }
+        except ValueError:
+            continue
+    return procs
+
+
+def get_cwds(pids):
+    pids = sorted({p for p in pids if p})
+    if not pids:
+        return {}
+    out = run(["lsof", "-a", "-d", "cwd", "-Fpn", "-p", ",".join(map(str, pids))], timeout=10)
+    cwds, cur = {}, None
+    for line in out.splitlines():
+        if line.startswith("p"):
+            cur = int(line[1:])
+        elif line.startswith("n") and cur is not None:
+            cwds[cur] = line[1:]
+    return cwds
+
+
+def resolve_host(procs, pid):
+    host = procs.get(pid)
+    while host and cmd_name(host["args"]) == "login":
+        host = procs.get(host["ppid"])
+    return host
+
+
+def host_kind(host):
+    if not host:
+        return None
+    name = cmd_name(host["args"]).lower()
+    if name.startswith("tmux"):
+        return "tmux"
+    if name.startswith("sshd"):
+        return "ssh"
+    return name
+
+
+def etime_seconds(etime):
+    days, _, rest = etime.rpartition("-")
+    secs = 0
+    for part in rest.split(":"):
+        secs = secs * 60 + int(part)
+    return secs + int(days or 0) * 86400
+
+
+def get_ttys(procs):
+    now = time.time()
+    by_tty = {}
+    for p in procs.values():
+        if p["tty"]:
+            by_tty.setdefault(p["tty"], []).append(p)
+    ttys = {}
+    for tty, members in by_tty.items():
+        roots = [p for p in members if procs.get(p["ppid"], {}).get("tty") != tty]
+        # Orphans reparented to launchd also look like roots; the real session leader has a live parent.
+        roots.sort(key=lambda p: (p["ppid"] == 1, p["pid"]))
+        if not roots:
+            continue
+        root = roots[0]
+        host = resolve_host(procs, root["ppid"])
+        fg = []
+        if root["tpgid"] > 0 and root["tpgid"] != root["pgid"]:
+            fg = sorted((p for p in members if p["pgid"] == root["tpgid"]), key=lambda p: p["pid"])
+        ttys[tty] = {
+            "tty": tty,
+            "shell_pid": root["pid"],
+            "shell": root["args"],
+            "started": int(now - etime_seconds(root["etime"])),
+            "host_pid": host["pid"] if host else None,
+            "host_args": host["args"] if host else None,
+            "host_kind": host_kind(host),
+            # e.g. `pixi shell` or `script` allocate a pty of their own inside the terminal's pty
+            "parent_tty": host["tty"] if host and host["tty"] and host["tty"] != tty else None,
+            "fg": [{"pid": p["pid"], "args": p["args"]} for p in fg],
+        }
+    return ttys
+
+
+def get_aerospace():
+    if not shutil.which("aerospace"):
+        return None
+    windows = run_json([
+        "aerospace", "list-windows", "--all", "--json", "--format",
+        "%{window-id} %{app-name} %{app-pid} %{app-bundle-id} %{window-title} %{workspace} "
+        "%{monitor-name} %{window-layout} %{window-parent-container-layout}",
+    ])
+    if windows is None:
+        return None
+    workspaces = run_json([
+        "aerospace", "list-workspaces", "--all", "--json", "--format",
+        "%{workspace} %{monitor-name} %{workspace-is-focused} %{workspace-is-visible}",
+    ]) or []
+    focused = run(["aerospace", "list-windows", "--focused", "--format", "%{window-id}"]).strip()
+    return {
+        "monitors": [m.get("monitor-name") for m in run_json(["aerospace", "list-monitors", "--json"]) or []],
+        "workspaces": [
+            {
+                "name": w.get("workspace"),
+                "monitor": w.get("monitor-name"),
+                "focused": w.get("workspace-is-focused"),
+                "visible": w.get("workspace-is-visible"),
+            }
+            for w in workspaces
+        ],
+        "windows": [
+            {
+                "id": w.get("window-id"),
+                "app": w.get("app-name"),
+                "pid": w.get("app-pid"),
+                "bundle": w.get("app-bundle-id"),
+                "title": w.get("window-title"),
+                "workspace": w.get("workspace"),
+                "monitor": w.get("monitor-name"),
+                "layout": w.get("window-layout"),
+                "parent_layout": w.get("window-parent-container-layout"),
+            }
+            for w in windows
+        ],
+        "focused_window": int(focused) if focused.isdigit() else None,
+    }
+
+
+def transcript_path(cwd, session_id):
+    if cwd:
+        p = CLAUDE_DIR / "projects" / re.sub(r"[^A-Za-z0-9]", "-", cwd) / f"{session_id}.jsonl"
+        if p.exists():
+            return p
+    return next((CLAUDE_DIR / "projects").glob(f"*/{session_id}.jsonl"), None)
+
+
+def prompt_text(entry):
+    att = entry.get("attachment") or {}
+    if entry.get("type") == "attachment" and att.get("type") == "queued_command" and isinstance(att.get("prompt"), str):
+        return " ".join(att["prompt"].split()) or None
+    if entry.get("type") != "user" or entry.get("isMeta") or entry.get("isSidechain") or entry.get("isCompactSummary"):
+        return None
+    content = (entry.get("message") or {}).get("content")
+    if isinstance(content, list):
+        if any(isinstance(c, dict) and c.get("type") == "tool_result" for c in content):
+            return None
+        content = "\n".join(
+            c.get("text", "") for c in content if isinstance(c, dict) and c.get("type") == "text"
+        )
+    if not isinstance(content, str):
+        return None
+    # Harness-injected blocks (reminders, slash-command echoes, pastes) bury the actual request.
+    content = re.sub(r"<([a-z_-]+)\b[^>]*>.*?</\1\b[^>]*>", " ", content, flags=re.S)
+    return " ".join(content.split()) or None
+
+
+def last_prompt(path, chunk=1 << 20, cap=64 << 20):
+    try:
+        with open(path, "rb") as f:
+            end = pos = f.seek(0, os.SEEK_END)
+            carry = b""
+            while pos > 0 and end - pos < cap:
+                step = min(chunk, pos)
+                pos -= step
+                f.seek(pos)
+                lines = (f.read(step) + carry).split(b"\n")
+                carry = lines.pop(0) if pos > 0 else b""
+                for raw in reversed(lines):
+                    try:
+                        text = prompt_text(json.loads(raw))
+                    except (ValueError, AttributeError):
+                        continue
+                    if text:
+                        return text
+    except OSError:
+        pass
+    return None
+
+
+def get_claude_sessions(procs):
+    sessions, seen = [], set()
+    for f in (CLAUDE_DIR / "sessions").glob("*.json"):
+        try:
+            meta = json.loads(f.read_text())
+        except (OSError, ValueError):
+            continue
+        proc = procs.get(meta.get("pid"))
+        if not proc or "claude" not in proc["args"]:
+            continue
+        seen.add(proc["pid"])
+        sessions.append({
+            "pid": proc["pid"],
+            "session_id": meta.get("sessionId"),
+            "name": meta.get("name"),
+            "cwd": meta.get("cwd"),
+            "status": meta.get("status"),
+            "kind": meta.get("kind"),
+            "version": meta.get("version"),
+            "started_at": (meta.get("startedAt") or 0) / 1000 or None,
+            "status_at": (meta.get("statusUpdatedAt") or 0) / 1000 or None,
+            "tty": proc["tty"],
+            "args": proc["args"],
+        })
+    for proc in procs.values():
+        if proc["pid"] in seen or cmd_name(proc["args"]) != "claude":
+            continue
+        if cmd_name(procs.get(proc["ppid"], {}).get("args")) == "claude":
+            continue
+        sessions.append({"pid": proc["pid"], "session_id": None, "tty": proc["tty"], "args": proc["args"]})
+    for s in sessions:
+        path = transcript_path(s.get("cwd"), s["session_id"]) if s.get("session_id") else None
+        if path:
+            s["transcript"] = str(path)
+            s["last_activity"] = path.stat().st_mtime
+            s["last_prompt"] = (last_prompt(path) or "")[:400] or None
+    sessions.sort(key=lambda s: s.get("started_at") or 0)
+    return sessions
+
+
+TMUX_FIELDS = [
+    "session_name", "session_attached", "window_index", "window_name", "window_layout", "window_active",
+    "pane_index", "pane_active", "pane_pid", "pane_tty", "pane_current_path", "pane_current_command",
+]
+
+
+def get_tmux():
+    if not shutil.which("tmux"):
+        return []
+    uid = os.getuid()
+    dirs = {
+        (Path(os.environ.get("TMUX_TMPDIR", "/tmp")) / f"tmux-{uid}").resolve(),
+        Path(f"/private/tmp/tmux-{uid}"),
+    }
+    servers = []
+    for d in sorted(dirs):
+        if not d.is_dir():
+            continue
+        for sock in sorted(d.iterdir()):
+            if not sock.is_socket():
+                continue
+            fmt = "\t".join("#{%s}" % f for f in TMUX_FIELDS)
+            panes = []
+            for line in run(["tmux", "-S", str(sock), "list-panes", "-a", "-F", fmt]).splitlines():
+                vals = line.split("\t")
+                if len(vals) != len(TMUX_FIELDS):
+                    continue
+                p = dict(zip(TMUX_FIELDS, vals))
+                p["pane_tty"] = p["pane_tty"].replace("/dev/", "")
+                panes.append(p)
+            if not panes:
+                continue
+            clients = []
+            for line in run(["tmux", "-S", str(sock), "list-clients", "-F", "#{client_tty}\t#{session_name}"]).splitlines():
+                tty, _, session = line.partition("\t")
+                clients.append({"tty": tty.replace("/dev/", ""), "session": session})
+            servers.append({"socket": str(sock), "panes": panes, "clients": clients})
+    return servers
+
+
+def tcp_ok(host, port, timeout=2):
+    try:
+        socket.create_connection((host, port), timeout=timeout).close()
+        return True
+    except OSError:
+        return False
+
+
+def get_tailscale():
+    cli = shutil.which("tailscale") or "/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+    if not os.path.exists(cli):
+        return None
+    d = run_json([cli, "status", "--json"])
+    if not d:
+        return {"state": "unreachable"}
+    me = d.get("Self") or {}
+    peers = list((d.get("Peer") or {}).values())
+    return {
+        "state": d.get("BackendState"),
+        "online": me.get("Online"),
+        "ips": me.get("TailscaleIPs") or [],
+        "dns_name": (me.get("DNSName") or "").rstrip("."),
+        "key_expiry": me.get("KeyExpiry"),
+        "peers": len(peers),
+        "peers_online": sum(1 for p in peers if p.get("Online")),
+        "health": d.get("Health") or [],
+    }
+
+
+def get_network():
+    ports, port = [], None
+    for line in run(["networksetup", "-listallhardwareports"]).splitlines():
+        if line.startswith("Hardware Port:"):
+            port = line.split(":", 1)[1].strip()
+        elif line.startswith("Device:") and port:
+            ports.append((port, line.split(":", 1)[1].strip()))
+            port = None
+    route = run(["route", "-n", "get", "default"])
+    m_if = re.search(r"interface:\s*(\S+)", route)
+    m_gw = re.search(r"gateway:\s*(\S+)", route)
+    interfaces = []
+    for port, dev in ports:
+        if "Thunderbolt" in port or "Bridge" in port:
+            continue
+        info = run(["ifconfig", dev])
+        active = "status: active" in info
+        if not (active or port == "Wi-Fi" or "LAN" in port or "USB" in port):
+            continue
+        ip = re.search(r"inet (\d+\.\d+\.\d+\.\d+)", info)
+        interfaces.append({"port": port, "device": dev, "active": active, "ip": ip.group(1) if ip else None})
+    return {
+        "default_interface": m_if.group(1) if m_if else None,
+        "gateway": m_gw.group(1) if m_gw else None,
+        "interfaces": interfaces,
+        "internet": tcp_ok("1.1.1.1", 443) or tcp_ok("8.8.8.8", 53),
+        "tailscale": get_tailscale(),
+    }
+
+
+def get_panics():
+    reports = [
+        p for p in Path("/Library/Logs/DiagnosticReports").glob("*.panic") if not p.name.startswith(".")
+    ]
+    out = []
+    for p in sorted(reports, key=lambda p: p.stat().st_mtime, reverse=True)[:3]:
+        try:
+            head = p.open("rb").read(16384).decode("utf-8", "replace")
+        except OSError:
+            continue
+        m = re.search(r'"panicString"\s*:\s*"panic\([^)]*\):\s*([^"\\]{0,160})', head)
+        out.append({"file": str(p), "written_at": p.stat().st_mtime, "summary": m.group(1).strip() if m else None})
+    return out
+
+
+def get_system():
+    m = re.search(r"sec = (\d+)", run(["sysctl", "-n", "kern.boottime"]))
+    batt = run(["pmset", "-g", "batt"])
+    pct = re.search(r"(\d+)%", batt)
+    pm = {}
+    for line in run(["pmset", "-g"]).splitlines():
+        kv = re.match(r"\s*(sleep|displaysleep|disksleep|autorestart|womp|tcpkeepalive|standby|powernap)\s+(\d+)", line)
+        if kv:
+            pm[kv.group(1)] = int(kv.group(2))
+    disk = shutil.disk_usage("/System/Volumes/Data" if os.path.exists("/System/Volumes/Data") else "/")
+    mem = re.search(r"free percentage:\s*(\d+)%", run(["memory_pressure", "-Q"]))
+    return {
+        "macos": platform.mac_ver()[0],
+        "boot_time": int(m.group(1)) if m else None,
+        "load": list(os.getloadavg()),
+        "power_source": "AC" if "AC Power" in batt else ("battery" if "Battery Power" in batt else None),
+        "battery_pct": int(pct.group(1)) if pct else None,
+        "pmset": pm,
+        "filevault": run(["fdesetup", "status"]).strip().splitlines()[0:1],
+        "disk_free_gb": disk.free // 2**30,
+        "mem_free_pct": int(mem.group(1)) if mem else None,
+        "panics": get_panics(),
+        "reboots": [
+            l.strip() for l in run(["last", "-6", "reboot", "shutdown"]).splitlines()
+            if l.strip() and not l.startswith("wtmp")
+        ],
+    }
+
+
+def get_listeners(procs):
+    by_pid, pid = {}, None
+    for line in run(["lsof", "-nP", "-iTCP", "-sTCP:LISTEN", "-Fpn"], timeout=10).splitlines():
+        if line.startswith("p"):
+            pid = int(line[1:])
+        elif line.startswith("n") and pid:
+            by_pid.setdefault(pid, set()).add(line[1:])
+    return [
+        {"pid": pid, "args": procs.get(pid, {}).get("args", "?")[:300], "addrs": sorted(addrs)}
+        for pid, addrs in sorted(by_pid.items())
+    ]
+
+
+def get_docker():
+    if not shutil.which("docker") or not (HOME / ".docker/run/docker.sock").exists():
+        return None
+    out = run(["docker", "ps", "--format", "{{json .}}"], timeout=4)
+    rows = []
+    for line in out.splitlines():
+        try:
+            c = json.loads(line)
+        except ValueError:
+            continue
+        rows.append({k: c.get(k) for k in ("Names", "Image", "Status", "Ports")})
+    return rows
+
+
+def get_top(procs):
+    me = os.getpid()
+    candidates = [p for p in procs.values() if p["pid"] != me and p["ppid"] != me]
+
+    def slim(p):
+        return {"pid": p["pid"], "cpu": p["cpu"], "rss_mb": p["rss_mb"], "etime": p["etime"], "args": p["args"][:200]}
+
+    return {
+        "cpu": [slim(p) for p in sorted(candidates, key=lambda p: -p["cpu"])[:8]],
+        "mem": [slim(p) for p in sorted(candidates, key=lambda p: -p["rss_mb"])[:8]],
+    }
+
+
+def get_netwatch_tail(n=6):
+    try:
+        return NETWATCH_LOG.read_text(errors="replace").splitlines()[-n:]
+    except OSError:
+        return None
+
+
+def fish_title_pwd(path):
+    parts = tilde(path).split("/")
+    return "/".join([p[:2] if p.startswith(".") else p[:1] for p in parts[:-1]] + parts[-1:])
+
+
+def assign_windows(windows, ttys):
+    by_pid = {}
+    for w in windows:
+        w["ttys"] = []
+        by_pid.setdefault(w["pid"], []).append(w)
+    for pid, wins in by_pid.items():
+        shells = sorted(
+            (t for t in ttys.values() if t["host_pid"] == pid and not t.get("parent_tty")),
+            key=lambda t: (t.get("started") or 0, t["shell_pid"]),
+        )
+        if len(wins) == 1:
+            wins[0]["ttys"] = [t["tty"] for t in shells]
+        elif len(wins) == len(shells):
+            # One process can own several windows (`alacritty msg create-window`). Each window gets
+            # its own shell at creation, and window ids are allocated in creation order, so the
+            # nth-oldest window belongs to the nth-oldest shell.
+            for w, t in zip(sorted(wins, key=lambda w: w["id"]), shells):
+                w["ttys"] = [t["tty"]]
+        else:
+            left = list(shells)
+            for w in wins:
+                hit = next((t for t in left if t.get("cwd") and fish_title_pwd(t["cwd"]) in (w.get("title") or "")), None)
+                if hit:
+                    w["ttys"] = [hit["tty"]]
+                    left.remove(hit)
+            for w in wins:
+                if not w["ttys"] and left:
+                    w["ttys"] = [t["tty"] for t in left]
+                    w["ambiguous"] = True
+        for w in wins:
+            for tty in w["ttys"]:
+                ttys[tty].setdefault("windows", []).append(w["id"])
+
+
+def collect():
+    procs = get_processes()
+    ttys = get_ttys(procs)
+    claude = get_claude_sessions(procs)
+    tmux = get_tmux()
+    aero = get_aerospace()
+    listeners = get_listeners(procs)
+    cwds = get_cwds(
+        [t["shell_pid"] for t in ttys.values()]
+        + [t["fg"][0]["pid"] for t in ttys.values() if t["fg"]]
+        + [c["pid"] for c in claude]
+        + [l["pid"] for l in listeners]
+    )
+    for t in ttys.values():
+        t["cwd"] = cwds.get(t["shell_pid"])
+        if t["fg"]:
+            t["fg"][0]["cwd"] = cwds.get(t["fg"][0]["pid"])
+    for c in claude:
+        c["cwd"] = c.get("cwd") or cwds.get(c["pid"])
+        if c.get("tty") in ttys:
+            ttys[c["tty"]]["claude_pid"] = c["pid"]
+    for l in listeners:
+        l["cwd"] = cwds.get(l["pid"])
+    for server in tmux:
+        for p in server["panes"]:
+            if p["pane_tty"] in ttys:
+                ttys[p["pane_tty"]]["tmux_pane"] = f"{p['session_name']}:{p['window_index']}.{p['pane_index']}"
+        for c in server["clients"]:
+            if c["tty"] in ttys:
+                ttys[c["tty"]]["tmux_client_session"] = c["session"]
+    if aero:
+        assign_windows(aero["windows"], ttys)
+    for t in ttys.values():
+        outer, hops = t, 0
+        while outer.get("parent_tty") in ttys and hops < 8:
+            outer, hops = ttys[outer["parent_tty"]], hops + 1
+        if outer is not t:
+            for key in ("windows", "tmux_pane"):
+                if key in outer:
+                    t[key] = outer[key]
+    return {
+        "version": 1,
+        "taken_at": time.time(),
+        "host": socket.gethostname(),
+        "system": get_system(),
+        "network": get_network(),
+        "aerospace": aero,
+        "ttys": ttys,
+        "claude": claude,
+        "tmux": tmux,
+        "listeners": listeners,
+        "docker": get_docker(),
+        "top": get_top(procs),
+        "netwatch": get_netwatch_tail(),
+    }
+
+
+class View:
+    def __init__(self, s):
+        self.s = s
+        self.ttys = s.get("ttys") or {}
+        self.claude_by_pid = {c["pid"]: c for c in s.get("claude") or []}
+        self.aero = s.get("aerospace")
+        self.windows = {w["id"]: w for w in (self.aero or {}).get("windows", [])}
+        self.children = {}
+        for t in self.ttys.values():
+            if t.get("parent_tty"):
+                self.children.setdefault(t["parent_tty"], []).append(t)
+
+    def leaf(self, t):
+        for _ in range(8):
+            kids = self.children.get(t["tty"]) if t else None
+            if not kids:
+                break
+            t = kids[0]
+        return t
+
+    def wrapper(self, t):
+        if t and self.leaf(t) is not t and t.get("fg"):
+            return trunc(t["fg"][0]["args"], 40)
+        return None
+
+    def claude_for(self, t):
+        return self.claude_by_pid.get((t or {}).get("claude_pid"))
+
+    def cwd(self, t):
+        t = self.leaf(t)
+        return (t["fg"][0].get("cwd") if t.get("fg") else None) or t.get("cwd")
+
+    def activity(self, t):
+        wrapper = self.wrapper(t)
+        text = self._activity(self.leaf(t))
+        return f"{dim(wrapper + ' ›')} {text}" if wrapper else text
+
+    def _activity(self, t):
+        c = self.claude_for(t)
+        if c:
+            label = c.get("name") or (c.get("session_id") or "")[:8] or f"pid {c['pid']}"
+            status = c.get("status") or ""
+            return cyan(f"claude «{label}»") + " " + (yellow(status) if status == "busy" else dim(status))
+        if t.get("tmux_client_session"):
+            return cyan(f"tmux attach → {t['tmux_client_session']}")
+        if t.get("fg"):
+            return "▶ " + trunc(t["fg"][0]["args"], 70)
+        return dim(cmd_name(t.get("shell")))
+
+    def location(self, t):
+        if not t:
+            return "no tty"
+        if t.get("windows"):
+            w = self.windows.get(t["windows"][0])
+            if w:
+                return f"ws {w['workspace']} #{w['id']}"
+        if t.get("tmux_pane"):
+            return f"tmux {t['tmux_pane']}"
+        return f"{t.get('host_kind') or '?'} {t['tty']}"
+
+    def resume_cmd(self, t):
+        t = self.leaf(t) if t else t
+        c = self.claude_for(t)
+        if c and c.get("session_id"):
+            return f"claude --resume {c['session_id']}"
+        if t and t.get("tmux_client_session"):
+            return f"tmux attach -t {shlex.quote(t['tmux_client_session'])}"
+        return None
+
+
+def render(s, label):
+    v = View(s)
+    out = []
+    w = out.append
+    sysd, net, now = s["system"], s["network"], s["taken_at"]
+
+    w(f"{bold(s['host'])}  {dim(fmt_ts(now, '%a %b %d %H:%M:%S') + ' · ' + label)}")
+    w("")
+    w(bold("system"))
+    boot = sysd.get("boot_time")
+    load = " ".join(f"{x:.2f}" for x in sysd.get("load") or [])
+    w(f"  macOS {sysd.get('macos')} · up {ago(now - boot) if boot else '?'} (booted {fmt_ts(boot)}) · load {load}")
+    power = f"{sysd.get('power_source') or '?'} {sysd.get('battery_pct')}%"
+    fv = (sysd.get("filevault") or ["?"])[0].replace("FileVault is ", "").rstrip(".")
+    w(f"  power {power} · mem free {sysd.get('mem_free_pct')}% · disk free {sysd.get('disk_free_gb')}G · FileVault {fv}")
+    pm = sysd.get("pmset") or {}
+    w("  pmset " + " ".join(f"{k}={v_}" for k, v_ in sorted(pm.items())))
+    for p in (sysd.get("panics") or [])[:1]:
+        w(f"  last panic report {fmt_ts(p['written_at'])}: {red(trunc(p.get('summary') or Path(p['file']).name, 80))}")
+    if sysd.get("reboots"):
+        w(dim("  " + " | ".join(trunc(r, 40) for r in sysd["reboots"][:3])))
+
+    w("")
+    w(bold("network"))
+    inet = green("internet ✓") if net.get("internet") else red("internet ✗")
+    w(f"  default {net.get('default_interface') or red('none')} via {net.get('gateway') or '?'} · {inet}")
+    for i in net.get("interfaces") or []:
+        mark = green("●") if i["active"] else dim("○")
+        default = " (default)" if i["device"] == net.get("default_interface") else ""
+        w(f"  {mark} {i['device']:<5} {i['port']:<28} {i['ip'] or dim('inactive')}{default}")
+    ts = net.get("tailscale")
+    if ts:
+        ok = ts.get("state") == "Running" and ts.get("online")
+        parts = [(green if ok else red)(f"tailscale {ts.get('state')}")]
+        if ts.get("ips"):
+            parts.append(ts["ips"][0])
+        if ts.get("dns_name"):
+            parts.append(ts["dns_name"])
+        if ts.get("key_expiry"):
+            try:
+                exp = datetime.strptime(ts["key_expiry"][:19], "%Y-%m-%dT%H:%M:%S")
+                days = (exp - datetime.utcnow()).days
+                txt = f"key expires {exp:%Y-%m-%d} ({days}d)"
+                parts.append(red(txt) if days < 30 else yellow(txt) if days < 90 else txt)
+            except ValueError:
+                pass
+        if "peers" in ts:
+            parts.append(f"{ts.get('peers_online')}/{ts.get('peers')} peers online")
+        w("  " + " · ".join(parts))
+        for h in ts.get("health") or []:
+            w("    " + yellow(trunc(h, 100)))
+    if s.get("netwatch"):
+        w(dim(f"  netwatch: {trunc(s['netwatch'][-1], 100)}"))
+
+    shown = set()
+    aero = v.aero
+    if aero:
+        w("")
+        focused = next((x["name"] for x in aero["workspaces"] if x.get("focused")), None)
+        w(bold("aerospace") + dim(f"  monitors: {', '.join(aero.get('monitors') or [])} · focused ws {focused}"))
+        order = {x["name"]: i for i, x in enumerate(aero["workspaces"])}
+        by_ws = {}
+        for win in aero["windows"]:
+            by_ws.setdefault(win["workspace"], []).append(win)
+        for ws in sorted(by_ws, key=lambda n: order.get(n, 999)):
+            tag = green(" ◆") if ws == focused else ""
+            w(f"  {bold('ws ' + ws)}{tag}")
+            for win in by_ws[ws]:
+                star = "*" if win["id"] == aero.get("focused_window") else " "
+                head = f"   {star}#{win['id']:<5} {win['app']:<10}"
+                ttys = [v.ttys[t] for t in win.get("ttys") or [] if t in v.ttys]
+                floating = dim(" (floating)") if win.get("layout") == "floating" else ""
+                if not ttys:
+                    w(f"{head} {trunc(win.get('title'), 70)}{floating}")
+                    continue
+                for i, t in enumerate(ttys):
+                    shown.add(t["tty"])
+                    lead = head if i == 0 else " " * len(head)
+                    amb = dim(" (window/shell pairing uncertain)") if win.get("ambiguous") else ""
+                    w(f"{lead} {tilde(v.cwd(t))}  {v.activity(t)}{floating}{amb}")
+
+    others = [
+        t for t in v.ttys.values()
+        if t["tty"] not in shown and t.get("host_kind") != "tmux" and not t.get("tmux_pane")
+        and not t.get("parent_tty")
+    ]
+    if others:
+        w("")
+        w(bold("other terminals"))
+        for t in sorted(others, key=lambda t: t["tty"]):
+            w(f"  {t['tty']:<8} {t.get('host_kind') or '?':<10} {tilde(v.cwd(t))}  {v.activity(t)}")
+
+    claude = s.get("claude") or []
+    w("")
+    w(bold(f"claude sessions ({len(claude)})"))
+    for c in claude:
+        t = v.ttys.get(c.get("tty"))
+        status = c.get("status") or "?"
+        status = yellow(status) if status == "busy" else dim(status)
+        name = c.get("name") or (c.get("session_id") or "")[:8] or "?"
+        meta = [v.location(t)]
+        if c.get("started_at"):
+            meta.append(f"up {ago(now - c['started_at'])}")
+        if c.get("last_activity"):
+            meta.append(f"last write {ago(now - c['last_activity'])} ago")
+        w(f"  {cyan(name)} {status}  {tilde(c.get('cwd'))}  {dim(' · '.join(meta))}")
+        if c.get("last_prompt"):
+            w(f"      {dim('❯')} {trunc(c['last_prompt'], 110)}")
+        if c.get("session_id"):
+            w(dim(f"      cd {shlex.quote(c.get('cwd') or '.')} && claude --resume {c['session_id']}"))
+
+    tmux = s.get("tmux") or []
+    w("")
+    w(bold("tmux") + ("" if tmux else dim("  no servers running")))
+    for server in tmux:
+        if not server["socket"].endswith("/default"):
+            w(dim(f"  socket {server['socket']}"))
+        sessions = {}
+        for p in server["panes"]:
+            sessions.setdefault(p["session_name"], {}).setdefault(p["window_index"], []).append(p)
+        for name, windows in sessions.items():
+            first = next(iter(windows.values()))[0]
+            attached = green(" (attached)") if first["session_attached"] not in ("0", "") else ""
+            w(f"  {bold(name)}{attached}")
+            for idx, panes in windows.items():
+                active = " ◆" if panes[0]["window_active"] == "1" else ""
+                w(f"    {idx}:{panes[0]['window_name']}{active}")
+                for p in panes:
+                    t = v.ttys.get(p["pane_tty"])
+                    act = v.activity(t) if t else p["pane_current_command"]
+                    w(f"      .{p['pane_index']} {tilde(p['pane_current_path'])}  {act}")
+
+    listeners = s.get("listeners") or []
+    if listeners:
+        w("")
+        w(bold("listening tcp ports"))
+        for l in listeners:
+            ports = sorted({a.rsplit(":", 1)[-1] for a in l["addrs"]}, key=lambda x: int(x) if x.isdigit() else 0)
+            where = f"  {dim(tilde(l['cwd']))}" if l.get("cwd") and l["cwd"] != "/" else ""
+            w(f"  {','.join(ports):<18} {trunc(cmd_name(l['args']), 30)}{where}")
+
+    docker = s.get("docker")
+    if docker:
+        w("")
+        w(bold("docker"))
+        for c in docker:
+            w(f"  {c.get('Names')}  {c.get('Image')}  {dim(c.get('Status') or '')}  {c.get('Ports') or ''}")
+
+    top = s.get("top") or {}
+    if top:
+        w("")
+        w(bold("top cpu") + " " * 44 + bold("top mem"))
+        for a, b in zip(top.get("cpu", [])[:5], top.get("mem", [])[:5]):
+            left = f"{a['cpu']:5.1f}%  {trunc(cmd_name(a['args']), 40)}"
+            right = f"{b['rss_mb']:6d}M  {trunc(cmd_name(b['args']), 40)}"
+            w(f"  {left:<49}{right}")
+    return "\n".join(out)
+
+
+RESTORE_HELPERS = r"""
+window_ids() { aerospace list-windows --all --format '%{window-id}' | sort; }
+
+# Starts a GUI command, waits for its window to show up, then files it on workspace $1.
+launch() {
+  local ws="$1" before new=""
+  shift
+  before="$(window_ids)"
+  "$@" >/dev/null 2>&1 &
+  disown
+  for _ in $(seq 50); do
+    sleep 0.2
+    new="$(comm -13 <(echo "$before") <(window_ids) | head -n1)"
+    [ -n "$new" ] && break
+  done
+  if [ -n "$new" ]; then
+    aerospace move-node-to-workspace --window-id "$new" "$ws"
+  else
+    echo "no new window appeared for: $*" >&2
+  fi
+}
+"""
+
+
+def restore_script(s, source):
+    q = shlex.quote
+    v = View(s)
+    L = [
+        "#!/bin/bash",
+        f"# Restore plan for {s['host']} from the snapshot taken {fmt_ts(s['taken_at'])} ({source}).",
+        "# Review before running. Recreates tmux sessions, then terminal windows on their AeroSpace",
+        "# workspaces, resuming Claude Code sessions where one was running. Other apps are listed only.",
+        "set -u",
+    ]
+
+    for server in s.get("tmux") or []:
+        tm = "tmux" if server["socket"].endswith("/default") else f"tmux -S {q(server['socket'])}"
+        sessions = {}
+        for p in server["panes"]:
+            sessions.setdefault(p["session_name"], {}).setdefault(int(p["window_index"]), []).append(p)
+        L.append("")
+        L.append(f"# tmux ({server['socket']})")
+        for name, windows in sessions.items():
+            L.append(f"if ! {tm} has-session -t {q(name)} 2>/dev/null; then")
+            for i, idx in enumerate(sorted(windows)):
+                panes = sorted(windows[idx], key=lambda p: int(p["pane_index"]))
+                first, target = panes[0], f"{name}:{idx}"
+                if i == 0:
+                    L.append(f"  {tm} new-session -d -s {q(name)} -n {q(first['window_name'])} -c {q(first['pane_current_path'])}")
+                    L.append(f"  {tm} move-window -s {q(name + ':')} -t {q(target)} 2>/dev/null")
+                else:
+                    L.append(f"  {tm} new-window -d -t {q(target)} -n {q(first['window_name'])} -c {q(first['pane_current_path'])}")
+                base = int(first["pane_index"])
+                for k, p in enumerate(panes[1:], start=1):
+                    L.append(f"  {tm} split-window -d -t {q(f'{target}.{base + k - 1}')} -c {q(p['pane_current_path'])}")
+                if len(panes) > 1:
+                    L.append(f"  {tm} select-layout -t {q(target)} {q(first['window_layout'])} 2>/dev/null")
+                for p in panes:
+                    t = v.ttys.get(p["pane_tty"])
+                    cmd = v.resume_cmd(t)
+                    pane = f"{target}.{p['pane_index']}"
+                    if cmd:
+                        L.append(f"  {tm} send-keys -t {q(pane)} {q(cmd)} Enter")
+                    elif p["pane_current_command"] not in SHELLS:
+                        was = t["fg"][0]["args"] if t and t.get("fg") else p["pane_current_command"]
+                        L.append(f"  # {pane} was running: {trunc(was, 100)}")
+            L.append("fi")
+
+    aero = v.aero
+    if aero:
+        L.append(RESTORE_HELPERS)
+        order = {x["name"]: i for i, x in enumerate(aero["workspaces"])}
+        done = set()
+        for win in sorted(aero["windows"], key=lambda w: order.get(w["workspace"], 999)):
+            ws = win["workspace"]
+            ttys = [v.ttys[t] for t in win.get("ttys") or [] if t in v.ttys and t not in done]
+            if (win["app"] or "").lower() not in TERMINAL_APPS:
+                L.append(f"# ws {ws}: {win['app']} - {trunc(win.get('title'), 80)}")
+                continue
+            if not ttys:
+                continue
+            for t in ttys:
+                done.add(t["tty"])
+                extra = (t.get("host_args") or "").split()[1:]
+                if "--working-directory" in extra:
+                    i = extra.index("--working-directory")
+                    del extra[i : i + 2]
+                argv = ["alacritty", "--working-directory", v.cwd(t) or str(HOME)] + extra
+                if "-e" in extra or "--command" in extra:
+                    L.append(f"launch {q(ws)} " + " ".join(q(a) for a in argv))
+                    continue
+                shell = (t.get("shell") or "").split(" ", 1)[0].lstrip("-")
+                if "/" not in shell:
+                    shell = shutil.which(shell) or shell
+                cmd = v.resume_cmd(t)
+                if cmd and cmd_name(shell) == "fish":
+                    argv += ["-e", shell, "-C", cmd]
+                elif cmd:
+                    argv += ["-e", shell, "-ic", f"{cmd}; exec {shell} -i"]
+                elif v.leaf(t).get("fg"):
+                    L.append(f"# ws {ws}: was running {trunc(v.leaf(t)['fg'][0]['args'], 100)}")
+                if v.wrapper(t):
+                    L.append(f"# ws {ws}: this terminal was inside `{v.wrapper(t)}`")
+                L.append(f"launch {q(ws)} " + " ".join(q(a) for a in argv))
+        focused = next((x["name"] for x in aero["workspaces"] if x.get("focused")), None)
+        if focused:
+            L.append(f"aerospace workspace {q(focused)}")
+    else:
+        for t in v.ttys.values():
+            cmd = v.resume_cmd(t)
+            if cmd and not t.get("tmux_pane"):
+                L.append(f"# terminal: cd {q(v.cwd(t) or '~')} && {cmd}")
+    return "\n".join(L) + "\n"
+
+
+def snapshot_files():
+    return sorted(SNAP_DIR.glob("boot-*/*.json.gz"), key=lambda p: p.name)
+
+
+def current_boot():
+    m = re.search(r"sec = (\d+)", run(["sysctl", "-n", "kern.boottime"]))
+    return int(m.group(1)) if m else None
+
+
+def parse_at(text):
+    now = datetime.now()
+    for fmt in ("%H:%M", "%Y-%m-%d %H:%M", "%Y-%m-%dT%H:%M", "%m-%d %H:%M"):
+        try:
+            t = datetime.strptime(text, fmt)
+        except ValueError:
+            continue
+        if fmt == "%H:%M":
+            t = t.replace(year=now.year, month=now.month, day=now.day)
+        elif fmt == "%m-%d %H:%M":
+            t = t.replace(year=now.year)
+        return t
+    sys.exit(f"devstate: can't parse --at {text!r}; use HH:MM or 'YYYY-MM-DD HH:MM'")
+
+
+def select_snapshot(which, at=None):
+    files = snapshot_files()
+    if at:
+        cutoff = parse_at(at).strftime("%Y%m%d-%H%M%S")
+        older = [f for f in files if f.name[:15] <= cutoff]
+        return older[-1] if older else None
+    if which == "latest":
+        return files[-1] if files else None
+    if which == "prev-boot":
+        boot_dir = f"boot-{current_boot()}"
+        older = [f for f in files if f.parent.name != boot_dir]
+        return older[-1] if older else None
+    p = Path(which)
+    return p if p.exists() else None
+
+
+def load_snapshot(path):
+    opener = gzip.open if str(path).endswith(".gz") else open
+    with opener(path, "rt") as f:
+        return json.load(f)
+
+
+def write_atomic(path, text):
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(text)
+    tmp.replace(path)
+
+
+def prune():
+    now = time.time()
+    for d in SNAP_DIR.glob("boot-*"):
+        files = sorted(d.glob("*.json.gz"))
+        for f in files[:-1]:
+            if now - f.stat().st_mtime > RETAIN_DAYS * 86400:
+                f.unlink()
+        if files and now - files[-1].stat().st_mtime > KEEP_LAST_OF_BOOT_DAYS * 86400:
+            files[-1].unlink()
+        try:
+            d.rmdir()
+        except OSError:
+            pass
+
+
+def cmd_snapshot(args):
+    s = collect()
+    d = SNAP_DIR / f"boot-{s['system']['boot_time']}"
+    d.mkdir(parents=True, exist_ok=True)
+    path = d / (fmt_ts(s["taken_at"], "%Y%m%d-%H%M%S") + ".json.gz")
+    with gzip.open(path, "wt") as f:
+        json.dump(s, f)
+    write_atomic(STATE_DIR / "latest.txt", render(s, f"snapshot {path}") + "\n")
+    prune()
+    if not args.quiet:
+        print(path)
+
+
+def resolve(args, default):
+    which = args.which or default
+    if which == "live":
+        return collect(), "live"
+    path = select_snapshot(which, args.at)
+    if not path and which == "prev-boot" and not args.at:
+        path = select_snapshot("latest")
+    if not path:
+        sys.exit("devstate: no matching snapshot (has the snapshot agent run yet? try `devstate snapshot`)")
+    return load_snapshot(path), str(path)
+
+
+def cmd_recover(args):
+    boot = current_boot()
+    path = select_snapshot("prev-boot")
+    if path:
+        s = load_snapshot(path)
+        gap = ago(boot - s["taken_at"]) if boot else "?"
+        print(bold(f"Last snapshot before this boot ({fmt_ts(boot)}): {fmt_ts(s['taken_at'])}, {gap} before the machine came back up."))
+    else:
+        path = select_snapshot("latest")
+        if not path:
+            sys.exit("devstate: no snapshots yet")
+        s = load_snapshot(path)
+        print(yellow("No snapshot from an earlier boot yet; showing the latest one from this boot."))
+    new_panics = [p for p in get_panics() if p["written_at"] > s["taken_at"]]
+    for p in new_panics:
+        print(red(f"Kernel panic report written {fmt_ts(p['written_at'])}: {p.get('summary')}"))
+    print()
+    print(render(s, str(path)))
+    print()
+    print(bold("To rebuild:") + " `devstate restore` prints a script that recreates tmux sessions and terminal")
+    print("windows (on their workspaces) and resumes the Claude sessions above. Review it, then pipe to bash.")
+
+
+def cmd_history(_):
+    boot_now = current_boot()
+    dirs = sorted({f.parent for f in snapshot_files()}, key=lambda d: d.name)
+    if not dirs:
+        print("no snapshots yet")
+    for d in dirs:
+        files = sorted(d.glob("*.json.gz"))
+        s = load_snapshot(files[-1])
+        boot = s["system"].get("boot_time")
+        cur = green("  (current boot)") if boot == boot_now else ""
+        windows = len((s.get("aerospace") or {}).get("windows", []))
+        panes = sum(len(x["panes"]) for x in s.get("tmux") or [])
+        print(f"{bold('boot ' + fmt_ts(boot))}{cur}")
+        first = datetime.strptime(files[0].name[:15], "%Y%m%d-%H%M%S")
+        print(f"  {len(files)} snapshots, {first:%a %b %d %H:%M} → {fmt_ts(s['taken_at'])}")
+        print(dim(f"  last: {windows} windows, {len(s.get('claude') or [])} claude sessions, {panes} tmux panes  {files[-1]}"))
+
+
+def main():
+    global COLOR
+    ap = argparse.ArgumentParser(
+        prog="devstate",
+        description="What is running on this Mac now, and what was running before it last went down.",
+    )
+    sub = ap.add_subparsers(dest="cmd")
+    sub.add_parser("now", help="live report (the default)")
+    p = sub.add_parser("snapshot", help="save a snapshot (launchd runs this every 5 minutes)")
+    p.add_argument("-q", "--quiet", action="store_true")
+    sub.add_parser("recover", help="show the last snapshot taken before the current boot")
+    sub.add_parser("history", help="list saved snapshots grouped by boot")
+    for name, default, help_ in (
+        ("show", "latest", "render a saved snapshot"),
+        ("restore", "prev-boot", "print a bash script that recreates tmux, terminals and claude sessions"),
+        ("json", "live", "dump a snapshot as JSON"),
+    ):
+        p = sub.add_parser(name, help=help_)
+        p.add_argument("which", nargs="?", help=f"live | latest | prev-boot | PATH (default: {default})")
+        p.add_argument("--at", help="newest snapshot at or before TIME (HH:MM or 'YYYY-MM-DD HH:MM')")
+        p.set_defaults(default=default)
+    args = ap.parse_args()
+    COLOR = sys.stdout.isatty() and not os.environ.get("NO_COLOR") and args.cmd not in ("snapshot", "restore", "json")
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+
+    if args.cmd in (None, "now"):
+        print(render(collect(), "live"))
+    elif args.cmd == "snapshot":
+        cmd_snapshot(args)
+    elif args.cmd == "recover":
+        cmd_recover(args)
+    elif args.cmd == "history":
+        cmd_history(args)
+    elif args.cmd == "show":
+        s, src = resolve(args, args.default)
+        print(render(s, src))
+    elif args.cmd == "restore":
+        s, src = resolve(args, args.default)
+        print(f"devstate: restore plan from {src}", file=sys.stderr)
+        sys.stdout.write(restore_script(s, src))
+    elif args.cmd == "json":
+        s, _ = resolve(args, args.default)
+        print(json.dumps(s, indent=1))
+
+
+if __name__ == "__main__":
+    main()

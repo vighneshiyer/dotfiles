@@ -1,0 +1,29 @@
+{{- if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" -}}
+#!/bin/bash
+# Root-level settings that keep this Mac reachable as a remote dev box. Re-runs whenever this file or devbox/* changes.
+set -euo pipefail
+echo "devbox: applying system settings (sudo)"
+sudo -v
+
+sudo pmset -a sleep 0 disksleep 0 standby 0 powernap 0 womp 1 tcpkeepalive 1 ttyskeepawake 1 autorestart 1
+sudo systemsetup -setrestartfreeze on >/dev/null 2>&1 || echo "devbox: restart-on-freeze is not settable on this Mac (Apple silicon reboots after panics anyway)"
+
+sudo install -d -o root -g wheel -m 755 /usr/local/sbin
+sudo tee /usr/local/sbin/netwatch >/dev/null <<'NETWATCH_EOF'
+{{ include "devbox/netwatch.sh" }}
+NETWATCH_EOF
+sudo chown root:wheel /usr/local/sbin/netwatch
+sudo chmod 755 /usr/local/sbin/netwatch
+
+sudo tee /Library/LaunchDaemons/local.netwatch.plist >/dev/null <<'PLIST_EOF'
+{{ include "devbox/local.netwatch.plist" }}
+PLIST_EOF
+sudo chown root:wheel /Library/LaunchDaemons/local.netwatch.plist
+sudo chmod 644 /Library/LaunchDaemons/local.netwatch.plist
+sudo launchctl bootout system/local.netwatch 2>/dev/null || true
+for _ in 1 2 3 4 5; do
+  sudo launchctl bootstrap system /Library/LaunchDaemons/local.netwatch.plist && break
+  sleep 1
+done
+echo "devbox: netwatch loaded; log at /var/log/netwatch.log"
+{{ end -}}

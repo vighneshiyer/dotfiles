@@ -67,3 +67,23 @@ Don't bother updating to Tahoe.
 I'll document things I encounter.
 
 On 12/4/2025, when I opened the lid, the computer was off and actually ended up rebooting. It showed an error message "SOCD report detected (iBoot async abort)". Quite worrying that the uptime is so bad (only a few days). This could be a hardware fault, so I should keep watching.
+
+## Remote Dev Box (vighnesh-macbook-pax)
+
+Accessed over Tailscale + SSH (Remote Login on). chezmoi handles most of it, gated on this hostname:
+
+- `~/.local/bin/devstate` + `~/Library/LaunchAgents/local.devstate.snapshot.plist`: snapshots terminals (cwd, foreground job), AeroSpace workspaces/windows, tmux, Claude Code sessions every 5 min to `~/.local/state/devstate/`
+  - `devstate` (live), `devstate recover` (last snapshot before this boot), `devstate restore` (script to rebuild tmux/terminals/claude sessions), `devstate history`, `devstate show --at 14:00`
+- `run_onchange_after_devbox-system.sh` (sudo, on `chezmoi apply`): `pmset` never-sleep + autorestart, and the `netwatch` LaunchDaemon (`devbox/netwatch.sh` → `/usr/local/sbin/netwatch`, log in `/var/log/netwatch.log`)
+  - netwatch pings every 2 min; if the gateway is unreachable it power-cycles Wi-Fi with backoff; it only reboots after 30 min down + 3 failed fixes, at most once per 12h, and never while FileVault is on
+
+Manual steps:
+
+- Tailscale admin console → this machine → Disable key expiry (otherwise remote access dies when the node key expires)
+- Tailscale app → Settings → Launch at login
+- Plug in the USB 2.5G Ethernet adapter (en7) and keep Wi-Fi as the fallback; Ethernet should sit above Wi-Fi in Network → Service Order
+- System Settings → Battery → Options → Prevent automatic sleeping on power adapter when the display is off
+- Keep the lid open (clamshell needs an external display + power)
+- FileVault: while it is on, any panic/reboot leaves the Mac at the pre-boot unlock screen until someone types the password. Planned reboots: `sudo fdesetup authrestart`.
+
+On 10/28/2026 ~02:00 it kernel panicked ("AOP crash of unknown type 0x9") and auto-rebooted, then sat at the FileVault screen until ~14:20.

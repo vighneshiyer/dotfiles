@@ -24,6 +24,8 @@ notes
 notes/**
 README.md
 key.txt.age
+devbox
+devbox/**
 
 # For specific hostnames, unignore specific dotfiles for that host only
 {{- if eq .chezmoi.fqdnHostname "vighnesh-t480" }}
@@ -169,6 +171,11 @@ key.txt.age
 {{- end }}
 
 {{- if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" }}
+!.local
+!.local/bin
+!.local/bin/devstate
+!Library/LaunchAgents
+!Library/LaunchAgents/local.devstate.snapshot.plist
 !.claude
 !.claude/CLAUDE.md
 !.claude/skills
