@@ -68,6 +68,8 @@ I'll document things I encounter.
 
 On 12/4/2025, when I opened the lid, the computer was off and actually ended up rebooting. It showed an error message "SOCD report detected (iBoot async abort)". Quite worrying that the uptime is so bad (only a few days). This could be a hardware fault, so I should keep watching.
 
+Unclean reboots (no shutdown in `last reboot shutdown`): 12/4/2025, 2/22/2026, 7/24/2026, 11/5/2026. Each time the Mac reset while asleep with the lid closed. The 11/5 report shows `AMCC error` (memory controller) at iBoot, plus a watchdog reset, so this is probably hardware. Run Apple Diagnostics and bring the panic reports to Apple. `devstate snapshot` now copies panic reports to `~/.local/state/devstate/panics/`, because macOS deletes them after a few weeks.
+
 ## Remote Dev Box (vighnesh-macbook-pax)
 
 Accessed over Tailscale + SSH (Remote Login on). chezmoi handles most of it, gated on this hostname:

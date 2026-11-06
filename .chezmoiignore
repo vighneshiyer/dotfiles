@@ -142,6 +142,11 @@ devbox/**
 {{- end }}
 
 {{- if eq .chezmoi.fqdnHostname "Vighneshs-MacBook-Air.local" }}
+!.local
+!.local/bin
+!.local/bin/devstate
+!Library/LaunchAgents
+!Library/LaunchAgents/local.devstate.snapshot.plist
 !.config
 !.config/aerospace
 !.config/aerospace/**

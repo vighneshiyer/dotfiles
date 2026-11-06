@@ -1,4 +1,4 @@
-{{- if eq .chezmoi.fqdnHostname "vighnesh-macbook-pax" -}}
+{{- if or (eq .chezmoi.fqdnHostname "vighnesh-macbook-pax") (eq .chezmoi.fqdnHostname "Vighneshs-MacBook-Air.local") -}}
 #!/bin/bash
 # plist hash: {{ include "private_Library/private_LaunchAgents/local.devstate.snapshot.plist.tmpl" | sha256sum }}
 set -euo pipefail

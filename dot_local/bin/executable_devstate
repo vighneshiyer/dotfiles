@@ -24,6 +24,9 @@ STATE_DIR = Path(os.environ.get("DEVSTATE_DIR", HOME / ".local/state/devstate"))
 SNAP_DIR = STATE_DIR / "snapshots"
 CLAUDE_DIR = HOME / ".claude"
 NETWATCH_LOG = Path("/var/log/netwatch.log")
+DIAG_DIR = Path("/Library/Logs/DiagnosticReports")
+# macOS deletes diagnostic reports after a few weeks; keep our own copies forever.
+PANIC_ARCHIVE = STATE_DIR / "panics"
 RETAIN_DAYS = 14
 # The final snapshot of each boot is what you need after a crash, so it outlives the rest.
 KEEP_LAST_OF_BOOT_DAYS = 120
@@ -443,7 +446,7 @@ def get_network():
 
 def get_panics():
     reports = [
-        p for p in Path("/Library/Logs/DiagnosticReports").glob("*.panic") if not p.name.startswith(".")
+        p for p in DIAG_DIR.glob("*.panic") if not p.name.startswith(".")
     ]
     out = []
     for p in sorted(reports, key=lambda p: p.stat().st_mtime, reverse=True)[:3]:
@@ -451,7 +454,7 @@ def get_panics():
             head = p.open("rb").read(16384).decode("utf-8", "replace")
         except OSError:
             continue
-        m = re.search(r'"panicString"\s*:\s*"panic\([^)]*\):\s*([^"\\]{0,160})', head)
+        m = re.search(r'"panicString"\s*:\s*"(?:panic\([^)]*\):\s*)?([^"\\]{0,160})', head)
         out.append({"file": str(p), "written_at": p.stat().st_mtime, "summary": m.group(1).strip() if m else None})
     return out
 
@@ -1039,7 +1042,20 @@ def prune():
             pass
 
 
+def archive_panics():
+    PANIC_ARCHIVE.mkdir(parents=True, exist_ok=True)
+    for p in list(DIAG_DIR.glob("*.panic")) + list(DIAG_DIR.glob("ResetCounter-*.diag")):
+        dest = PANIC_ARCHIVE / p.name
+        if p.name.startswith(".") or dest.exists():
+            continue
+        try:
+            shutil.copy2(p, dest)
+        except OSError:
+            pass
+
+
 def cmd_snapshot(args):
+    archive_panics()
     s = collect()
     d = SNAP_DIR / f"boot-{s['system']['boot_time']}"
     d.mkdir(parents=True, exist_ok=True)
